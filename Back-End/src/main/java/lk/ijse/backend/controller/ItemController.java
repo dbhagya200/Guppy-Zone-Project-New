@@ -5,6 +5,7 @@ import lk.ijse.backend.dto.ItemDTO;
 import lk.ijse.backend.service.ItemService;
 import lk.ijse.backend.util.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
         maxFileSize = 1024 * 1024 * 10, // 10MB
         maxRequestSize = 1024 * 1024 * 50 // 50MB
 )
+@CrossOrigin
 public class ItemController {
     @Autowired
     private ItemService itemService;

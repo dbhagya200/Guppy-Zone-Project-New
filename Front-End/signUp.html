@@ -42,7 +42,7 @@
     }
     input{
         border-radius: 10px;
-        font-family: "DejaVu Sans";
+        font-family: aakari;
     }
     #form{
         overflow: hidden;
@@ -133,6 +133,15 @@
                 <input type="email" class="form-control" id="email" placeholder="Enter your email" required>
             </div>
             <div class="mb-3">
+<!--                <label for="category" class="form-label">Category</label>-->
+                <select class="form-select "  id="role" required>
+                    <option value="" style="font-family: aakari;">Select a role</option>
+                    <option value="BUYER">BUYER</option>
+                    <option value="SELLER">SELLER</option>
+<!--                    <option value="ADMIN">ADMIN</option>-->
+                </select>
+            </div>
+            <div class="mb-3">
 <!--                <label for="password" class="form-label">Password</label>-->
                 <input type="password" class="form-control" id="password" placeholder="Enter password" required>
             </div>
@@ -159,6 +168,7 @@
             let email = $('#email').val();
             let password = $('#password').val();
             let confirmPassword = $('#confirm-password').val();
+            let selectedValue = $('#role').val();
             if (password !== confirmPassword) {
                 alert('Password and Confirm Password do not match');
                 return;
@@ -181,7 +191,7 @@
                             "username": name,
                             "email": email,
                             "password": password,
-                            "role": "USER"
+                            "role": selectedValue
                         }),
                         success: function(response) {
                             localStorage.setItem("token", response.data.token);

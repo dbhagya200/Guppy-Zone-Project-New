@@ -13,8 +13,8 @@ public class Orders {
     private User userId;
     private LocalDateTime orderDate;
     private Double totalAmount;
-    private String status; // e.g., Pending, Shipped, Delivered, Cancelled
-    @OneToMany(mappedBy = "orders", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private String status; //  Pending, Shipped, Delivered, Cancelled
+    @OneToMany(mappedBy = "orders", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.LAZY)
     private List<OrderDetails> orderDetails;
 
     public Orders() {

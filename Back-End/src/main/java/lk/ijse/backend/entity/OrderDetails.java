@@ -6,8 +6,7 @@ import jakarta.persistence.*;
 public class OrderDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String id;
-    private String itemId;
+    private int id;
     private int quantity;
     private double price;
     @ManyToOne
@@ -18,29 +17,20 @@ public class OrderDetails {
     public OrderDetails() {
     }
 
-    public OrderDetails(String id, String itemId, int quantity, double price, Orders orders, Item item) {
+    public OrderDetails(int id, int quantity, double price, Orders orders, Item item) {
         this.id = id;
-        this.itemId = itemId;
         this.quantity = quantity;
         this.price = price;
         this.orders = orders;
         this.item = item;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
-    }
-
-    public String getItemId() {
-        return itemId;
-    }
-
-    public void setItemId(String itemId) {
-        this.itemId = itemId;
     }
 
     public int getQuantity() {
@@ -78,8 +68,7 @@ public class OrderDetails {
     @Override
     public String toString() {
         return "OrderDetails{" +
-                "id='" + id + '\'' +
-                ", itemId='" + itemId + '\'' +
+                "id=" + id +
                 ", quantity=" + quantity +
                 ", price=" + price +
                 ", orders=" + orders +
