@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Guppy Zone-Advertisement</title>
+    <script src="/frameWork/bootstrap/bootstrap.bundle.min.js"></script>
+    <link
+            rel="stylesheet"
+            href="/frameWork/bootstrap/bootstrap.min.css?h=1bd2fff2799ca0c747d7b2f342f09263"
+    />
+    <link
+            rel="stylesheet"
+            href="../css/styles.min.css?h=d9e5aa7f37bca943795177b2227d103f"
+    />
+</head>
+<style>
+    body{
+        background-color: white;
+        width: 100vw;
+        height: 100vh;
+        overflow-x: hidden;
+    }
+    #mainNav{
+        /*background: #114253;*/
+        box-shadow: black 0 0 10px;
+        font-family: "Open Sans Semibold";
+
+    }
+    #mainNav{
+        background-color: white;
+        display: block;
+    }
+    .all-ads-section {
+        background-color: #f8f9fa; /* Light background */
+        padding: 60px 0; /* Add some padding */
+    }
+
+    .ad-row {
+        background-color: #fff; /* White background for each ad */
+        border: 1px solid #ddd; /* Light border */
+        border-radius: 10px; /* Rounded corners */
+        padding: 15px; /* Add some padding */
+        transition: box-shadow 0.3s ease; /* Add hover effect */
+        margin-bottom: 20px;
+    }
+
+    .ad-row:hover {
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow on hover */
+    }
+
+    .ad-title {
+        font-size: 1.5rem; /* Larger title */
+        font-weight: bold;
+        color: #333; /* Dark text */
+        margin-bottom: 10px;
+    }
+
+    .ad-price {
+        font-size: 1.25rem; /* Slightly larger text */
+        color: #28a745; /* Green color for price */
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+
+    .ad-description {
+        font-size: 1rem; /* Normal text size */
+        color: #555; /* Medium-dark text */
+        margin-bottom: 10px;
+    }
+
+    .ad-location {
+        font-size: 0.9rem; /* Smaller text for location */
+        color: #777; /* Light text */
+    }
+</style>
+<body>
+<nav
+        class="navbar navbar-expand-md sticky-top navbar-light text-light"
+        id="mainNav"
+>
+    <div class="container">
+        <a class="navbar-brand d-flex align-items-center" href="/">
+            <img style="width: 3rem;height: 3rem" src="../img/logo-2.png">
+            <span>Guppy Zone</span></a>
+        <button
+                data-bs-toggle="collapse"
+                class="navbar-toggler"
+                data-bs-target="#navcol-1"
+        >
+          <span class="visually-hidden">Toggle navigation</span
+          ><span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navcol-1">
+            <ul class="navbar-nav mx-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="home.html">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/services.html">Adverties</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/projects.html">Projects</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/pricing.html">Pricing</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/contacts.html">Profile</a>
+                </li>
+            </ul>
+            <a style="color: #19945d" class="txt  shadow" role="textbox" href="login.html"
+            >LogOut</a
+            >
+        </div>
+    </div>
+</nav>
+
+<section class="text-end m-4">
+    <h2 class=" text-center fw-bold" style="margin-top: 30px;font-family: aakari;"> All Advertisements</h2>
+    <button style="font-family: 'Droid Serif', sans-serif; margin-right: 0" type="button" class="btn btn-success" data-bs-toggle="modal"
+            data-bs-target="#addvertisementModal">
+        Add Your Advertisement
+    </button>
+</section>
+<div class="modal fade" id="addvertisementModal" tabindex="-1" aria-labelledby="addvertisementModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-success text-white">
+                <h5 style="font-family: 'Times New Roman', Times, serif;" class="modal-title" id="addvertisementModalLabel">Post Your Advertisement</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="addForm" enctype="multipart/form-data" action="addvertisement" method="post">
+                <div class="modal-body">
+                <!-- Title -->
+                <div class="mb-3">
+                    <label for="title" class="form-label">Title</label>
+                    <input type="text" class="form-control" id="title" placeholder="Enter ad title" required>
+                </div>
+
+                <!-- Description -->
+                <div class="mb-3">
+                    <label for="description" class="form-label">Description</label>
+                    <textarea class="form-control" id="description" rows="5" placeholder="Enter ad description" required></textarea>
+                </div>
+
+                <!-- Price -->
+                <div class="mb-3">
+                    <label for="price" class="form-label">Price (Rs.)</label>
+                    <input type="number" class="form-control" id="price" placeholder="Enter price" required>
+                </div>
+
+                    <!-- Quentity -->
+                    <div class="mb-3">
+                        <label for="quentity" class="form-label">Quentity</label>
+                        <input type="number" class="form-control" id="quentity" placeholder="Enter quentity" required>
+                    </div>
+
+                <!-- Category -->
+                <div class="mb-3">
+                    <label for="category" class="form-label">Category</label>
+                    <select class="form-select" id="category" required>
+                        <option value="">Select a category</option>
+                        <option value="guppies">Guppies</option>
+                        <option value="tanks">Tanks</option>
+                        <option value="filters">Filters</option>
+                        <option value="food">Food</option>
+                    </select>
+                </div>
+
+                <!-- Upload Images -->
+                <div class="mb-3">
+                    <label for="images" class="form-label">Upload Images</label>
+                    <input type="file" class="form-control" id="images" multiple accept="image/*" required>
+                    <small class="text-muted">You can upload up to 3 images.</small>
+                </div>
+
+                <!-- Location -->
+                <div class="mb-3">
+                    <label for="location" class="form-label">Location</label>
+                    <input type="text" class="form-control" id="location" placeholder="Enter location">
+                </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-success">Post Ad</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<section id="all-ads" class="all-ads-section py-5">
+    <div class="container">
+        <!-- Ad 1 -->
+        <div class="ad-row">
+            <div class="row align-items-center mb-4">
+                <!-- Image -->
+                <div class="col-md-3">
+                    <img src="https://via.placeholder.com/200x150" alt="Ad Image" class="img-fluid rounded">
+                </div>
+                <!-- Details -->
+                <div class="col-md-9">
+                    <h3 class="ad-title">Beautiful Guppies for Sale</h3>
+                    <p class="ad-price">$10</p>
+                    <p class="ad-description">High-quality guppies with vibrant colors. Perfect for your aquarium!</p>
+                    <p class="ad-location"><small class="text-muted">Colombo</small></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Ad 2 -->
+        <div class="ad-row">
+            <div class="row align-items-center mb-4">
+                <!-- Image -->
+                <div class="col-md-3">
+                    <img src="https://via.placeholder.com/200x150" alt="Ad Image" class="img-fluid rounded">
+                </div>
+                <!-- Details -->
+                <div class="col-md-9">
+                    <h3 class="ad-title">Rare Blue Guppies</h3>
+                    <p class="ad-price">$15</p>
+                    <p class="ad-description">Rare and exotic blue guppies. Limited stock available!</p>
+                    <p class="ad-location"><small class="text-muted">Kandy</small></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Ad 3 -->
+        <div class="ad-row">
+            <div class="row align-items-center mb-4">
+                <!-- Image -->
+                <div class="col-md-3">
+                    <img src="https://via.placeholder.com/200x150" alt="Ad Image" class="img-fluid rounded">
+                </div>
+                <!-- Details -->
+                <div class="col-md-9">
+                    <h3 class="ad-title">Healthy Guppy Fry</h3>
+                    <p class="ad-price">$5</p>
+                    <p class="ad-description">Healthy and active guppy fry. Great for breeding!</p>
+                    <p class="ad-location"><small class="text-muted">Galle</small></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Add more ads here -->
+    </div>
+</section>
+
+
+</body>
+</html>

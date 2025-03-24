@@ -1,6 +1,7 @@
 package lk.ijse.backend.service.imple;
 
 
+import jakarta.servlet.annotation.MultipartConfig;
 import lk.ijse.backend.dto.ItemDTO;
 import lk.ijse.backend.entity.Item;
 import lk.ijse.backend.repository.CategoriesRepo;
@@ -15,6 +16,11 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
+@MultipartConfig(
+        fileSizeThreshold = 1024 * 1024 * 2, // 2MB
+        maxFileSize = 1024 * 1024 * 10, // 10MB
+        maxRequestSize = 1024 * 1024 * 50 // 50MB
+)
 public class ItemServiceImple implements ItemService {
     @Autowired
     private UserRepo userRepository;

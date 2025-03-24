@@ -18,13 +18,15 @@ public class Item {
     private Categories category;
     @ManyToOne
     private User user;
+    @OneToOne
+    private ReviewsRatings review;
     @OneToMany(mappedBy = "item", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<OrderDetails> orderDetails;
 
     public Item() {
     }
 
-    public Item(String itemCode, String itemName, String description, int quantity, double price, String location, String sourceUrl, Categories category, User user, List<OrderDetails> orderDetails) {
+    public Item(String itemCode, String itemName, String description, int quantity, double price, String location, String sourceUrl, Categories category, User user, ReviewsRatings review, List<OrderDetails> orderDetails) {
         this.itemCode = itemCode;
         this.itemName = itemName;
         this.description = description;
@@ -34,6 +36,7 @@ public class Item {
         this.sourceUrl = sourceUrl;
         this.category = category;
         this.user = user;
+        this.review = review;
         this.orderDetails = orderDetails;
     }
 
@@ -109,6 +112,14 @@ public class Item {
         this.user = user;
     }
 
+    public ReviewsRatings getReview() {
+        return review;
+    }
+
+    public void setReview(ReviewsRatings review) {
+        this.review = review;
+    }
+
     public List<OrderDetails> getOrderDetails() {
         return orderDetails;
     }
@@ -129,6 +140,7 @@ public class Item {
                 ", sourceUrl='" + sourceUrl + '\'' +
                 ", category=" + category +
                 ", user=" + user +
+                ", review=" + review +
                 ", orderDetails=" + orderDetails +
                 '}';
     }

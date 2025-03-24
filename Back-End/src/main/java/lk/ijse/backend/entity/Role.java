@@ -8,14 +8,17 @@ public class Role {
     private String roleId;
     private String roleName;
     private String privileges;
+    @ManyToOne
+    private User user;
 
     public Role() {
     }
 
-    public Role(String roleId, String roleName, String privileges) {
+    public Role(String roleId, String roleName, String privileges, User user) {
         this.roleId = roleId;
         this.roleName = roleName;
         this.privileges = privileges;
+        this.user = user;
     }
 
     public String getRoleId() {
@@ -40,5 +43,23 @@ public class Role {
 
     public void setPrivileges(String privileges) {
         this.privileges = privileges;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    @Override
+    public String toString() {
+        return "Role{" +
+                "roleId='" + roleId + '\'' +
+                ", roleName='" + roleName + '\'' +
+                ", privileges='" + privileges + '\'' +
+                ", user=" + user +
+                '}';
     }
 }

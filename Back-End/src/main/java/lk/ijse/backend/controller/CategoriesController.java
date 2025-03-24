@@ -1,11 +1,15 @@
 package lk.ijse.backend.controller;
 
 import lk.ijse.backend.dto.CategoriesDTO;
+import lk.ijse.backend.dto.ResponseDTO;
 import lk.ijse.backend.service.CategoriesService;
 import lk.ijse.backend.util.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/categories")
@@ -16,14 +20,15 @@ public class CategoriesController {
 
     @PostMapping(path = "save")
     @PreAuthorize("hasAnyAuthority('ADMIN')")
-    public ResponseUtil saveCategories(@RequestBody CategoriesDTO categoriesDTO){
+    public ResponseEntity<CategoriesDTO> saveCategories(@RequestBody CategoriesDTO categoriesDTO){
         categoriesService.saveCategories(categoriesDTO);
-        return new ResponseUtil(201, "Success", null);
+        return ResponseEntity.ok(categoriesDTO);
     }
     @GetMapping(path = "get")
     @PreAuthorize("hasAnyAuthority('ADMIN')")
-    public ResponseUtil getAllCategories(){
-        return new ResponseUtil(200, "Success", categoriesService.getAllCategories());
+    public ResponseEntity<List<CategoriesDTO>> getAllCategories() {
+        List<CategoriesDTO> categories = categoriesService.getAllCategories();
+        return ResponseEntity.ok(categories);
     }
 
     @PutMapping(path = "update")

@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sign Up</title>
+    <link href="/frameWork/bootstrap/bootstrap.min.css" rel="stylesheet">
+<!--    <link-->
+<!--            rel="stylesheet"-->
+<!--            href="bootstrap/bootstrap.min.css?h=1bd2fff2799ca0c747d7b2f342f09263"-->
+<!--    />-->
+<!--    <link-->
+<!--            rel="stylesheet"-->
+<!--            href="css/styles.min.css?h=d9e5aa7f37bca943795177b2227d103f"-->
+<!--    />-->
+
+</head>
+<style>
+    body{
+        background-color: black;
+        width: 100vw;
+        height: 100vh;
+        overflow-x:hidden ;
+    }
+    #back-img{
+        background: url("../img/signup-3.jpg") repeat center center fixed;
+        -webkit-background-size: cover;
+        /*position: absolute;*/
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        overflow: hidden;
+        opacity: 0.7;
+
+    }
+    #mainNav{
+        background-color: white;
+        display: block;
+        box-shadow: black 0 0 10px;
+        font-family: "Open Sans Semibold";
+
+    }
+    input{
+        border-radius: 10px;
+        font-family: aakari;
+    }
+    #form{
+        overflow: hidden;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        margin-top: 50px;
+        label{
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+        }
+
+    }
+    #card{
+        box-shadow: black 0 0 10px;
+        border-radius: 15px;
+        font-family: "Droid Sans";
+        align-items: center;
+        width: 450px;
+
+    }
+
+
+</style>
+<body>
+<nav
+        class="navbar navbar-expand-md sticky-top   text-light"
+        id="mainNav"
+>
+    <div class="container">
+        <a class="navbar-brand d-flex align-items-center" href="/">
+            <img style="width: 3rem;height: 3rem" src="../img/logo-2.png">
+            <span>Guppy Zone</span></a>
+        <button
+            data-bs-toggle="collapse"
+            class="navbar-toggler"
+            data-bs-target="#navcol-1"
+    >
+          <span class="visually-hidden">Toggle navigation</span
+          ><span class="navbar-toggler-icon"></span>
+    </button>
+        <div class="collapse navbar-collapse" id="navcol-1">
+            <ul class="navbar-nav mx-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="index.html">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/services.html">Services</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/projects.html">Projects</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/pricing.html">Pricing</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/contacts.html">Contacts</a>
+                </li>
+            </ul>
+            <a style="background-color: #19945d;margin-right: 20px"  class=" btn btn-success shadow" role="button" href="signUp.html"
+            >Sign up</a
+            >
+            <a style="color: #19945d" class="txt  shadow" role="textbox" href="login.html"
+            >Login</a
+            >
+        </div>
+    </div>
+</nav>
+
+
+<section id="back-img">
+
+</section>
+<section id="form">
+<div class="container d-flex justify-content-center align-items-center vh-100">
+    <div class="card p-5 shadow" id="card" >
+        <h2 class="fw-bold fs-5 text-center text-success">Sign Up</h2>
+        <h2 class="text-center mb-4 fs-2">Welcome to Guppy Zone</h2>
+
+        <form>
+            <div class="mb-3">
+<!--                <label for="name" class="form-label">Full Name</label>-->
+                <input style="width: 350px;" type="text" class="form-control fs-6" id="name" placeholder="Enter your  Username" required>
+            </div>
+            <div class="mb-3">
+<!--                <label for="email" class="form-label">Email address</label>-->
+                <input type="email" class="form-control" id="email" placeholder="Enter your email" required>
+            </div>
+            <div class="mb-3">
+<!--                <label for="category" class="form-label">Category</label>-->
+                <select class="form-select "  id="role" required>
+                    <option value="" style="font-family: aakari;">Select a role</option>
+                    <option value="BUYER">BUYER</option>
+                    <option value="SELLER">SELLER</option>
+<!--                    <option value="ADMIN">ADMIN</option>-->
+                </select>
+            </div>
+            <div class="mb-3">
+<!--                <label for="password" class="form-label">Password</label>-->
+                <input type="password" class="form-control" id="password" placeholder="Enter password" required>
+            </div>
+            <div class="mb-3">
+<!--                <label for="confirm-password" class="form-label">Confirm Password</label>-->
+                <input type="password" class="form-control" id="confirm-password" placeholder="Confirm password" required>
+            </div>
+            <button id="registerBtn" type="button" class="btn btn-success w-100">Register</button>
+        </form>
+        <p class="text-center mt-2">Already have an account? <a href="login.html">Login</a></p>
+    </div>
+</div>
+</section>
+<script src="/frameWork/bootstrap/bootstrap.bundle.min.js"></script>
+<script src="/frameWork/jquery/jquery-3.7.1.min.js"></script>
+<script src="../frameWork/sweetalert2/sweetalert2.all.min.js"></script>
+<script src="../js/util.js"></script>
+<!--<script src="js/signUp.js"></script>-->
+<script>
+
+    $(document).ready(function() {
+        $('#registerBtn').click(function (){
+            let name = $('#name').val();
+            let email = $('#email').val();
+            let password = $('#password').val();
+            let confirmPassword = $('#confirm-password').val();
+            let selectedValue = $('#role').val();
+            if (password !== confirmPassword) {
+                alert('Password and Confirm Password do not match');
+                return;
+            }
+            Swal.fire({
+                title: "Complete Registration?",
+                text: "You will be redirected to login page.",
+                icon: "question",
+                showCancelButton: true,
+                confirmButtonColor: "#13a810",
+                cancelButtonColor: "#df8282",
+                confirmButtonText: "Register"
+            }).then((result)=>{
+                if(result.isConfirmed){
+                    $.ajax({
+                        url: 'http://localhost:8080/api/v1/user/register',
+                        method: 'POST',
+                        contentType: 'application/json',
+                        data: JSON.stringify({
+                            "username": name,
+                            "email": email,
+                            "password": password,
+                            "role": selectedValue
+                        }),
+                        success: function(response) {
+                            localStorage.setItem("token", response.data.token);
+                            Swal.fire({
+                                icon: "success",
+                                title: "Success",
+                                text: "Registration Successful!",
+                            }).then(() => {
+                                window.location.href = "login.html";
+                            });
+                        },
+                        error: function(xhr,error) {
+                            if (xhr){
+                                checkXHR(xhr)
+                                return;
+                            }
+                            let data = error.responseJSON.data;
+                            if (data.name != null){
+                                errorAlert(data.name)
+                            }else if (data.email != null){
+                                errorAlert(data.email)
+                            }else if(data.password != null){
+                                errorAlert(data.password)
+                            }
+                        }
+                    });
+                }
+            });
+
+        })
+        function errorAlert(message){
+            showAlert("error","Oops...",message)
+        }
+    });
+</script>
+</body>
+</html>

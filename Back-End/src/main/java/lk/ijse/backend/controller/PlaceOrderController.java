@@ -7,6 +7,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("api/v1/placeOrder")
 @CrossOrigin
@@ -21,9 +23,11 @@ public class PlaceOrderController {
         return ResponseEntity.ok(savedOrder);
     }
 
-    @GetMapping(path = "test")
-    public String checkss(){
-        return "passed~!2";
-    }
+//    @GetMapping(path = "get")
+//    @PreAuthorize("hasAnyAuthority('SELLER','BUYER')")
+//    public ResponseEntity<List<OrderDTO>> getOrders(){
+//        List<OrderDTO> orders = orderService.getAllOrders();
+//        return ResponseEntity.ok(orders);
+//    }
 
 }

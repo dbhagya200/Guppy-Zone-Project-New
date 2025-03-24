@@ -6,7 +6,8 @@ import jakarta.persistence.*;
 public class Adverties {
     @Id
     private String advertiesId;
-    private String userId;
+    @ManyToOne
+    private User userId;
     private String itemId;
 
 

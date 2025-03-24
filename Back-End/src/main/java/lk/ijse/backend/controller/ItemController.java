@@ -1,21 +1,16 @@
 package lk.ijse.backend.controller;
-
-import jakarta.servlet.annotation.MultipartConfig;
 import lk.ijse.backend.dto.ItemDTO;
 import lk.ijse.backend.service.ItemService;
 import lk.ijse.backend.util.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/v1/addsItem")
-@MultipartConfig(
-        fileSizeThreshold = 1024 * 1024 * 2, // 2MB
-        maxFileSize = 1024 * 1024 * 10, // 10MB
-        maxRequestSize = 1024 * 1024 * 50 // 50MB
-)
 @CrossOrigin
 public class ItemController {
     @Autowired
@@ -24,15 +19,15 @@ public class ItemController {
 
     @PostMapping(path = "save")
     @PreAuthorize("hasAnyAuthority('SELLER')")
-    public ResponseUtil postItems(@RequestBody ItemDTO itemDTO) {
+    public ResponseEntity<ItemDTO> postItems(@RequestBody ItemDTO itemDTO) {
         itemService.saveItem(itemDTO);
-        return new ResponseUtil(200, "Success", null);
+        return ResponseEntity.ok(itemDTO);
     }
     @GetMapping(path = "get")
     @PreAuthorize("hasAnyAuthority('SELLER')")
-    public ResponseUtil getItems() {
-
-        return new ResponseUtil(200, "Success", itemService.getAllItems());
+    public ResponseEntity<List<ItemDTO>> getItems() {
+        List<ItemDTO> items = itemService.getAllItems();
+        return ResponseEntity.ok(items);
     }
 
     @PutMapping(path = "update")
