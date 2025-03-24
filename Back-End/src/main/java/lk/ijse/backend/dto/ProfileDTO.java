@@ -3,11 +3,13 @@ package lk.ijse.backend.dto;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
+import org.springframework.stereotype.Component;
 
+@Component
 public class ProfileDTO {
     private String profileId;
     @Email(message = "invalid format")
-    private UserDTO email;
+    private String email;
     private String image;
     @Size(min = 2,max = 30,message = "Name min length is 2  ")
     private String name;
@@ -19,7 +21,7 @@ public class ProfileDTO {
     public ProfileDTO() {
     }
 
-    public ProfileDTO(String profileId, UserDTO email, String image, String name, String address, String contact) {
+    public ProfileDTO(String profileId, String email, String image, String name, String address, String contact) {
         this.profileId = profileId;
         this.email = email;
         this.image = image;
@@ -36,11 +38,11 @@ public class ProfileDTO {
         this.profileId = profileId;
     }
 
-    public UserDTO getEmail() {
+    public String getEmail() {
         return email;
     }
 
-    public void setEmail(UserDTO email) {
+    public void setEmail(String email) {
         this.email = email;
     }
 
@@ -80,7 +82,7 @@ public class ProfileDTO {
     public String toString() {
         return "ProfileDTO{" +
                 "profileId='" + profileId + '\'' +
-                ", email=" + email +
+                ", email='" + email + '\'' +
                 ", image='" + image + '\'' +
                 ", name='" + name + '\'' +
                 ", address='" + address + '\'' +

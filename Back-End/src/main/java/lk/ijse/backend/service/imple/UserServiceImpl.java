@@ -1,6 +1,7 @@
 package lk.ijse.backend.service.imple;
 
 
+import lk.ijse.backend.dto.ProfileDataDTO;
 import lk.ijse.backend.dto.UserDTO;
 import lk.ijse.backend.entity.User;
 import lk.ijse.backend.repository.UserRepo;
@@ -15,6 +16,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -66,6 +68,12 @@ public class UserServiceImpl implements UserDetailsService, UserService {
             return VarList.Created;
         }
     }
+
+//    @Override
+//    public String saveItemImage(MultipartFile image) {
+//        return null;
+//    }
+
 
     @Override
     public int saveUser(UserDTO userDTO) {
