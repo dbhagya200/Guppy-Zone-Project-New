@@ -4,14 +4,20 @@ package lk.ijse.backend.controller;
 import lk.ijse.backend.dto.AuthDTO;
 import lk.ijse.backend.dto.ResponseDTO;
 import lk.ijse.backend.dto.UserDTO;
+import lk.ijse.backend.entity.User;
+import lk.ijse.backend.repository.UserRepo;
 import lk.ijse.backend.service.imple.UserServiceImpl;
 import lk.ijse.backend.util.JwtUtil;
 import lk.ijse.backend.util.VarList;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("api/v1/auth")
@@ -22,6 +28,8 @@ public class AuthController {
     private final AuthenticationManager authenticationManager;
     private final UserServiceImpl userService;
     private final ResponseDTO responseDTO;
+
+    private  UserRepo userRepo;
 
     //constructor injection
     public AuthController(JwtUtil jwtUtil, AuthenticationManager authenticationManager, UserServiceImpl userService, ResponseDTO responseDTO) {
@@ -56,9 +64,33 @@ public class AuthController {
         AuthDTO authDTO = new AuthDTO();
         authDTO.setEmail(loadedUser.getEmail());
         authDTO.setToken(token);
+        authDTO.setRole(loadedUser.getRole());
+
+        // Create response payload
+        Map<String, Object> response = new HashMap<>();
+        response.put("token", token);
+        response.put("role", authDTO.getRole()); // Ensure role is included
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(new ResponseDTO(VarList.Created, "Success", authDTO));
+
+
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<Map<String, Object>> login(@RequestBody UserDTO userDTO) {
+        authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(userDTO.getEmail(), userDTO.getPassword()));
+
+        // Generate JWT token
+        String token = jwtUtil.generateToken(userDTO);
+
+        // Create response payload
+        Map<String, Object> response = new HashMap<>();
+        response.put("token", token);
+        response.put("role", userDTO.getRole()); // Ensure role is included
+
+        return ResponseEntity.ok(response);
     }
 
 }

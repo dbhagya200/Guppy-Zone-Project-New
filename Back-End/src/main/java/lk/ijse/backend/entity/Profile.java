@@ -7,21 +7,22 @@ public class Profile {
     @Id
     private String profileId;
     @OneToOne
-    @JoinColumn(name = "email", referencedColumnName = "email")
     private User user;
     private String image;
-    private String name;
+    private String firstName;
+    private String lastName;
     private String address;
     private String contact;
 
     public Profile() {
     }
 
-    public Profile(String profileId, User userId, String image, String name, String address, String contact) {
+    public Profile(String profileId, User user, String image, String firstName, String lastName, String address, String contact) {
         this.profileId = profileId;
-        this.user = userId;
+        this.user = user;
         this.image = image;
-        this.name = name;
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.address = address;
         this.contact = contact;
     }
@@ -38,8 +39,8 @@ public class Profile {
         return user;
     }
 
-    public void setUser(User userId) {
-        this.user = userId;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public String getImage() {
@@ -50,12 +51,20 @@ public class Profile {
         this.image = image;
     }
 
-    public String getName() {
-        return name;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getAddress() {
@@ -78,9 +87,10 @@ public class Profile {
     public String toString() {
         return "Profile{" +
                 "profileId='" + profileId + '\'' +
-                ", userId=" + user +
+                ", user=" + user +
                 ", image='" + image + '\'' +
-                ", name='" + name + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
                 ", address='" + address + '\'' +
                 ", contact='" + contact + '\'' +
                 '}';

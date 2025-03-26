@@ -7,7 +7,6 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class ProfileDTO {
-    private String profileId;
     @Email(message = "invalid format")
     private String email;
     private String image;
@@ -16,26 +15,17 @@ public class ProfileDTO {
     @Size(min = 5,max = 30,message = "Name min length is 5  ")
     private String address;
     @Pattern(regexp = "^[0-9]{10}$",message = "Phone number must be 10 digits")
-    private String contact;
+        private String contact;
 
     public ProfileDTO() {
     }
 
-    public ProfileDTO(String profileId, String email, String image, String name, String address, String contact) {
-        this.profileId = profileId;
+    public ProfileDTO(String email, String image, String name, String address, String contact) {
         this.email = email;
         this.image = image;
         this.name = name;
         this.address = address;
         this.contact = contact;
-    }
-
-    public String getProfileId() {
-        return profileId;
-    }
-
-    public void setProfileId(String profileId) {
-        this.profileId = profileId;
     }
 
     public String getEmail() {
@@ -81,8 +71,7 @@ public class ProfileDTO {
     @Override
     public String toString() {
         return "ProfileDTO{" +
-                "profileId='" + profileId + '\'' +
-                ", email='" + email + '\'' +
+                "email='" + email + '\'' +
                 ", image='" + image + '\'' +
                 ", name='" + name + '\'' +
                 ", address='" + address + '\'' +

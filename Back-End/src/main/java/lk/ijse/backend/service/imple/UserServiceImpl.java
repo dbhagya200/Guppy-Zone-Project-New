@@ -48,9 +48,9 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     }
 
     @Override
-    public UserDTO searchUser(String username) {
-        if (userRepository.existsByEmail(username)) {
-            User user=userRepository.findByEmail(username);
+    public UserDTO getCurrentUser(String email) {
+        if (userRepository.existsByEmail(email)) {
+            User user=userRepository.findByEmail(email);
             return modelMapper.map(user,UserDTO.class);
         } else {
             return null;

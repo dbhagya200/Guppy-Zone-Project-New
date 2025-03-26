@@ -181,26 +181,52 @@
 <script src="frameWork/sweetalert2/sweetalert2.all.min.js"></script>
 <script>
     $(document).ready(function() {
-        $('#registerBtn').click(function (){
-            let name = $('#name').val();
-            let email = $('#email').val();
+        $('#registerBtn').click(function () {
+            // Get form values
+            let name = $('#name').val().trim();
+            let email = $('#email').val().trim();
             let password = $('#password').val();
             let confirmPassword = $('#confirm-password').val();
             let selectedValue = $('#role').val();
-            if (password !== confirmPassword) {
-                alert('Password and Confirm Password do not match');
+
+            if (!name || !email || !password || !confirmPassword || !selectedValue) {
+                Swal.fire({
+                    icon: "error",
+                    title: "Missing Information",
+                    text: "Please fill in all fields",
+                });
                 return;
             }
+
+            if (password !== confirmPassword) {
+                Swal.fire({
+                    icon: "error",
+                    title: "Password Mismatch",
+                    text: "Password and Confirm Password do not match",
+                });
+                return;
+            }
+
+            if (password.length < 8) {
+                Swal.fire({
+                    icon: "error",
+                    title: "Weak Password",
+                    text: "Password must be at least 8 characters long",
+                });
+                return;
+            }
+
             Swal.fire({
                 title: "Complete Registration?",
-                text: "You will be redirected to login page.",
+                text: "You will be redirected to login page after successful registration.",
                 icon: "question",
                 showCancelButton: true,
                 confirmButtonColor: "#13a810",
                 cancelButtonColor: "#df8282",
                 confirmButtonText: "Register"
-            }).then((result)=>{
-                if(result.isConfirmed){
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.showLoading();
                     $.ajax({
                         url: 'http://localhost:8080/api/v1/user/register',
                         method: 'POST',
@@ -212,34 +238,56 @@
                             "role": selectedValue
                         }),
                         success: function(response) {
-                            localStorage.setItem("token", response.data.token);
+                            if (response.data && response.data.token) {
+                                localStorage.setItem("token", response.data.token);
+                            }
+
                             Swal.fire({
                                 icon: "success",
                                 title: "Success",
-                                text: "Registration Successful!",
+                                text: "Registration Successful! Please login.",
+                                timer: 2000,
+                                showConfirmButton: false
                             }).then(() => {
-                                window.location.href = "register.html";
+                                window.location.href = "login.html";
                             });
                         },
-                        error: function(xhr,error) {
-                            if (xhr){
-                                checkXHR(xhr)
-                                return;
-                            }
-                            let data = error.responseJSON.data;
-                            if (data.name != null){
-                                errorAlert(data.name)
-                            }else if (data.email != null){
-                                errorAlert(data.email)
-                            }else if(data.password != null){
-                                errorAlert(data.password)
+                        error: function(xhr) {
+                            Swal.hideLoading();
+
+                            if (xhr.status === 400) {
+                                let errors = xhr.responseJSON?.errors || [];
+                                let errorMessage = errors.map(e => e.message).join('\n');
+
+                                Swal.fire({
+                                    icon: "error",
+                                    title: "Validation Error",
+                                    text: errorMessage || "Please check your input",
+                                });
+                            } else if (xhr.status === 409) {
+                                Swal.fire({
+                                    icon: "error",
+                                    title: "Registration Failed",
+                                    text: xhr.responseJSON?.message || "User already exists",
+                                });
+                            } else {
+                                Swal.fire({
+                                    icon: "error",
+                                    title: "Registration Failed",
+                                    text: xhr.responseJSON?.message || "Something went wrong. Please try again.",
+                                });
                             }
                         }
                     });
                 }
             });
+        });
 
-        })
+        function showFieldError(fieldId, message) {
+            $(fieldId).addClass('is-invalid');
+            $(fieldId).next('.invalid-feedback').text(message);
+        }
+
 
         $('#loginBtn').click(function (){
             let name = $('#name-login').val();
@@ -262,8 +310,20 @@
                         title: "Success",
                         text: "Login Successful!",
                     }).then(() => {
-
-                        window.location.href = "home.html";
+                        switch(response.data.role) {
+                            case "SELLER":
+                                window.location.href = "home.html";
+                                break;
+                            case "BUYER":
+                                window.location.href = "buyerHome.html";
+                                break;
+                            case "ADMIN":
+                                window.location.href = "adminHome.html";
+                                break;
+                            default:
+                                console.error("Unknown role:", response.data.role);
+                                window.location.href = "index-1.html";
+                        }
                     });
                 },
                 error: function (error) {
@@ -272,7 +332,7 @@
                         title: "Oops...",
                         text: " Something went wrong!",
                     }).then(() => {
-                        window.location.href = "login.html";
+                        window.location.href = "register.html";
                     });
                 }
             });

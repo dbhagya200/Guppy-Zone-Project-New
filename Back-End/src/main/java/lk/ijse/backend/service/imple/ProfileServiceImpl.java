@@ -4,6 +4,7 @@ import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.transaction.Transactional;
 import lk.ijse.backend.dto.ProfileDTO;
 import lk.ijse.backend.dto.ProfileDataDTO;
+import lk.ijse.backend.dto.UserDTO;
 import lk.ijse.backend.entity.Profile;
 import lk.ijse.backend.entity.User;
 import lk.ijse.backend.repository.ProfileRepo;
@@ -19,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -59,17 +61,72 @@ public class ProfileServiceImpl implements ProfileService {
 
     @Override
     public String saveItemImage(MultipartFile image) {
-        // Generate a unique filename
         String fileName = System.currentTimeMillis() + "_" + image.getOriginalFilename();
         Path filePath = Paths.get(ITEM_UPLOAD_DIR + fileName);
 
         try {
-            //save the image
             image.transferTo(filePath.toFile());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
         return filePath.toString();
+    }
+
+    @Override
+    public ProfileDTO saveProfile(ProfileDataDTO profileDataDTO) {
+        // Validate image
+        if (profileDataDTO.getImage() == null || profileDataDTO.getImage().isEmpty()) {
+            throw new IllegalArgumentException("Profile image is required");
+        }
+
+        // Save image
+        String imagePath = null;
+        try {
+            imagePath = saveProfileImage(profileDataDTO.getImage());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        // Map and save profile
+        Profile profile = new Profile();
+        profile.setFirstName(profileDataDTO.getFirstName());
+        profile.setLastName(profileDataDTO.getLastName());
+        profile.setContact(profileDataDTO.getContact());
+        profile.setAddress(profileDataDTO.getAddress());
+        profile.setImage(imagePath);
+
+        // Set user (assuming you have this relationship)
+        UserDTO user = userService.getCurrentUser(profileDataDTO.getEmail()); // Or fetch by ID/email
+        profile.setUser(modelMapper.map(user, User.class));
+
+        // Save to database
+        Profile savedProfile = profileRepo.save(profile);
+
+        // Convert to DTO
+        ProfileDTO profileDTO = new ProfileDTO();
+        profileDTO.setName(savedProfile.getFirstName() + " " + savedProfile.getLastName());
+        profileDTO.setEmail(savedProfile.getUser().getEmail());
+        profileDTO.setContact(savedProfile.getContact());
+        profileDTO.setAddress(savedProfile.getAddress());
+        profileDTO.setImage(savedProfile.getImage());
+
+        return profileDTO;
+    }
+
+    private String saveProfileImage(MultipartFile image) throws IOException {
+        String fileName = UUID.randomUUID() + "_" + image.getOriginalFilename();
+        Path uploadPath = Paths.get(PROFILE_UPLOAD_DIR).toAbsolutePath().normalize();
+        Path filePath = uploadPath.resolve(fileName);
+
+        // Create directories if they don't exist
+        Files.createDirectories(uploadPath);
+
+        // Save file
+        try (InputStream inputStream = image.getInputStream()) {
+            Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
+        }
+
+        return "/profile-images/" + fileName; // Return relative path
     }
 
     static void createIfNotExistDirectory(String directory) {
@@ -78,4 +135,7 @@ public class ProfileServiceImpl implements ProfileService {
             uploadDir.mkdirs(); // ✅ Create directory if it doesn’t exist
         }
     }
+
+
+
 }

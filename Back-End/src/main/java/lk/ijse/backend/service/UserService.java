@@ -5,7 +5,7 @@ import lk.ijse.backend.dto.UserDTO;
 
 public interface UserService {
     int saveUser(UserDTO userDTO);
-    UserDTO searchUser(String username);
+    UserDTO getCurrentUser(String email);
 
     int updateUser(UserDTO userDTO);
 
