@@ -146,6 +146,10 @@
                             <label for="last-name">Last Name</label>
                             <input type="text" class="form-control" id="last-name">
                         </div>
+                        <div class="form-group">
+                            <label for="last-name">Email</label>
+                            <input type="email" class="form-control" id="email">
+                        </div>
                         <!-- File chooser -->
                         <div class="form-group choose-file">
                             <i class="fa fa-user text-center"></i>
@@ -273,6 +277,58 @@
 <script src="/frameWork/jquery/jquery-3.7.1.min.js"></script>
 <script src="frameWork/sweetalert2/sweetalert2.all.min.js"></script>
 <script src="js/profile.js"></script>
+<script>
+    $(document).ready(function () {
+        const token = localStorage.getItem('token');
 
+        if (!token) {
+            console.error("Token not found!");
+            return;
+        }
+
+        // Function to decode JWT and extract email
+        function getEmailFromToken(token) {
+            try {
+                const payload = JSON.parse(atob(token.split('.')[1])); // Decode JWT payload
+                return payload.sub || payload.email || ""; // Extract email (assuming 'sub' or 'email' holds it)
+            } catch (error) {
+                console.error("Error decoding token:", error);
+                return "";
+            }
+        }
+
+        // Get email from token
+        const email = getEmailFromToken(token);
+        console.log("Extracted email:", email);
+        $("#email").val(email); // Set email in text field
+
+        // Load user details via API
+        $.ajax({
+            url: 'http://localhost:8080/api/v1/user/get',
+            method: 'GET',
+            headers: {
+                'Authorization': 'Bearer ' + token
+            },
+            success: function (response) {
+                console.log("API Response:", response);
+                const user = response; // Adjust if response contains 'data'
+
+                $("#email").val(user.email || email); // Use API email if available
+                $("#contact").val(user.contact || "");
+                $("#address").val(user.address || "");
+
+                if (user.name) {
+                    const names = user.name.split(' ');
+                    $("#first-name").val(names[0] || "");
+                    $("#last-name").val(names.slice(1).join(' ') || "");
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error("Error fetching user data:", xhr.responseText);
+            }
+        });
+    });
+
+</script>
 </body>
 </html>

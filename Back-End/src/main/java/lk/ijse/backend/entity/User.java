@@ -16,16 +16,26 @@ public class User implements Serializable {
     private String email;
     private String password;
     private String role;
+    private String image;
+    private String address;
+    private String contact;
+    private String firstName;
+    private String lastName;
 
     public User() {
     }
 
-    public User(UUID uid, String username, String email, String password, String role) {
+    public User(UUID uid, String username, String email, String password, String role, String image, String address, String contact, String firstName, String lastName) {
         this.uid = uid;
         this.username = username;
         this.email = email;
         this.password = password;
         this.role = role;
+        this.image = image;
+        this.address = address;
+        this.contact = contact;
+        this.firstName = firstName;
+        this.lastName = lastName;
     }
 
     public UUID getUid() {
@@ -68,6 +78,46 @@ public class User implements Serializable {
         this.role = role;
     }
 
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getContact() {
+        return contact;
+    }
+
+    public void setContact(String contact) {
+        this.contact = contact;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -76,6 +126,11 @@ public class User implements Serializable {
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 ", role='" + role + '\'' +
+                ", image='" + image + '\'' +
+                ", address='" + address + '\'' +
+                ", contact='" + contact + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
                 '}';
     }
 }

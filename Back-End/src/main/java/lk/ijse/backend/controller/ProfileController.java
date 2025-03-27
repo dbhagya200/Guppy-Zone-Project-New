@@ -14,12 +14,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
-import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/profile")
@@ -46,21 +42,16 @@ public class ProfileController {
                 .body(new ResponseDTO(VarList.Created, "Success", savedProfile));
     }
 
-    @PostMapping(path = "/saveProfile", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    @PreAuthorize("hasAnyAuthority('SELLER','BUYER')")
-    public ResponseEntity<ResponseDTO> saveProfile(
-            @Valid @ModelAttribute ProfileDataDTO profileDataDTO,
-            BindingResult bindingResult) throws MethodArgumentNotValidException {
+//    @PostMapping(path = "/saveProfile", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+//    @PreAuthorize("hasAnyAuthority('SELLER','BUYER')")
+//    public ResponseEntity<ResponseDTO> saveProfile(
+//            @Valid @RequestBody ProfileDTO profileDTO)  {
+//        profileService.saveProfile(profileDTO);
+//        return ResponseEntity.status(HttpStatus.CREATED)
+//                .body(new ResponseDTO(VarList.Created, "Success", profileDTO));
+//    }
 
-        // Validate input
-        if (bindingResult.hasErrors()) {
-            throw new MethodArgumentNotValidException(null, bindingResult);
-        }
 
-        ProfileDTO savedProfile = profileService.saveProfile(profileDataDTO);
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(new ResponseDTO(VarList.Created, "Profile created successfully", savedProfile));
-    }
 
 
 }

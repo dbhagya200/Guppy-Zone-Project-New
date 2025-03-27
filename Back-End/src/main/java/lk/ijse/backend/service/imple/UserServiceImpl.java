@@ -1,11 +1,13 @@
 package lk.ijse.backend.service.imple;
 
 
+import lk.ijse.backend.dto.ProfileDTO;
 import lk.ijse.backend.dto.ProfileDataDTO;
 import lk.ijse.backend.dto.UserDTO;
 import lk.ijse.backend.entity.User;
 import lk.ijse.backend.repository.UserRepo;
 import lk.ijse.backend.service.UserService;
+import lk.ijse.backend.util.JwtUtil;
 import lk.ijse.backend.util.VarList;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,10 +71,16 @@ public class UserServiceImpl implements UserDetailsService, UserService {
         }
     }
 
-//    @Override
-//    public String saveItemImage(MultipartFile image) {
-//        return null;
-//    }
+    @Override
+    public String getUserEmailByToken(String token) {
+        return null;
+    }
+
+    public UserDTO getUserByEmail(String email) {
+        User user = userRepository.findByEmail(email);
+
+        return modelMapper.map(user, UserDTO.class);
+    }
 
 
     @Override
@@ -86,5 +94,28 @@ public class UserServiceImpl implements UserDetailsService, UserService {
             userRepository.save(modelMapper.map(userDTO, User.class));
             return VarList.Created;
         }
+    }
+
+    @Override
+    public ProfileDTO updateUserProfile(String email, ProfileDataDTO profileDataDTO) {
+        // Find user by email
+        User user = userRepository.findByEmail(email);
+        System.out.println("user = " + user);
+
+        // Convert ProfileDataDTO to ProfileDTO
+        ProfileDTO profileDTO = new ProfileDTO();
+        profileDTO.setEmail(profileDataDTO.getEmail());
+        profileDTO.setImage(profileDataDTO.getImage().getOriginalFilename()); // Save image name (you can upload separately)
+        profileDTO.setName(profileDataDTO.getFirstName() + " " + profileDataDTO.getLastName());
+        profileDTO.setAddress(profileDataDTO.getAddress());
+        profileDTO.setContact(profileDataDTO.getContact());
+
+        // Map ProfileDTO to User entity
+        modelMapper.map(profileDTO, user);
+
+        // Save updated user
+        userRepository.save(user);
+
+        return profileDTO;
     }
 }

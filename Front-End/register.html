@@ -249,7 +249,7 @@
                                 timer: 2000,
                                 showConfirmButton: false
                             }).then(() => {
-                                window.location.href = "login.html";
+                                window.location.href = "register.html";
                             });
                         },
                         error: function(xhr) {
@@ -282,6 +282,15 @@
                 }
             });
         });
+
+        fetch('http://localhost:8080/api/v1/user/me', {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            }
+        })
+            .then(response => response.json())
+            .then(data => console.log(data));
 
         function showFieldError(fieldId, message) {
             $(fieldId).addClass('is-invalid');
