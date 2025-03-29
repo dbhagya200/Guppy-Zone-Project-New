@@ -37,97 +37,111 @@ public class ItemServiceImple implements ItemService {
     private ModelMapper modelMapper;
 
     @Override
-    public ItemDTO saveItem(ItemDTO itemDTO) {
+    public ItemDTO saveItem(ItemDTO itemDTO, String sellerEmail) {
+        // Verify the seller exists and is actually a seller
+        User seller = userRepository.findByEmailAndRole(sellerEmail, "SELLER");
+        if (seller == null) {
+            throw new RuntimeException("Seller not found or invalid role");
+        }
+
+        // Verify the category belongs to the seller
+        Categories category = categoryRepo.findById(itemDTO.getCategoryId())
+                .orElseThrow(() -> new RuntimeException("Category not found"));
+
+        if (!category.getSeller().getEmail().equals(sellerEmail)) {
+            throw new RuntimeException("Category does not belong to this seller");
+        }
+
         Item item = modelMapper.map(itemDTO, Item.class);
-
-        // Set category if categoryId is provided
-        if (itemDTO.getCategoryId() != null) {
-            Categories category = categoryRepo.findById(itemDTO.getCategoryId())
-                    .orElseThrow(() -> new RuntimeException("Category not found"));
-            item.setCategory(category);
-        }
-
-        // Set user if userEmail is provided
-        if (itemDTO.getUserEmail() != null) {
-            User user = userRepository.findById(itemDTO.getUserEmail())
-                    .orElseThrow(() -> new RuntimeException("User not found"));
-            item.setUser(user);
-        }
+        item.setUser(seller);
+        item.setCategory(category);
 
         itemRepository.save(item);
         return modelMapper.map(item, ItemDTO.class);
     }
-
     @Override
-    public ItemDTO updateItem(ItemDTO itemDTO) {
-        if (!itemRepository.existsById(itemDTO.getItemCode())) {
-            throw new RuntimeException("Item not found");
-        }
-
-        Item existingItem = itemRepository.findById(itemDTO.getItemCode()).get();
-        modelMapper.map(itemDTO, existingItem);
-
-        // Update category if changed
-        if (itemDTO.getCategoryId() != null &&
-                (existingItem.getCategory() == null ||
-                        !existingItem.getCategory().getCategoryId().equals(itemDTO.getCategoryId()))) {
-            Categories category = categoryRepo.findById(itemDTO.getCategoryId())
-                    .orElseThrow(() -> new RuntimeException("Category not found"));
-            existingItem.setCategory(category);
-        }
-
-        // Update user if changed
-        if (itemDTO.getUserEmail() != null &&
-                (existingItem.getUser() == null ||
-                        !existingItem.getUser().getEmail().equals(itemDTO.getUserEmail()))) {
-            User user = userRepository.findById(itemDTO.getUserEmail())
-                    .orElseThrow(() -> new RuntimeException("User not found"));
-            existingItem.setUser(user);
-        }
-
-        itemRepository.save(existingItem);
-        return modelMapper.map(existingItem, ItemDTO.class);
+    public List<ItemDTO> getItemsBySeller(String sellerEmail) {
+        return itemRepository.findByUserEmail(sellerEmail).stream()
+                .map(item -> modelMapper.map(item, ItemDTO.class))
+                .collect(Collectors.toList());
     }
-
     @Override
-    public void deleteItem(String itemCode) {
-        if (!itemRepository.existsById(itemCode)) {
-            throw new RuntimeException("Item not found");
-        }
-        itemRepository.deleteById(itemCode);
-    }
-
-    @Override
-    public ItemDTO findItem(String itemCode) {
-        Item item = itemRepository.findById(itemCode)
-                .orElseThrow(() -> new RuntimeException("Item not found"));
-        return modelMapper.map(item, ItemDTO.class);
-    }
-
-    @Override
-    public List<ItemDTO> getAllItems() {
-        return itemRepository.findAll().stream()
+    public List<ItemDTO> getItemsByCategoryAndSeller(String categoryId, String sellerEmail) {
+        return itemRepository.findByCategoryAndSeller(categoryId, sellerEmail).stream()
                 .map(item -> modelMapper.map(item, ItemDTO.class))
                 .collect(Collectors.toList());
     }
 
-    @Override
-    public List<ItemDTO> getItemsByCategory(String categoryId) {
-        Categories category = categoryRepo.findById(categoryId)
-                .orElseThrow(() -> new RuntimeException("Category not found"));
+//    @Override
+//    public ItemDTO updateItem(ItemDTO itemDTO) {
+//        if (!itemRepository.existsById(itemDTO.getItemCode())) {
+//            throw new RuntimeException("Item not found");
+//        }
+//
+//        Item existingItem = itemRepository.findById(itemDTO.getItemCode()).get();
+//        modelMapper.map(itemDTO, existingItem);
+//
+//        // Update category if changed
+//        if (itemDTO.getCategoryId() != null &&
+//                (existingItem.getCategory() == null ||
+//                        !existingItem.getCategory().getCategoryId().equals(itemDTO.getCategoryId()))) {
+//            Categories category = categoryRepo.findById(itemDTO.getCategoryId())
+//                    .orElseThrow(() -> new RuntimeException("Category not found"));
+//            existingItem.setCategory(category);
+//        }
+//
+//        // Update user if changed
+//        if (itemDTO.getUserEmail() != null &&
+//                (existingItem.getUser() == null ||
+//                        !existingItem.getUser().getEmail().equals(itemDTO.getUserEmail()))) {
+//            User user = userRepository.findById(itemDTO.getUserEmail())
+//                    .orElseThrow(() -> new RuntimeException("User not found"));
+//            existingItem.setUser(user);
+//        }
+//
+//        itemRepository.save(existingItem);
+//        return modelMapper.map(existingItem, ItemDTO.class);
+//    }
 
-        return itemRepository.findByCategory(category).stream()
-                .map(item -> modelMapper.map(item, ItemDTO.class))
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public List<ItemDTO> getItemsByUser(String userEmail) {
-        User user = userRepository.findById(userEmail)
-                .orElseThrow(() -> new RuntimeException("User not found"));
-
-        return itemRepository.findByUser(user).stream()
-                .map(item -> modelMapper.map(item, ItemDTO.class))
-                .collect(Collectors.toList());
-    }
+//    @Override
+//    public void deleteItem(String itemCode) {
+//        if (!itemRepository.existsById(itemCode)) {
+//            throw new RuntimeException("Item not found");
+//        }
+//        itemRepository.deleteById(itemCode);
+//    }
+//
+//    @Override
+//    public ItemDTO findItem(String itemCode) {
+//        Item item = itemRepository.findById(itemCode)
+//                .orElseThrow(() -> new RuntimeException("Item not found"));
+//        return modelMapper.map(item, ItemDTO.class);
+//    }
+//
+//    @Override
+//    public List<ItemDTO> getAllItems() {
+//        return itemRepository.findAll().stream()
+//                .map(item -> modelMapper.map(item, ItemDTO.class))
+//                .collect(Collectors.toList());
+//    }
+//
+//    @Override
+//    public List<ItemDTO> getItemsByCategory(String categoryId) {
+//        Categories category = categoryRepo.findById(categoryId)
+//                .orElseThrow(() -> new RuntimeException("Category not found"));
+//
+//        return itemRepository.findByCategory(category).stream()
+//                .map(item -> modelMapper.map(item, ItemDTO.class))
+//                .collect(Collectors.toList());
+//    }
+//
+//    @Override
+//    public List<ItemDTO> getItemsByUser(String userEmail) {
+//        User user = userRepository.findById(userEmail)
+//                .orElseThrow(() -> new RuntimeException("User not found"));
+//
+//        return itemRepository.findByUser(user).stream()
+//                .map(item -> modelMapper.map(item, ItemDTO.class))
+//                .collect(Collectors.toList());
+//    }
 }

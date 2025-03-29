@@ -3,6 +3,7 @@ package lk.ijse.backend.entity;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -21,11 +22,17 @@ public class User implements Serializable {
     private String contact;
     private String firstName;
     private String lastName;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Item> items;
+    @OneToMany(mappedBy = "seller", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Categories> categories;
+    @OneToMany(mappedBy = "username", cascade = CascadeType.ALL)
+    private List<ReviewsRatings> reviewsRatings;
 
     public User() {
     }
 
-    public User(UUID uid, String username, String email, String password, String role, String image, String address, String contact, String firstName, String lastName) {
+    public User(UUID uid, String username, String email, String password, String role, String image, String address, String contact, String firstName, String lastName, List<Item> items, List<Categories> categories, List<ReviewsRatings> reviewsRatings) {
         this.uid = uid;
         this.username = username;
         this.email = email;
@@ -36,6 +43,9 @@ public class User implements Serializable {
         this.contact = contact;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.items = items;
+        this.categories = categories;
+        this.reviewsRatings = reviewsRatings;
     }
 
     public UUID getUid() {
@@ -118,6 +128,30 @@ public class User implements Serializable {
         this.lastName = lastName;
     }
 
+    public List<Item> getItems() {
+        return items;
+    }
+
+    public void setItems(List<Item> items) {
+        this.items = items;
+    }
+
+    public List<Categories> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(List<Categories> categories) {
+        this.categories = categories;
+    }
+
+    public List<ReviewsRatings> getReviewsRatings() {
+        return reviewsRatings;
+    }
+
+    public void setReviewsRatings(List<ReviewsRatings> reviewsRatings) {
+        this.reviewsRatings = reviewsRatings;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -131,6 +165,9 @@ public class User implements Serializable {
                 ", contact='" + contact + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
+                ", items=" + items +
+                ", categories=" + categories +
+                ", reviewsRatings=" + reviewsRatings +
                 '}';
     }
 }

@@ -1,13 +1,14 @@
 package lk.ijse.backend.service;
 
 import lk.ijse.backend.dto.CategoriesDTO;
+import lk.ijse.backend.entity.User;
 
 import java.util.List;
 
 public interface CategoriesService {
-    void saveCategories(CategoriesDTO categoriesDTO);
-    List <CategoriesDTO> getAllCategories();
-    void updateCategories(CategoriesDTO categoriesDTO);
-    void deleteCategories(String id);
-
+    CategoriesDTO saveCategory(String email, CategoriesDTO categoriesDTO);
+//    CategoriesDTO getCategoryById(String id);
+////    List<CategoriesDTO> getAllCategories();
+//    CategoriesDTO updateCategory(String id, CategoriesDTO categoriesDTO);
+//    void deleteCategory(String id);
 }

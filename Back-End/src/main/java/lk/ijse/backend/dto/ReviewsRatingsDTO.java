@@ -1,9 +1,11 @@
 package lk.ijse.backend.dto;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.Size;
 import lk.ijse.backend.entity.Item;
 import lk.ijse.backend.entity.User;
+import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.stereotype.Component;
 
 import java.sql.Timestamp;
@@ -11,9 +13,12 @@ import java.sql.Timestamp;
 @Component
 public class ReviewsRatingsDTO {
     private Long reviewId;
+    @Size(max = 1000)
     private String review;
     @Size(min = 1,max = 5)
     private int rating;
+    @Column(updatable = false)
+    @CreationTimestamp
     private Timestamp date;
     private UserDTO username;
     private ItemDTO itemCode;
