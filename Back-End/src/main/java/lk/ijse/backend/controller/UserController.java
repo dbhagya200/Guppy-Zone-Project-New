@@ -7,9 +7,12 @@ import lk.ijse.backend.service.UserService;
 import lk.ijse.backend.util.JwtUtil;
 import lk.ijse.backend.util.VarList;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/user")
@@ -78,11 +81,24 @@ public class UserController {
 //
 //        return ResponseEntity.ok(updatedProfile);
 //    }
-@GetMapping("/get")
-public String getUserProfile(HttpServletRequest request) {
-    String token = request.getHeader("Authorization").substring(7); // Remove "Bearer " prefix
-    String username = JwtUtil.JWT_TOKEN_VALIDITY + jwtUtil.getUsernameFromToken(token);
-    return "User Email: " + username;
-}
+    @GetMapping("/get")
+    public String getUserProfile(HttpServletRequest request) {
+        String token = request.getHeader("Authorization").substring(7); // Remove "Bearer " prefix
+        String username = JwtUtil.JWT_TOKEN_VALIDITY + jwtUtil.getUsernameFromToken(token);
+        return "User Email: " + username;
+    }
+
+//    @PutMapping("/update")
+//    public ResponseEntity<ProfileDTO> updateProfile(@RequestHeader("Authorization") String token,
+//                                                     @ModelAttribute ProfileDataDTO profileDataDTO) {
+//
+//        // Extract email from JWT token
+//        String email = jwtUtil.getUsernameFromToken(token.substring(7));
+//
+//        // Update profile
+//        ProfileDTO updatedProfile = userService.updateUserProfile(email, profileDataDTO);
+//        return ResponseEntity.ok(updatedProfile);
+//    }
+
 
 }

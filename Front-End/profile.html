@@ -100,7 +100,7 @@
                     <div class="widget user-dashboard-profile">
                         <!-- User Image -->
                         <div class="profile-thumb">
-                            <img src="images/user/user-thumb.jpg" alt="" class="rounded-circle" id="image">
+                            <img src="images/user/user-thumb.jpg" alt="" class="rounded-circle" id="profileImage">
                         </div>
                         <!-- User Name -->
                         <h5 class="text-center" id="name">Samanta Doe</h5>
@@ -135,7 +135,7 @@
                 <!-- Edit Personal Info -->
                 <div class="widget personal-info">
                     <h3 class="widget-header user">Edit Personal Information</h3>
-                    <form action="#">
+                    <form action="#" id="profile-form">
                         <!-- First Name -->
                         <div class="form-group">
                             <label for="first-name">First Name</label>
@@ -327,7 +327,134 @@
                 console.error("Error fetching user data:", xhr.responseText);
             }
         });
+
+        // Debug: Check localStorage contents
+        console.log("LocalStorage contents:", localStorage);
+        const token = localStorage.getItem('token');
+        const user = JSON.parse(localStorage.getItem('user'));
+
+        if (!token) {
+            console.error("No token found - redirecting to login");
+            window.location.href = "login.html";
+            return;
+        }
+
+        // Load existing profile data
+        if (user) {
+            $('#first-name').val(user.firstName || '');
+            $('#last-name').val(user.lastName || '');
+            $('#email').val(user.email || '');
+            $('#address').val(user.address || '');
+            $('#contact').val(user.contact || '');
+
+            if (user.image) {
+                $('#image-preview').attr('src', user.image).show();
+            }
+        }
+
+        // Handle profile picture preview
+        $('#input-file').change(function() {
+            const file = this.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    $('#image-preview').attr('src', e.target.result).show();
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Handle form submission
+        $('#profile-form').submit(function (event) {
+            event.preventDefault();
+
+            const submitBtn = $(this).find('button[type="submit"]');
+            submitBtn.prop('disabled', true).html('<i class="fa fa-spinner fa-spin"></i> Saving...');
+
+            // Create FormData for potential file upload
+            const formData = new FormData();
+            formData.append('firstName', $('#first-name').val());
+            formData.append('lastName', $('#last-name').val());
+            formData.append('email', $('#email').val());
+            formData.append('address', $('#address').val());
+            formData.append('contact', $('#contact').val());
+
+            // Append file if selected
+            const fileInput = $('#input-file')[0];
+            if (fileInput.files[0]) {
+                formData.append('image', fileInput.files[0]);
+            }
+
+            // Debug: Log the data being sent
+            console.log("Submitting profile update with data:", {
+                firstName: $('#first-name').val(),
+                lastName: $('#last-name').val(),
+                email: $('#email').val(),
+                address: $('#address').val(),
+                contact: $('#contact').val(),
+                hasImage: !!fileInput.files[0]
+            });
+
+            $.ajax({
+                url: 'http://localhost:8080/api/v1/profile/update',
+                method: 'PUT',
+                data: formData,
+                processData: false,
+                contentType: false,
+                headers: {
+                    'Authorization': 'Bearer ' + token
+                },
+                success: function (response) {
+                    console.log("Update successful:", response);
+
+                    // Update local user data
+                    if (response.data) {
+                        localStorage.setItem('user', JSON.stringify(response.data));
+                        $('#profile-name').text(response.data.firstName + ' ' + response.data.lastName);
+
+                        if (response.data.image) {
+                            $('#image-preview').attr('src', response.data.image);
+                        }
+                    }
+
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Profile Updated!',
+                        text: 'Your changes have been saved successfully.',
+                        timer: 2000
+                    });
+                },
+                error: function (xhr, status, error) {
+                    console.error("Update error:", {
+                        status: xhr.status,
+                        error: error,
+                        response: xhr.responseText
+                    });
+
+                    let errorMessage = "Failed to update profile. Please try again.";
+                    if (xhr.status === 401) {
+                        errorMessage = "Session expired. Please login again.";
+                        localStorage.clear();
+                        setTimeout(() => window.location.href = "login.html", 1500);
+                    } else if (xhr.responseJSON && xhr.responseJSON.message) {
+                        errorMessage = xhr.responseJSON.message;
+                    }
+
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Update Failed',
+                        text: errorMessage
+                    });
+                },
+                complete: function() {
+                    submitBtn.prop('disabled', false).text('Save Changes');
+                }
+            });
+        });
     });
+
+
+
 
 </script>
 </body>

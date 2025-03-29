@@ -1,6 +1,7 @@
 package lk.ijse.backend.controller;
 
 import jakarta.servlet.annotation.MultipartConfig;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lk.ijse.backend.dto.ProfileDTO;
 import lk.ijse.backend.dto.ProfileDataDTO;
@@ -27,9 +28,14 @@ public class ProfileController {
 
     @Autowired
     private final ProfileService profileService;
+    @Autowired
+    private final UserService userService;
+    private final JwtUtil jwtUtil;
 
-    public ProfileController(ProfileService profileService) {
+    public ProfileController(ProfileService profileService, UserService userService, JwtUtil jwtUtil) {
         this.profileService = profileService;
+        this.userService = userService;
+        this.jwtUtil = jwtUtil;
     }
 
 
@@ -37,21 +43,21 @@ public class ProfileController {
     @PreAuthorize("hasAnyAuthority('SELLER','BUYER')")
     public ResponseEntity<ResponseDTO> saveImage(@ModelAttribute ProfileDataDTO profileDataDTO) {
 
-        String savedProfile = profileService.saveItemImage(profileDataDTO.getImage());
+        String savedProfile = userService.saveItemImage(profileDataDTO.getImage());
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(new ResponseDTO(VarList.Created, "Success", savedProfile));
     }
 
-//    @PostMapping(path = "/saveProfile", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-//    @PreAuthorize("hasAnyAuthority('SELLER','BUYER')")
-//    public ResponseEntity<ResponseDTO> saveProfile(
-//            @Valid @RequestBody ProfileDTO profileDTO)  {
-//        profileService.saveProfile(profileDTO);
-//        return ResponseEntity.status(HttpStatus.CREATED)
-//                .body(new ResponseDTO(VarList.Created, "Success", profileDTO));
-//    }
+    @PutMapping(path = "/update", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<ProfileDTO> updateProfile(@RequestHeader("Authorization") String token,
+                                                    @ModelAttribute ProfileDataDTO profileDataDTO) {
 
+        // Extract email from JWT token
+        String email = jwtUtil.getUsernameFromToken(token.substring(7));
 
-
+        // Update profile
+        ProfileDTO updatedProfile = userService.updateUserProfile(email, profileDataDTO);
+        return ResponseEntity.ok(updatedProfile);
+    }
 
 }

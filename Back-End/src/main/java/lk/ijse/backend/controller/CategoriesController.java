@@ -4,7 +4,9 @@ import lk.ijse.backend.dto.CategoriesDTO;
 import lk.ijse.backend.dto.ResponseDTO;
 import lk.ijse.backend.service.CategoriesService;
 import lk.ijse.backend.util.ResponseUtil;
+import lk.ijse.backend.util.VarList;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -16,37 +18,40 @@ import java.util.List;
 @CrossOrigin
 public class CategoriesController {
     @Autowired
-    private CategoriesService categoriesService;
+    private final CategoriesService categoriesService;
+
+    public CategoriesController(CategoriesService categoriesService) {
+        this.categoriesService = categoriesService;
+    }
 
     @PostMapping(path = "save")
-    @PreAuthorize("hasAnyAuthority('ADMIN')")
-    public ResponseEntity<CategoriesDTO> saveCategories(@RequestBody CategoriesDTO categoriesDTO){
+    @PreAuthorize("hasAnyAuthority('SELLER')")
+    public ResponseEntity<ResponseDTO> saveCategories(@RequestBody CategoriesDTO categoriesDTO) { //saveCategories
         categoriesService.saveCategories(categoriesDTO);
-        return ResponseEntity.ok(categoriesDTO);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(new ResponseDTO(VarList.Created, "Success", null));
+
     }
     @GetMapping(path = "get")
-    @PreAuthorize("hasAnyAuthority('ADMIN')")
-    public ResponseEntity<List<CategoriesDTO>> getAllCategories() {
+    @PreAuthorize("hasAnyAuthority('SELLER','BUYER')")
+    public ResponseEntity<ResponseDTO> getAllCategories() {
         List<CategoriesDTO> categories = categoriesService.getAllCategories();
-        return ResponseEntity.ok(categories);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(new ResponseDTO(VarList.OK, "Success", categories));
     }
 
     @PutMapping(path = "update")
-    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('SELLER')")
     public ResponseUtil updateCategories(@RequestBody CategoriesDTO categoriesDTO){
         categoriesService.updateCategories(categoriesDTO);
         return new ResponseUtil(200, "Success", null);
     }
 
     @DeleteMapping(path = "delete",params = "id")
-    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('SELLER')")
     public ResponseUtil deleteCategories(@RequestParam (value = "id") String id){
         categoriesService.deleteCategories(id);
         return new ResponseUtil(200, "Success", null);
     }
-    @GetMapping("/test3")
-    @PreAuthorize("hasAuthority('ADMIN')")
-    public String checkss(){
-        return "passed~!2";
-    }
+
 }

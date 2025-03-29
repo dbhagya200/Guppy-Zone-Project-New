@@ -316,19 +316,40 @@
                 const user = response; // Adjust if response contains 'data'
 
                 $("#email").val(user.email || email); // Use API email if available
-                $("#contact").val(user.contact || "");
-                $("#address").val(user.address || "");
-
-                if (user.name) {
-                    const names = user.name.split(' ');
-                    $("#first-name").val(names[0] || "");
-                    $("#last-name").val(names.slice(1).join(' ') || "");
-                }
+                // $("#contact").val(user.contact || "");
+                // $("#address").val(user.address || "");
+                //
+                // if (user.name) {
+                //     const names = user.name.split(' ');
+                //     $("#first-name").val(names[0] || "");
+                //     $("#last-name").val(names.slice(1).join(' ') || "");
+                // }
             },
             error: function (xhr, status, error) {
                 console.error("Error fetching user data:", xhr.responseText);
             }
         });
+
+
+        $.ajax({
+            url: 'http://localhost:8080/api/v1/user/update',
+            method: 'PUT',
+            contentType: 'application/json',
+            data: JSON.stringify({
+                "email": email,
+                "role": "BUYER"
+            }),
+            headers: {
+                'Authorization': 'Bearer ' + token
+            },
+            success: function (response) {
+                console.log("API Response:", response);
+            },
+            error: function (xhr, status, error) {
+                console.error("Error fetching user data:", xhr.responseText);
+            }
+        })
+
     });
 
 </script>

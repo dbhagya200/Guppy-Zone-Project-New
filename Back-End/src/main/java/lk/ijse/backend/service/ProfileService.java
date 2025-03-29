@@ -10,10 +10,5 @@ import java.util.List;
 
 
 public interface ProfileService {
-    public String saveItemImage(MultipartFile image);
-    ProfileDTO saveProfile(UserDTO userDTO);
-//    ProfileDTO getProfileByUserEmail(String email);
-//    ProfileDTO updateProfile(String email, ProfileDataDTO profileDataDTO);
-//    void deleteProfile(String email);
-//    List<ProfileDTO> getAllProfiles();
+
 }
