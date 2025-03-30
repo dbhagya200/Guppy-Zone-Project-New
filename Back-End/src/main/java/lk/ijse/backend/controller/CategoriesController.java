@@ -30,14 +30,6 @@ public class CategoriesController {
         this.jwtUtil = jwtUtil;
     }
 
-//    @PostMapping(path = "/save", consumes = MediaType.APPLICATION_JSON_VALUE)
-//    @PreAuthorize("hasAnyAuthority('SELLER')")
-//    public ResponseEntity<ResponseDTO> createCategory(
-//            @RequestBody CategoriesDTO categoriesDTO) {
-//        CategoriesDTO category = categoriesService.saveCategory(categoriesDTO);
-//        return ResponseEntity.status(HttpStatus.CREATED)
-//                .body(new ResponseDTO(VarList.Created, "Success", category));
-//    }
 
     @PostMapping(path = "/save", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CategoriesDTO> createCategory(@RequestBody CategoriesDTO categoryDTO) {
@@ -45,11 +37,13 @@ public class CategoriesController {
         return ResponseEntity.status(HttpStatus.CREATED).body(savedCategory);
     }
 
-//    @GetMapping(path = "/get")
+
+    @GetMapping(path = "/get", produces = MediaType.APPLICATION_JSON_VALUE)
 //    @PreAuthorize("hasAnyAuthority('SELLER','BUYER')")
-//    public ResponseEntity<List<Categories>> getAllCategories() {
-//        List<Categories> categories = categoriesService.getAllCategories();
-//        return ResponseEntity.ok(categories);
-//    }
+    public ResponseEntity<ResponseDTO> getAllCategories() {
+        List<CategoriesDTO> categories = categoriesService.getAllCategories();
+        return ResponseEntity.ok()
+                .body(new ResponseDTO(VarList.OK, "Success", categories));
+    }
 
 }

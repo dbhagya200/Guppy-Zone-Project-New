@@ -12,8 +12,11 @@ import lk.ijse.backend.util.VarList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -91,6 +94,13 @@ public class AuthController {
         response.put("role", userDTO.getRole()); // Ensure role is included
 
         return ResponseEntity.ok(response);
+    }
+    @GetMapping("/check")
+    public ResponseEntity<String> checkAuth(@AuthenticationPrincipal UserDetails userDetails) {
+        return ResponseEntity.ok(
+                "User: " + userDetails.getUsername() + "\n" +
+                        "Authorities: " + userDetails.getAuthorities()
+        );
     }
 
 }

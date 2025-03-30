@@ -47,19 +47,11 @@ public class CategoriesServiceImpl implements CategoriesService {
         return modelMapper.map(savedCategory, CategoriesDTO.class);
     }
 
-//    @Override
-//    public CategoriesDTO getCategoryById(String id) {
-//        Categories category = categoriesRepo.findById(id)
-//                .orElseThrow(() -> new RuntimeException("Category not found"));
-//        return modelMapper.map(category, CategoriesDTO.class);
-//    }
-//
     @Override
-    public List<Categories> getAllCategories() {
+    public List<CategoriesDTO> getAllCategories() {
         List<Categories> categories = categoriesRepo.findAll();
-        return categories.stream()
-                .map(category -> modelMapper.map(category, Categories.class))
-                .collect(Collectors.toList());
+        return modelMapper.map(categories,
+                new TypeToken<List<CategoriesDTO>>(){}.getType());
     }
 //
 //    @Override
