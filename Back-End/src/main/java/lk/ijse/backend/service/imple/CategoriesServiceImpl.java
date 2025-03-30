@@ -6,6 +6,7 @@ import jakarta.transaction.Transactional;
 import lk.ijse.backend.dto.CategoriesDTO;
 import lk.ijse.backend.dto.CategoryUpdateDTO;
 import lk.ijse.backend.entity.Categories;
+import lk.ijse.backend.entity.User;
 import lk.ijse.backend.repository.CategoriesRepo;
 import lk.ijse.backend.repository.UserRepo;
 import lk.ijse.backend.service.CategoriesService;
@@ -14,6 +15,7 @@ import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.DeleteMapping;
 
 import java.util.List;
 import java.util.Optional;
@@ -74,11 +76,24 @@ public class CategoriesServiceImpl implements CategoriesService {
         return modelMapper.map(updatedCategory, CategoriesDTO.class);
 
     }
-//
-//    @Override
-//    public void deleteCategory(String id) {
-//        categoriesRepo.deleteById(id);
-//    }
+
+    @Override
+    public void deleteCategory(String id, String username) {
+        Categories category = categoriesRepo.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Category not found"));
+
+        // 2. Verify user is seller
+        User seller = userRepo.findByEmailAndRole(username, "SELLER");
+        if (seller == null) {
+            throw new RuntimeException("Seller not found or invalid role");
+        }
+
+        categoriesRepo.deleteById(id);
+
+        categoriesRepo.delete(category);
+    }
+
+
 }
 
 

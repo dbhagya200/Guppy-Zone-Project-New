@@ -49,7 +49,7 @@ public class CategoriesController {
     }
 
     @PutMapping(path = "update",params = "id",consumes = MediaType.APPLICATION_JSON_VALUE)
-//    @PreAuthorize("hasAnyAuthority('SELLER', 'ADMIN')") // Only sellers or admins can update
+//    @PreAuthorize("hasAnyAuthority('SELLER', 'ADMIN')")
     public ResponseEntity<ResponseDTO> updateCategory(
             @RequestParam ("id") String id,
             @Valid @RequestBody CategoryUpdateDTO updateDTO,
@@ -73,6 +73,34 @@ public class CategoriesController {
         } catch (Exception ex) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(new ResponseDTO(VarList.Internal_Server_Error, ex.getMessage(), null));
+        }
+    }
+
+    @DeleteMapping(path = "delete",params = "id")
+//    @PreAuthorize("hasAnyAuthority('SELLER')")
+    public ResponseEntity<ResponseDTO> deleteCategory(
+            @RequestParam ("id") String id,
+            @RequestHeader("Authorization") String authHeader) {
+
+        try {
+
+            String token = authHeader.replace("Bearer ", "");
+            String username = jwtUtil.getUsernameFromToken(token);
+
+            categoriesService.deleteCategory(id, username);
+
+            return ResponseEntity.ok()
+                    .body(new ResponseDTO(VarList.OK, "Category deleted successfully", null));
+
+        } catch (EntityNotFoundException ex) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new ResponseDTO(VarList.Not_Found, ex.getMessage(), null));
+        } catch (IllegalArgumentException ex) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                    .body(new ResponseDTO(VarList.Forbidden, ex.getMessage(), null));
+        } catch (Exception ex) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new ResponseDTO(VarList.Internal_Server_Error, "Error deleting category", null));
         }
     }
 
