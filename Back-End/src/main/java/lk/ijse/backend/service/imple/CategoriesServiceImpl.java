@@ -1,8 +1,10 @@
 package lk.ijse.backend.service.imple;
 
 
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lk.ijse.backend.dto.CategoriesDTO;
+import lk.ijse.backend.dto.CategoryUpdateDTO;
 import lk.ijse.backend.entity.Categories;
 import lk.ijse.backend.repository.CategoriesRepo;
 import lk.ijse.backend.repository.UserRepo;
@@ -10,9 +12,11 @@ import lk.ijse.backend.service.CategoriesService;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 
@@ -53,14 +57,23 @@ public class CategoriesServiceImpl implements CategoriesService {
         return modelMapper.map(categories,
                 new TypeToken<List<CategoriesDTO>>(){}.getType());
     }
-//
-//    @Override
-//    public CategoriesDTO updateCategory(String id, CategoriesDTO categoriesDTO) {
-//        Categories category = categoriesRepo.findById(id)
-//                .orElseThrow(() -> new RuntimeException("Category not found"));
-//        category.setName(categoriesDTO.getName());
-//        return modelMapper.map(categoriesRepo.save(category), CategoriesDTO.class);
-//    }
+
+    @Override
+    public CategoriesDTO updateCategory(String id, CategoryUpdateDTO updateDTO, String username) {
+        Categories category = categoriesRepo.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Category not found with id: " + id));
+        if (updateDTO.getName() != null && !updateDTO.getName().isBlank()) {
+            if (categoriesRepo.existsByNameAndIdNot(updateDTO.getName(), id)) {
+                throw new IllegalArgumentException("Category name already exists");
+            }
+            category.setName(updateDTO.getName());
+        }
+
+        // 5. Save changes
+        Categories updatedCategory = categoriesRepo.save(category);
+        return modelMapper.map(updatedCategory, CategoriesDTO.class);
+
+    }
 //
 //    @Override
 //    public void deleteCategory(String id) {

@@ -1,6 +1,9 @@
 package lk.ijse.backend.controller;
 
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.Valid;
 import lk.ijse.backend.dto.CategoriesDTO;
+import lk.ijse.backend.dto.CategoryUpdateDTO;
 import lk.ijse.backend.dto.ResponseDTO;
 import lk.ijse.backend.entity.Categories;
 import lk.ijse.backend.service.CategoriesService;
@@ -25,7 +28,6 @@ public class CategoriesController {
     private final JwtUtil jwtUtil;
 
     public CategoriesController(CategoriesService categoriesService, JwtUtil jwtUtil) {
-
         this.categoriesService = categoriesService;
         this.jwtUtil = jwtUtil;
     }
@@ -44,6 +46,34 @@ public class CategoriesController {
         List<CategoriesDTO> categories = categoriesService.getAllCategories();
         return ResponseEntity.ok()
                 .body(new ResponseDTO(VarList.OK, "Success", categories));
+    }
+
+    @PutMapping(path = "update",params = "id",consumes = MediaType.APPLICATION_JSON_VALUE)
+//    @PreAuthorize("hasAnyAuthority('SELLER', 'ADMIN')") // Only sellers or admins can update
+    public ResponseEntity<ResponseDTO> updateCategory(
+            @RequestParam ("id") String id,
+            @Valid @RequestBody CategoryUpdateDTO updateDTO,
+            @RequestHeader("Authorization") String authHeader) {
+
+        try {
+            String token = authHeader.replace("Bearer ", "");
+            String username = jwtUtil.getUsernameFromToken(token);
+
+            CategoriesDTO updatedCategory = categoriesService.updateCategory(id, updateDTO, username);
+
+            return ResponseEntity.ok()
+                    .body(new ResponseDTO(VarList.OK, "Category updated successfully", updatedCategory));
+
+        } catch (EntityNotFoundException ex) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new ResponseDTO(VarList.Not_Found, ex.getMessage(), null));
+        } catch (IllegalArgumentException ex) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                    .body(new ResponseDTO(VarList.Forbidden, ex.getMessage(), null));
+        } catch (Exception ex) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new ResponseDTO(VarList.Internal_Server_Error, ex.getMessage(), null));
+        }
     }
 
 }
