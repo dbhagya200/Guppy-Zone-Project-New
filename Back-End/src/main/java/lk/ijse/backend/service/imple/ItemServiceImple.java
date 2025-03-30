@@ -130,6 +130,19 @@ public class ItemServiceImple implements ItemService {
 
     }
 
+    @Override
+    public void deleteItem(String id, String username) {
+        Item item = itemRepository.findByItemCode(id);
+        if (item == null) {
+            throw new RuntimeException("Item not found");
+        }
+        User user = userRepository.findByEmailAndRole(username, "SELLER");
+        if (user == null) {
+            throw new RuntimeException("User not found or invalid role");
+        }
+        itemRepository.delete(item);
+    }
+
 //    @Override
 //    public ItemDTO updateItem(ItemDTO itemDTO) {
 //        if (!itemRepository.existsById(itemDTO.getItemCode())) {

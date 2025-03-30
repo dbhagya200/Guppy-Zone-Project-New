@@ -105,5 +105,15 @@ public class ItemController {
         ItemDTO updatedItem = itemService.updateItem(itemDataDTO, email);
         return ResponseEntity.ok(updatedItem);
     }
+    @DeleteMapping(path = "/delete",params = "id")
+    public ResponseEntity<ResponseDTO> deleteItem( @RequestParam ("id") String id,
+                                              @RequestHeader("Authorization") String authHeader) {
+        String token = authHeader.replace("Bearer ", "");
+        String username = jwtUtil.getUsernameFromToken(token);
+
+        itemService.deleteItem(id, username);
+        return ResponseEntity.ok()
+                .body(new ResponseDTO(VarList.OK, "Item deleted successfully", null));
+    }
 
 }

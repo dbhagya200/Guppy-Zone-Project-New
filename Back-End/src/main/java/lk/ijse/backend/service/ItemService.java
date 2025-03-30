@@ -15,4 +15,6 @@ public interface ItemService {
     List<ItemDTO> getAllItems();
 
     ItemDTO updateItem(ItemDataDTO itemDataDTO, String email);
+
+    void deleteItem(String id, String username);
 }
