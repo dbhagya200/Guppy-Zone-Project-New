@@ -51,11 +51,8 @@ public class ProfileController {
     @PutMapping(path = "/update", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<ProfileDTO> updateProfile(@RequestHeader("Authorization") String token,
                                                     @ModelAttribute ProfileDataDTO profileDataDTO) {
-
-        // Extract email from JWT token
         String email = jwtUtil.getUsernameFromToken(token.substring(7));
 
-        // Update profile
         ProfileDTO updatedProfile = userService.updateUserProfile(email, profileDataDTO);
         return ResponseEntity.ok(updatedProfile);
     }

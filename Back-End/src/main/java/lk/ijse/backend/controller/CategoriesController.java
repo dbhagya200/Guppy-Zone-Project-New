@@ -34,6 +34,7 @@ public class CategoriesController {
 
 
     @PostMapping(path = "/save", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAnyAuthority('SELLER')")
     public ResponseEntity<CategoriesDTO> createCategory(@RequestBody CategoriesDTO categoryDTO) {
         CategoriesDTO savedCategory = categoriesService.saveCategory(categoryDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedCategory);
@@ -41,7 +42,7 @@ public class CategoriesController {
 
 
     @GetMapping(path = "/get", produces = MediaType.APPLICATION_JSON_VALUE)
-//    @PreAuthorize("hasAnyAuthority('SELLER','BUYER')")
+    @PreAuthorize("hasAnyAuthority('SELLER','BUYER')")
     public ResponseEntity<ResponseDTO> getAllCategories() {
         List<CategoriesDTO> categories = categoriesService.getAllCategories();
         return ResponseEntity.ok()
@@ -49,7 +50,7 @@ public class CategoriesController {
     }
 
     @PutMapping(path = "update",params = "id",consumes = MediaType.APPLICATION_JSON_VALUE)
-//    @PreAuthorize("hasAnyAuthority('SELLER', 'ADMIN')")
+    @PreAuthorize("hasAnyAuthority('SELLER')")
     public ResponseEntity<ResponseDTO> updateCategory(
             @RequestParam ("id") String id,
             @Valid @RequestBody CategoryUpdateDTO updateDTO,
@@ -77,7 +78,7 @@ public class CategoriesController {
     }
 
     @DeleteMapping(path = "delete",params = "id")
-//    @PreAuthorize("hasAnyAuthority('SELLER')")
+    @PreAuthorize("hasAnyAuthority('SELLER')")
     public ResponseEntity<ResponseDTO> deleteCategory(
             @RequestParam ("id") String id,
             @RequestHeader("Authorization") String authHeader) {

@@ -1,7 +1,12 @@
 package lk.ijse.backend.controller;
 import lk.ijse.backend.dto.ItemDTO;
+import lk.ijse.backend.dto.ItemDataDTO;
+import lk.ijse.backend.dto.ProfileDataDTO;
 import lk.ijse.backend.dto.ResponseDTO;
 import lk.ijse.backend.service.ItemService;
+import lk.ijse.backend.service.UserService;
+import lk.ijse.backend.service.imple.UserServiceImpl;
+import lk.ijse.backend.util.JwtUtil;
 import lk.ijse.backend.util.ResponseUtil;
 import lk.ijse.backend.util.VarList;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,17 +25,52 @@ import java.util.List;
 @CrossOrigin
 public class ItemController {
     @Autowired
-    private ItemService itemService;
+    private final ItemService itemService;
+    @Autowired
+    private final UserService userService;
+    @Autowired
+    private final JwtUtil jwtUtil;
+    @Autowired
+    private final UserServiceImpl userServiceImpl;
+
+    public ItemController(ItemService itemService, UserService userService, JwtUtil jwtUtil, UserServiceImpl userServiceImpl) {
+        this.itemService = itemService;
+        this.userService = userService;
+        this.jwtUtil = jwtUtil;
+        this.userServiceImpl = userServiceImpl;
+    }
 
 
     @PostMapping(path = "/save",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+   @PreAuthorize("hasAnyAuthority('SELLER')")
+    //@PreAuthorize("hasRole('SELLER')")
+    public ResponseEntity<ResponseDTO> saveItemImage(@ModelAttribute ItemDataDTO itemDataDTO,
+                                                     @RequestHeader("Authorization") String authHeader) {
+        try {
+            String token = authHeader.replace("Bearer ", "");
+            String username = jwtUtil.getUsernameFromToken(token);
+
+            userServiceImpl.loadUserByUsername(username);
+
+            String savedItem = userService.saveItemImage(itemDataDTO.getSourceImage());
+            return ResponseEntity.status(HttpStatus.CREATED)
+                    .body(new ResponseDTO(VarList.Created, "Success", savedItem));
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                    .body(new ResponseDTO(VarList.Forbidden, "Only sellers can upload items", null));
+        }
+    }
+
+    @PostMapping(path = "/saveItem", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @PreAuthorize("hasAnyAuthority('SELLER')")
-    public ResponseEntity<ResponseDTO> saveItem(@RequestBody ItemDTO itemDTO,
-                                                @AuthenticationPrincipal UserDetails userDetails) {
-        String sellerEmail = userDetails.getUsername();
-        ItemDTO savedItem = itemService.saveItem(itemDTO, sellerEmail);
+    public ResponseEntity<ItemDTO> saveItem(@RequestHeader("Authorization") String token,
+                                            @ModelAttribute ItemDataDTO itemDataDTO) {
+        String email = jwtUtil.getUsernameFromToken(token.substring(7));
+
+        ItemDTO savedItem = itemService.saveItem(itemDataDTO, email);
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(new ResponseDTO(VarList.Created, "Item saved successfully", savedItem));
+                .body(savedItem);
     }
 
     @GetMapping(path = "/get")

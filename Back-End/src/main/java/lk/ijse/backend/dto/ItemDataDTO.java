@@ -1,30 +1,29 @@
 package lk.ijse.backend.dto;
 
-import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 
-@Component
-public class ItemDTO {
+public class ItemDataDTO {
     private String itemCode;
     private String itemName;
     private String description;
     private int quantity;
     private double price;
     private String location;
-    private String sourceImage;
+    private MultipartFile sourceImage;
     private String categoryId;
     private String userEmail;
 
-    public ItemDTO() {
+    public ItemDataDTO() {
     }
 
-    public ItemDTO(String itemCode, String itemName, String description, int quantity, double price, String location, String sourceUrl, String categoryId, String userEmail) {
+    public ItemDataDTO(String itemCode, String itemName, String description, int quantity, double price, String location, MultipartFile sourceImage, String categoryId, String userEmail) {
         this.itemCode = itemCode;
         this.itemName = itemName;
         this.description = description;
         this.quantity = quantity;
         this.price = price;
         this.location = location;
-        this.sourceImage = sourceUrl;
+        this.sourceImage = sourceImage;
         this.categoryId = categoryId;
         this.userEmail = userEmail;
     }
@@ -77,11 +76,11 @@ public class ItemDTO {
         this.location = location;
     }
 
-    public String getSourceImage() {
+    public MultipartFile getSourceImage() {
         return sourceImage;
     }
 
-    public void setSourceImage(String sourceImage) {
+    public void setSourceImage(MultipartFile sourceImage) {
         this.sourceImage = sourceImage;
     }
 
@@ -103,16 +102,16 @@ public class ItemDTO {
 
     @Override
     public String toString() {
-        return "ItemDTO{" +
+        return "ItemDataDTO{" +
                 "itemCode='" + itemCode + '\'' +
                 ", itemName='" + itemName + '\'' +
                 ", description='" + description + '\'' +
                 ", quantity=" + quantity +
                 ", price=" + price +
                 ", location='" + location + '\'' +
-                ", sourceUrl='" + sourceImage + '\'' +
+                ", sourceImage=" + sourceImage +
                 ", categoryId='" + categoryId + '\'' +
-                ", userId='" + userEmail + '\'' +
+                ", userEmail='" + userEmail + '\'' +
                 '}';
     }
 }

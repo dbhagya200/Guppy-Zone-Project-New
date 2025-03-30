@@ -3,6 +3,7 @@ package lk.ijse.backend.service.imple;
 
 import jakarta.servlet.annotation.MultipartConfig;
 import lk.ijse.backend.dto.ItemDTO;
+import lk.ijse.backend.dto.ItemDataDTO;
 import lk.ijse.backend.entity.Categories;
 import lk.ijse.backend.entity.Item;
 import lk.ijse.backend.entity.User;
@@ -27,33 +28,56 @@ import java.util.stream.Collectors;
 public class ItemServiceImple implements ItemService {
     @Autowired
     private UserRepo userRepository;
-
     @Autowired
     private ItemRepo itemRepository;
     @Autowired
     private CategoriesRepo categoryRepo;
-
     @Autowired
     private ModelMapper modelMapper;
+    @Autowired
+    private UserServiceImpl userService;
 
     @Override
-    public ItemDTO saveItem(ItemDTO itemDTO, String sellerEmail) {
+    public ItemDTO saveItem(ItemDataDTO itemDataDTO, String sellerEmail) {
         // Verify the seller exists and is actually a seller
         User seller = userRepository.findByEmailAndRole(sellerEmail, "SELLER");
         if (seller == null) {
             throw new RuntimeException("Seller not found or invalid role");
         }
 
+        if (itemDataDTO.getSourceImage() == null) {
+            String savePath = userService.saveItemImage(itemDataDTO.getSourceImage());
+        }
+
         // Verify the category belongs to the seller
-        Categories category = categoryRepo.findById(itemDTO.getCategoryId())
+        Categories category = categoryRepo.findById(itemDataDTO.getCategoryId())
                 .orElseThrow(() -> new RuntimeException("Category not found"));
 
-        Item item = modelMapper.map(itemDTO, Item.class);
+        Item item = modelMapper.map(itemDataDTO, Item.class);
+        item.setItemCode(itemDataDTO.getItemCode());
+        item.setItemName(itemDataDTO.getItemName());
+        item.setDescription(itemDataDTO.getDescription());
+        item.setQuantity(itemDataDTO.getQuantity());
+        item.setPrice(itemDataDTO.getPrice());
+        item.setSourceUrl(userService.saveItemImage(itemDataDTO.getSourceImage()));
+        item.setLocation(itemDataDTO.getLocation());
         item.setUser(seller);
         item.setCategory(category);
 
         itemRepository.save(item);
-        return modelMapper.map(item, ItemDTO.class);
+
+        ItemDTO itemDTO = new ItemDTO();
+        itemDTO.setItemCode(item.getItemCode());
+        itemDTO.setItemName(item.getItemName());
+        itemDTO.setDescription(item.getDescription());
+        itemDTO.setQuantity(item.getQuantity());
+        itemDTO.setPrice(item.getPrice());
+        itemDTO.setLocation(item.getLocation());
+        itemDTO.setSourceImage(item.getSourceUrl());
+        itemDTO.setCategoryId(item.getCategory().getCategoryId());
+        itemDTO.setUserEmail(item.getUser().getEmail());
+
+        return itemDTO;
     }
     @Override
     public List<ItemDTO> getItemsBySeller(String sellerEmail) {
