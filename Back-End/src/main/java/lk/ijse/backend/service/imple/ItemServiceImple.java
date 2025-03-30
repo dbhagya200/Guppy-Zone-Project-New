@@ -99,6 +99,37 @@ public class ItemServiceImple implements ItemService {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public ItemDTO updateItem(ItemDataDTO itemDataDTO, String email) {
+        Item item = itemRepository.findByItemCode(itemDataDTO.getItemCode());
+        if (item == null) {
+            throw new RuntimeException("Item not found");
+        }
+
+        item.setItemName(itemDataDTO.getItemName());
+        item.setDescription(itemDataDTO.getDescription());
+        item.setQuantity(itemDataDTO.getQuantity());
+        item.setPrice(itemDataDTO.getPrice());
+        item.setLocation(itemDataDTO.getLocation());
+        item.setSourceUrl(userService.saveItemImage(itemDataDTO.getSourceImage()));
+
+        itemRepository.save(item);
+
+        ItemDTO itemDTO = new ItemDTO();
+        itemDTO.setItemCode(item.getItemCode());
+        itemDTO.setItemName(item.getItemName());
+        itemDTO.setDescription(item.getDescription());
+        itemDTO.setQuantity(item.getQuantity());
+        itemDTO.setPrice(item.getPrice());
+        itemDTO.setLocation(item.getLocation());
+        itemDTO.setSourceImage(item.getSourceUrl());
+        itemDTO.setCategoryId(item.getCategory().getCategoryId());
+        itemDTO.setUserEmail(item.getUser().getEmail());
+
+        return itemDTO;
+
+    }
+
 //    @Override
 //    public ItemDTO updateItem(ItemDTO itemDTO) {
 //        if (!itemRepository.existsById(itemDTO.getItemCode())) {

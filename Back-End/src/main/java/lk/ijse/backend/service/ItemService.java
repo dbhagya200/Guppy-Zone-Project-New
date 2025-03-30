@@ -13,4 +13,6 @@ public interface ItemService {
     List<ItemDTO> getItemsByCategoryAndSeller(String categoryId, String sellerEmail);
 
     List<ItemDTO> getAllItems();
+
+    ItemDTO updateItem(ItemDataDTO itemDataDTO, String email);
 }
