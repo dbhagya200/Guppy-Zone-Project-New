@@ -24,15 +24,13 @@ public class User implements Serializable {
     private String lastName;
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Item> items;
-    @OneToMany(mappedBy = "seller", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Categories> categories;
     @OneToMany(mappedBy = "username", cascade = CascadeType.ALL)
     private List<ReviewsRatings> reviewsRatings;
 
     public User() {
     }
 
-    public User(UUID uid, String username, String email, String password, String role, String image, String address, String contact, String firstName, String lastName, List<Item> items, List<Categories> categories, List<ReviewsRatings> reviewsRatings) {
+    public User(UUID uid, String username, String email, String password, String role, String image, String address, String contact, String firstName, String lastName, List<Item> items, List<ReviewsRatings> reviewsRatings) {
         this.uid = uid;
         this.username = username;
         this.email = email;
@@ -44,7 +42,6 @@ public class User implements Serializable {
         this.firstName = firstName;
         this.lastName = lastName;
         this.items = items;
-        this.categories = categories;
         this.reviewsRatings = reviewsRatings;
     }
 
@@ -136,14 +133,6 @@ public class User implements Serializable {
         this.items = items;
     }
 
-    public List<Categories> getCategories() {
-        return categories;
-    }
-
-    public void setCategories(List<Categories> categories) {
-        this.categories = categories;
-    }
-
     public List<ReviewsRatings> getReviewsRatings() {
         return reviewsRatings;
     }
@@ -166,7 +155,6 @@ public class User implements Serializable {
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", items=" + items +
-                ", categories=" + categories +
                 ", reviewsRatings=" + reviewsRatings +
                 '}';
     }

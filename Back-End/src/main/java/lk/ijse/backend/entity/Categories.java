@@ -11,18 +11,14 @@ public class Categories {
     private String name;
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Item> items;
-    @ManyToOne
-    @JoinColumn(name = "seller_id") // Match User's ID field
-    private User seller;
 
     public Categories() {
     }
 
-    public Categories(String categoryId, String name, List<Item> items, User seller) {
+    public Categories(String categoryId, String name, List<Item> items) {
         this.categoryId = categoryId;
         this.name = name;
         this.items = items;
-        this.seller = seller;
     }
 
     public String getCategoryId() {
@@ -49,21 +45,12 @@ public class Categories {
         this.items = items;
     }
 
-    public User getSeller() {
-        return seller;
-    }
-
-    public void setSeller(User seller) {
-        this.seller = seller;
-    }
-
     @Override
     public String toString() {
         return "Categories{" +
                 "categoryId='" + categoryId + '\'' +
                 ", name='" + name + '\'' +
                 ", items=" + items +
-                ", seller=" + seller +
                 '}';
     }
 }

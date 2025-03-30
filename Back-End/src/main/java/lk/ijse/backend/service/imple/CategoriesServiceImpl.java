@@ -4,16 +4,16 @@ package lk.ijse.backend.service.imple;
 import jakarta.transaction.Transactional;
 import lk.ijse.backend.dto.CategoriesDTO;
 import lk.ijse.backend.entity.Categories;
-import lk.ijse.backend.entity.User;
 import lk.ijse.backend.repository.CategoriesRepo;
 import lk.ijse.backend.repository.UserRepo;
 import lk.ijse.backend.service.CategoriesService;
-import lk.ijse.backend.service.UserService;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -34,18 +34,16 @@ public class CategoriesServiceImpl implements CategoriesService {
 
 
     @Override
-    public CategoriesDTO saveCategory(String email,CategoriesDTO categoriesDTO) {
-            User seller = userRepo.findByEmail(email);
-        if (categoriesRepo.existsByNameAndSeller(categoriesDTO.getName(), seller)) {
-            throw new RuntimeException("Category name already exists for this seller");
+    public CategoriesDTO saveCategory(CategoriesDTO categoriesDTO) {
+        if (categoriesRepo.existsByName(categoriesDTO.getName())) {
+            throw new RuntimeException("Category name already exists");
         }
 
-        Categories category = new Categories();
+        CategoriesDTO category = new CategoriesDTO();
         category.setCategoryId(categoriesDTO.getCategoryId());
         category.setName(categoriesDTO.getName());
-        category.setSeller(seller);
 
-        Categories savedCategory = categoriesRepo.save(category);
+        Categories savedCategory = categoriesRepo.save(modelMapper.map(category, Categories.class));
         return modelMapper.map(savedCategory, CategoriesDTO.class);
     }
 
@@ -56,10 +54,13 @@ public class CategoriesServiceImpl implements CategoriesService {
 //        return modelMapper.map(category, CategoriesDTO.class);
 //    }
 //
-////    @Override
-////    public List<CategoriesDTO> getAllCategories() {
-////        return categoriesRepo.getAllCategories();
-////    }
+    @Override
+    public List<Categories> getAllCategories() {
+        List<Categories> categories = categoriesRepo.findAll();
+        return categories.stream()
+                .map(category -> modelMapper.map(category, Categories.class))
+                .collect(Collectors.toList());
+    }
 //
 //    @Override
 //    public CategoriesDTO updateCategory(String id, CategoriesDTO categoriesDTO) {

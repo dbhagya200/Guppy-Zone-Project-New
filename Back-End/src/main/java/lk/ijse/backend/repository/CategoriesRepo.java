@@ -12,8 +12,7 @@ import java.util.Optional;
 
 @Repository
 public interface CategoriesRepo extends JpaRepository<Categories,String> {
-    List<Categories> findBySellerEmail(String sellerEmail);
-    boolean existsByNameAndSeller(String name, User seller);
 
 
+    boolean existsByName(String name);
 }

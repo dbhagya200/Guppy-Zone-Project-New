@@ -1,22 +1,16 @@
 package lk.ijse.backend.controller;
 
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.JwtException;
 import lk.ijse.backend.dto.CategoriesDTO;
-import lk.ijse.backend.dto.ProfileDTO;
 import lk.ijse.backend.dto.ResponseDTO;
-import lk.ijse.backend.entity.User;
+import lk.ijse.backend.entity.Categories;
 import lk.ijse.backend.service.CategoriesService;
 import lk.ijse.backend.util.JwtUtil;
-import lk.ijse.backend.util.ResponseUtil;
 import lk.ijse.backend.util.VarList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -36,54 +30,26 @@ public class CategoriesController {
         this.jwtUtil = jwtUtil;
     }
 
-
-//    @PostMapping(path = "save", consumes = MediaType.APPLICATION_JSON_VALUE)
+//    @PostMapping(path = "/save", consumes = MediaType.APPLICATION_JSON_VALUE)
 //    @PreAuthorize("hasAnyAuthority('SELLER')")
 //    public ResponseEntity<ResponseDTO> createCategory(
-//            @RequestHeader("Authorization") String token,
-//            @RequestBody CategoriesDTO categoriesDTO) {  // Changed from @ModelAttribute to @RequestBody
-//
-//        String email = jwtUtil.getUsernameFromToken(token.substring(7));
-//        CategoriesDTO category = categoriesService.saveCategory(email, categoriesDTO);
-//        System.out.println("Category saved: " + category);
+//            @RequestBody CategoriesDTO categoriesDTO) {
+//        CategoriesDTO category = categoriesService.saveCategory(categoriesDTO);
 //        return ResponseEntity.status(HttpStatus.CREATED)
 //                .body(new ResponseDTO(VarList.Created, "Success", category));
 //    }
 
     @PostMapping(path = "/save", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ResponseDTO> createCategory(
-            @RequestHeader("Authorization") String token,
-            @RequestBody CategoriesDTO categoriesDTO) {  // Changed from @ModelAttribute to @RequestBody
-
-        String email = jwtUtil.getUsernameFromToken(token.substring(7));
-        CategoriesDTO category = categoriesService.saveCategory(email, categoriesDTO);
-
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(new ResponseDTO(VarList.Created, "Success", category));
+    public ResponseEntity<CategoriesDTO> createCategory(@RequestBody CategoriesDTO categoryDTO) {
+        CategoriesDTO savedCategory = categoriesService.saveCategory(categoryDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedCategory);
     }
-
-
-//    @GetMapping("/{id}")
-//    @PreAuthorize("hasAnyAuthority('SELLER')")
-//    public ResponseEntity<CategoriesDTO> getCategoryById(@PathVariable String id) {
-//        return ResponseEntity.ok(categoriesService.getCategoryById(id));
-//    }
 
 //    @GetMapping(path = "/get")
 //    @PreAuthorize("hasAnyAuthority('SELLER','BUYER')")
-//    public ResponseEntity<List<CategoriesDTO>> getAllCategories() {
-//        return ResponseEntity.ok(categoriesService.getAllCategories());
-//    }
-//
-//    @PutMapping("/{id}")
-//    public ResponseEntity<CategoriesDTO> updateCategory(@PathVariable String id, @RequestBody CategoriesDTO categoriesDTO) {
-//        return ResponseEntity.ok(categoriesService.updateCategory(id, categoriesDTO));
-//    }
-//
-//    @DeleteMapping("/{id}")
-//    public ResponseEntity<Void> deleteCategory(@PathVariable String id) {
-//        categoriesService.deleteCategory(id);
-//        return ResponseEntity.noContent().build();
+//    public ResponseEntity<List<Categories>> getAllCategories() {
+//        List<Categories> categories = categoriesService.getAllCategories();
+//        return ResponseEntity.ok(categories);
 //    }
 
 }

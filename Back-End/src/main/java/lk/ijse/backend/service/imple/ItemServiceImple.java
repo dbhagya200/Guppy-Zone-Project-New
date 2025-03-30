@@ -48,10 +48,6 @@ public class ItemServiceImple implements ItemService {
         Categories category = categoryRepo.findById(itemDTO.getCategoryId())
                 .orElseThrow(() -> new RuntimeException("Category not found"));
 
-        if (!category.getSeller().getEmail().equals(sellerEmail)) {
-            throw new RuntimeException("Category does not belong to this seller");
-        }
-
         Item item = modelMapper.map(itemDTO, Item.class);
         item.setUser(seller);
         item.setCategory(category);
