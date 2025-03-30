@@ -73,13 +73,19 @@ public class ItemController {
                 .body(savedItem);
     }
 
-    @GetMapping(path = "/get")
+    @GetMapping(path = "/get", produces = MediaType.MULTIPART_FORM_DATA_VALUE)
     @PreAuthorize("hasAnyAuthority('SELLER','BUYER')")
     public ResponseEntity<ResponseDTO> getItemsBySeller(@AuthenticationPrincipal UserDetails userDetails) {
         String sellerEmail = userDetails.getUsername();
         List<ItemDTO> items = itemService.getItemsBySeller(sellerEmail);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(new ResponseDTO(VarList.OK, "Items fetched successfully", items));
+    }
+    @GetMapping(path = "/getAll")
+    @PreAuthorize("hasAnyAuthority('SELLER','BUYER')")
+    public ResponseEntity<List<ItemDTO>> getAllItems() {
+        List<ItemDTO> items = itemService.getAllItems();
+        return ResponseEntity.ok(items);
     }
 
     @GetMapping("/category/{categoryId}")

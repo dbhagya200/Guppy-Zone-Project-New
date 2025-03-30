@@ -92,6 +92,13 @@ public class ItemServiceImple implements ItemService {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public List<ItemDTO> getAllItems() {
+        return itemRepository.findAll().stream()
+                .map(item -> modelMapper.map(item, ItemDTO.class))
+                .collect(Collectors.toList());
+    }
+
 //    @Override
 //    public ItemDTO updateItem(ItemDTO itemDTO) {
 //        if (!itemRepository.existsById(itemDTO.getItemCode())) {

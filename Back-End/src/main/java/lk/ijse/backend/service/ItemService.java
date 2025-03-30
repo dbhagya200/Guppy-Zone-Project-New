@@ -12,4 +12,5 @@ public interface ItemService {
     List<ItemDTO> getItemsBySeller(String sellerEmail);
     List<ItemDTO> getItemsByCategoryAndSeller(String categoryId, String sellerEmail);
 
+    List<ItemDTO> getAllItems();
 }
