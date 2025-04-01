@@ -8,13 +8,14 @@ import java.util.List;
 @Entity
 public class Item implements Serializable {
     @Id
-    private String itemCode;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int itemCode;
     private String itemName;
     private String description;
     private int quantity;
     private double price;
     private String location;
-    private String sourceUrl;
+    private String sourceImage;
     @ManyToOne
     private Categories category;
     @ManyToOne
@@ -27,25 +28,25 @@ public class Item implements Serializable {
     public Item() {
     }
 
-    public Item(String itemCode, String itemName, String description, int quantity, double price, String location, String sourceUrl, Categories category, User user, List<ReviewsRatings> reviewsRatings, List<OrderDetails> orderDetails) {
+    public Item(int itemCode, String itemName, String description, int quantity, double price, String location, String sourceUrl, Categories category, User user, List<ReviewsRatings> reviewsRatings, List<OrderDetails> orderDetails) {
         this.itemCode = itemCode;
         this.itemName = itemName;
         this.description = description;
         this.quantity = quantity;
         this.price = price;
         this.location = location;
-        this.sourceUrl = sourceUrl;
+        this.sourceImage = sourceUrl;
         this.category = category;
         this.user = user;
         this.reviewsRatings = reviewsRatings;
         this.orderDetails = orderDetails;
     }
 
-    public String getItemCode() {
+    public int getItemCode() {
         return itemCode;
     }
 
-    public void setItemCode(String itemCode) {
+    public void setItemCode(int itemCode) {
         this.itemCode = itemCode;
     }
 
@@ -89,12 +90,12 @@ public class Item implements Serializable {
         this.location = location;
     }
 
-    public String getSourceUrl() {
-        return sourceUrl;
+    public String getSourceImage() {
+        return sourceImage;
     }
 
-    public void setSourceUrl(String sourceUrl) {
-        this.sourceUrl = sourceUrl;
+    public void setSourceImage(String sourceImage) {
+        this.sourceImage = sourceImage;
     }
 
     public Categories getCategory() {
@@ -129,7 +130,7 @@ public class Item implements Serializable {
         this.orderDetails = orderDetails;
     }
 
-//    @Override
+    //    @Override
 //    public String toString() {
 //        return "Item{" +
 //                "itemCode='" + itemCode + '\'' +

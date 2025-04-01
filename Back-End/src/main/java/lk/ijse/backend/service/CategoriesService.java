@@ -10,8 +10,8 @@ public interface CategoriesService {
     CategoriesDTO saveCategory(CategoriesDTO categoriesDTO);
 //    CategoriesDTO getCategoryById(String id);
     List<CategoriesDTO> getAllCategories();
-    CategoriesDTO updateCategory(String id, CategoryUpdateDTO updateDTO, String username);
+    CategoriesDTO updateCategory(int id, CategoryUpdateDTO updateDTO, String username);
 
-    void deleteCategory(String id, String username);
+    void deleteCategory(int id, String username);
 
 }

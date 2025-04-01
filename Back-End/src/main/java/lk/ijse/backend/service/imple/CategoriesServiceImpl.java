@@ -61,7 +61,7 @@ public class CategoriesServiceImpl implements CategoriesService {
     }
 
     @Override
-    public CategoriesDTO updateCategory(String id, CategoryUpdateDTO updateDTO, String username) {
+    public CategoriesDTO updateCategory(int id, CategoryUpdateDTO updateDTO, String username) {
         Categories category = categoriesRepo.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Category not found with id: " + id));
         if (updateDTO.getName() != null && !updateDTO.getName().isBlank()) {
@@ -78,7 +78,7 @@ public class CategoriesServiceImpl implements CategoriesService {
     }
 
     @Override
-    public void deleteCategory(String id, String username) {
+    public void deleteCategory(int id, String username) {
         Categories category = categoriesRepo.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Category not found"));
 

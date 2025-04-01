@@ -52,7 +52,7 @@ public class CategoriesController {
     @PutMapping(path = "update",params = "id",consumes = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasAnyAuthority('SELLER')")
     public ResponseEntity<ResponseDTO> updateCategory(
-            @RequestParam ("id") String id,
+            @RequestParam ("id") int id,
             @Valid @RequestBody CategoryUpdateDTO updateDTO,
             @RequestHeader("Authorization") String authHeader) {
 
@@ -80,7 +80,7 @@ public class CategoriesController {
     @DeleteMapping(path = "delete",params = "id")
     @PreAuthorize("hasAnyAuthority('SELLER')")
     public ResponseEntity<ResponseDTO> deleteCategory(
-            @RequestParam ("id") String id,
+            @RequestParam ("id") int id,
             @RequestHeader("Authorization") String authHeader) {
 
         try {

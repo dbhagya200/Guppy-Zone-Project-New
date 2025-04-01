@@ -8,7 +8,8 @@ import java.util.List;
 @Entity
 public class Orders {
     @Id
-    private String orderId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int orderId;
     @ManyToOne
     private User userId;
     private LocalDateTime orderDate;
@@ -22,7 +23,7 @@ public class Orders {
     public Orders() {
     }
 
-    public Orders(String orderId, User userId, LocalDateTime orderDate, Double totalAmount, String status, List<OrderDetails> orderDetails) {
+    public Orders(int orderId, User userId, LocalDateTime orderDate, Double totalAmount, String status, List<OrderDetails> orderDetails) {
         this.orderId = orderId;
         this.userId = userId;
         this.orderDate = orderDate;
@@ -31,11 +32,11 @@ public class Orders {
         this.orderDetails = orderDetails;
     }
 
-    public String getOrderId() {
+    public int getOrderId() {
         return orderId;
     }
 
-    public void setOrderId(String orderId) {
+    public void setOrderId(int orderId) {
         this.orderId = orderId;
     }
 

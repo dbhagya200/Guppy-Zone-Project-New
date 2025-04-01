@@ -13,11 +13,11 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface CategoriesRepo extends JpaRepository<Categories,String> {
+public interface CategoriesRepo extends JpaRepository<Categories,Integer> {
 
 
     boolean existsByName(String name);
 
     @Query("SELECT COUNT(c) > 0 FROM Categories c WHERE c.name = :name AND c.categoryId <> :id")
-    boolean existsByNameAndIdNot(@Param("name") String name, @Param("id") String id);
+    boolean existsByNameAndIdNot(@Param("name") String name, @Param("id") int id);
 }

@@ -7,12 +7,12 @@ import lk.ijse.backend.dto.ItemDataDTO;
 import lk.ijse.backend.entity.Categories;
 import lk.ijse.backend.entity.Item;
 import lk.ijse.backend.entity.User;
+import lk.ijse.backend.model.ItemModel;
 import lk.ijse.backend.repository.CategoriesRepo;
 import lk.ijse.backend.repository.ItemRepo;
 import lk.ijse.backend.repository.UserRepo;
 import lk.ijse.backend.service.ItemService;
 import org.modelmapper.ModelMapper;
-import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -59,7 +59,7 @@ public class ItemServiceImple implements ItemService {
         item.setDescription(itemDataDTO.getDescription());
         item.setQuantity(itemDataDTO.getQuantity());
         item.setPrice(itemDataDTO.getPrice());
-        item.setSourceUrl(userService.saveItemImage(itemDataDTO.getSourceImage()));
+        item.setSourceImage(userService.saveItemImage(itemDataDTO.getSourceImage()));
         item.setLocation(itemDataDTO.getLocation());
         item.setUser(seller);
         item.setCategory(category);
@@ -73,7 +73,7 @@ public class ItemServiceImple implements ItemService {
         itemDTO.setQuantity(item.getQuantity());
         itemDTO.setPrice(item.getPrice());
         itemDTO.setLocation(item.getLocation());
-        itemDTO.setSourceImage(item.getSourceUrl());
+        itemDTO.setSourceImage(item.getSourceImage());
         itemDTO.setCategoryId(item.getCategory().getCategoryId());
         itemDTO.setUserEmail(item.getUser().getEmail());
 
@@ -93,9 +93,19 @@ public class ItemServiceImple implements ItemService {
     }
 
     @Override
-    public List<ItemDTO> getAllItems() {
+    public List<ItemModel> getAllItems() {
         return itemRepository.findAll().stream()
-                .map(item -> modelMapper.map(item, ItemDTO.class))
+                .map(item -> new ItemModel(
+                        item.getItemCode(),
+                        item.getItemName(),
+                        item.getCategory().getCategoryId(),
+                        item.getDescription(),
+                        item.getPrice(),
+                        item.getSourceImage(),
+                        item.getLocation(),
+                        item.getQuantity(),
+                        item.getUser().getEmail()
+                ))
                 .collect(Collectors.toList());
     }
 
@@ -111,7 +121,7 @@ public class ItemServiceImple implements ItemService {
         item.setQuantity(itemDataDTO.getQuantity());
         item.setPrice(itemDataDTO.getPrice());
         item.setLocation(itemDataDTO.getLocation());
-        item.setSourceUrl(userService.saveItemImage(itemDataDTO.getSourceImage()));
+        item.setSourceImage(userService.saveItemImage(itemDataDTO.getSourceImage()));
 
         itemRepository.save(item);
 
@@ -122,7 +132,7 @@ public class ItemServiceImple implements ItemService {
         itemDTO.setQuantity(item.getQuantity());
         itemDTO.setPrice(item.getPrice());
         itemDTO.setLocation(item.getLocation());
-        itemDTO.setSourceImage(item.getSourceUrl());
+        itemDTO.setSourceImage(item.getSourceImage());
         itemDTO.setCategoryId(item.getCategory().getCategoryId());
         itemDTO.setUserEmail(item.getUser().getEmail());
 
@@ -131,7 +141,7 @@ public class ItemServiceImple implements ItemService {
     }
 
     @Override
-    public void deleteItem(String id, String username) {
+    public void deleteItem(int id, String username) {
         Item item = itemRepository.findByItemCode(id);
         if (item == null) {
             throw new RuntimeException("Item not found");

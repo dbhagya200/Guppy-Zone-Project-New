@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.UUID;
 
 @Repository
-public interface ProfileRepo extends JpaRepository<Profile, String> {
+public interface ProfileRepo extends JpaRepository<Profile, Integer> {
     Profile findByUserEmail(String email);
 
     Profile findByUser(User user);

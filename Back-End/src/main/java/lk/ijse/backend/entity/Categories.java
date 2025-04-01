@@ -8,7 +8,8 @@ import java.util.List;
 @Entity
 public class Categories implements Serializable {
     @Id
-    private String categoryId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int categoryId;
     private String name;
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Item> items;
@@ -16,17 +17,17 @@ public class Categories implements Serializable {
     public Categories() {
     }
 
-    public Categories(String categoryId, String name, List<Item> items) {
+    public Categories(int categoryId, String name, List<Item> items) {
         this.categoryId = categoryId;
         this.name = name;
         this.items = items;
     }
 
-    public String getCategoryId() {
+    public int getCategoryId() {
         return categoryId;
     }
 
-    public void setCategoryId(String categoryId) {
+    public void setCategoryId(int categoryId) {
         this.categoryId = categoryId;
     }
 

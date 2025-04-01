@@ -3,20 +3,20 @@ package lk.ijse.backend.dto;
 import org.springframework.web.multipart.MultipartFile;
 
 public class ItemDataDTO {
-    private String itemCode;
+    private int itemCode;
     private String itemName;
     private String description;
     private int quantity;
     private double price;
     private String location;
     private MultipartFile sourceImage;
-    private String categoryId;
+    private int categoryId;
     private String userEmail;
 
     public ItemDataDTO() {
     }
 
-    public ItemDataDTO(String itemCode, String itemName, String description, int quantity, double price, String location, MultipartFile sourceImage, String categoryId, String userEmail) {
+    public ItemDataDTO(int itemCode, String itemName, String description, int quantity, double price, String location, MultipartFile sourceImage, int categoryId, String userEmail) {
         this.itemCode = itemCode;
         this.itemName = itemName;
         this.description = description;
@@ -28,11 +28,11 @@ public class ItemDataDTO {
         this.userEmail = userEmail;
     }
 
-    public String getItemCode() {
+    public int getItemCode() {
         return itemCode;
     }
 
-    public void setItemCode(String itemCode) {
+    public void setItemCode(int itemCode) {
         this.itemCode = itemCode;
     }
 
@@ -84,11 +84,11 @@ public class ItemDataDTO {
         this.sourceImage = sourceImage;
     }
 
-    public String getCategoryId() {
+    public int getCategoryId() {
         return categoryId;
     }
 
-    public void setCategoryId(String categoryId) {
+    public void setCategoryId(int categoryId) {
         this.categoryId = categoryId;
     }
 

@@ -4,20 +4,20 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class ItemDTO {
-    private String itemCode;
+    private int itemCode;
     private String itemName;
     private String description;
     private int quantity;
     private double price;
     private String location;
     private String sourceImage;
-    private String categoryId;
+    private int categoryId;
     private String userEmail;
 
     public ItemDTO() {
     }
 
-    public ItemDTO(String itemCode, String itemName, String description, int quantity, double price, String location, String sourceUrl, String categoryId, String userEmail) {
+    public ItemDTO(int itemCode, String itemName, String description, int quantity, double price, String location, String sourceUrl, int categoryId, String userEmail) {
         this.itemCode = itemCode;
         this.itemName = itemName;
         this.description = description;
@@ -29,11 +29,11 @@ public class ItemDTO {
         this.userEmail = userEmail;
     }
 
-    public String getItemCode() {
+    public int getItemCode() {
         return itemCode;
     }
 
-    public void setItemCode(String itemCode) {
+    public void setItemCode(int itemCode) {
         this.itemCode = itemCode;
     }
 
@@ -85,11 +85,11 @@ public class ItemDTO {
         this.sourceImage = sourceImage;
     }
 
-    public String getCategoryId() {
+    public int getCategoryId() {
         return categoryId;
     }
 
-    public void setCategoryId(String categoryId) {
+    public void setCategoryId(int categoryId) {
         this.categoryId = categoryId;
     }
 

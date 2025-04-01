@@ -5,7 +5,8 @@ import jakarta.persistence.*;
 @Entity
 public class Profile {
     @Id
-    private String profileId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int profileId;
     @OneToOne
     private User user;
     private String image;
@@ -17,7 +18,7 @@ public class Profile {
     public Profile() {
     }
 
-    public Profile(String profileId, User user, String image, String firstName, String lastName, String address, String contact) {
+    public Profile(int profileId, User user, String image, String firstName, String lastName, String address, String contact) {
         this.profileId = profileId;
         this.user = user;
         this.image = image;
@@ -27,11 +28,11 @@ public class Profile {
         this.contact = contact;
     }
 
-    public String getProfileId() {
+    public int getProfileId() {
         return profileId;
     }
 
-    public void setProfileId(String profileId) {
+    public void setProfileId(int profileId) {
         this.profileId = profileId;
     }
 

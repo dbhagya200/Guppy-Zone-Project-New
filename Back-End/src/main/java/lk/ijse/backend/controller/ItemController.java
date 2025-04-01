@@ -3,6 +3,7 @@ import lk.ijse.backend.dto.ItemDTO;
 import lk.ijse.backend.dto.ItemDataDTO;
 import lk.ijse.backend.dto.ProfileDataDTO;
 import lk.ijse.backend.dto.ResponseDTO;
+import lk.ijse.backend.model.ItemModel;
 import lk.ijse.backend.service.ItemService;
 import lk.ijse.backend.service.UserService;
 import lk.ijse.backend.service.imple.UserServiceImpl;
@@ -83,9 +84,11 @@ public class ItemController {
     }
     @GetMapping(path = "/getAll")
     @PreAuthorize("hasAnyAuthority('SELLER','BUYER')")
-    public ResponseEntity<List<ItemDTO>> getAllItems() {
-        List<ItemDTO> items = itemService.getAllItems();
-        return ResponseEntity.ok(items);
+    public ResponseEntity<ResponseDTO> getAllItems(@RequestHeader("Authorization") String token) {
+        String username = jwtUtil.getUsernameFromToken(token.substring(7));
+        List<ItemModel> items = itemService.getAllItems();
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(new ResponseDTO(VarList.OK, "Items fetched successfully", items));
     }
 
     @GetMapping("/category/{categoryId}")
@@ -106,7 +109,7 @@ public class ItemController {
         return ResponseEntity.ok(updatedItem);
     }
     @DeleteMapping(path = "/delete",params = "id")
-    public ResponseEntity<ResponseDTO> deleteItem( @RequestParam ("id") String id,
+    public ResponseEntity<ResponseDTO> deleteItem( @RequestParam ("id") int id,
                                               @RequestHeader("Authorization") String authHeader) {
         String token = authHeader.replace("Bearer ", "");
         String username = jwtUtil.getUsernameFromToken(token);

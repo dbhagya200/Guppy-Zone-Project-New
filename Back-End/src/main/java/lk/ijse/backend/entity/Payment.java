@@ -5,7 +5,8 @@ import jakarta.persistence.*;
 @Entity
 public class Payment {
     @Id
-    private String paymentId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int paymentId;
     @ManyToOne
     private User userId;
     @OneToOne
@@ -18,7 +19,7 @@ public class Payment {
     public Payment() {
     }
 
-    public Payment(String paymentId, User userId, Orders orders, double amount, String paymentDate, String paymentMethod, String paymentStatus) {
+    public Payment(int paymentId, User userId, Orders orders, double amount, String paymentDate, String paymentMethod, String paymentStatus) {
         this.paymentId = paymentId;
         this.userId = userId;
         this.orders = orders;
@@ -28,11 +29,11 @@ public class Payment {
         this.paymentStatus = paymentStatus;
     }
 
-    public String getPaymentId() {
+    public int getPaymentId() {
         return paymentId;
     }
 
-    public void setPaymentId(String paymentId) {
+    public void setPaymentId(int paymentId) {
         this.paymentId = paymentId;
     }
 

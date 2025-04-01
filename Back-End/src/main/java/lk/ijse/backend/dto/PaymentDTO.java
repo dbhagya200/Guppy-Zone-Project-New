@@ -6,7 +6,7 @@ import lk.ijse.backend.entity.Orders;
 import lk.ijse.backend.entity.User;
 
 public class PaymentDTO {
-    private String paymentId;
+    private int paymentId;
     private UserDTO userId;
     private OrderDTO orders;
     private double amount;
@@ -17,7 +17,7 @@ public class PaymentDTO {
     public PaymentDTO() {
     }
 
-    public PaymentDTO(String paymentId, UserDTO userId, OrderDTO orders, double amount, String paymentDate, String paymentMethod, String paymentStatus) {
+    public PaymentDTO(int paymentId, UserDTO userId, OrderDTO orders, double amount, String paymentDate, String paymentMethod, String paymentStatus) {
         this.paymentId = paymentId;
         this.userId = userId;
         this.orders = orders;
@@ -27,11 +27,11 @@ public class PaymentDTO {
         this.paymentStatus = paymentStatus;
     }
 
-    public String getPaymentId() {
+    public int getPaymentId() {
         return paymentId;
     }
 
-    public void setPaymentId(String paymentId) {
+    public void setPaymentId(int paymentId) {
         this.paymentId = paymentId;
     }
 

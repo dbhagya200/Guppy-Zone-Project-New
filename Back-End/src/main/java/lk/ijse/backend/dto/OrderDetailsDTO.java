@@ -2,7 +2,7 @@ package lk.ijse.backend.dto;
 
 public class OrderDetailsDTO {
 
-    private String id;
+    private int id;
     private String orderId;
     private String itemId;
     private int quantity;
@@ -11,7 +11,7 @@ public class OrderDetailsDTO {
     public OrderDetailsDTO() {
     }
 
-    public OrderDetailsDTO(String id, String orderId, String itemId, int quantity, double price) {
+    public OrderDetailsDTO(int id, String orderId, String itemId, int quantity, double price) {
         this.id = id;
         this.orderId = orderId;
         this.itemId = itemId;
@@ -19,11 +19,11 @@ public class OrderDetailsDTO {
         Price = price;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 

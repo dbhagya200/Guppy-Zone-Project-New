@@ -1,22 +1,22 @@
 package lk.ijse.backend.dto;
 
 public class CategoriesDTO {
-    private String categoryId;
+    private int categoryId;
     private String name;
 
     public CategoriesDTO() {
     }
 
-    public CategoriesDTO(String categoryId, String name) {
+    public CategoriesDTO(int categoryId, String name) {
         this.categoryId = categoryId;
         this.name = name;
     }
 
-    public String getCategoryId() {
+    public int getCategoryId() {
         return categoryId;
     }
 
-    public void setCategoryId(String categoryId) {
+    public void setCategoryId(int categoryId) {
         this.categoryId = categoryId;
     }
 

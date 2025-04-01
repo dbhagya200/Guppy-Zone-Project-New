@@ -14,13 +14,13 @@ import java.util.Arrays;
 import java.util.List;
 
 @Repository
-public interface ItemRepo extends JpaRepository<Item, String> {
+public interface ItemRepo extends JpaRepository<Item, Integer> {
     List<Item> findByUserEmail(String sellerEmail);
-    List<Item> findByCategoryCategoryId(String categoryId);
+    List<Item> findByCategoryCategoryId(int categoryId);
 
     @Query("SELECT i FROM Item i WHERE i.category.categoryId = :categoryId AND i.user.email = :sellerEmail")
     List<Item> findByCategoryAndSeller(@Param("categoryId") String categoryId,
                                        @Param("sellerEmail") String sellerEmail);
 
-    Item findByItemCode(String itemCode);
+    Item findByItemCode(int itemCode);
 }
