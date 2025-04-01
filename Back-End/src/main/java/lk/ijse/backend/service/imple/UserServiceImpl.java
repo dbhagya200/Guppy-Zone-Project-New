@@ -13,6 +13,7 @@ import lk.ijse.backend.service.UserService;
 import lk.ijse.backend.util.JwtUtil;
 import lk.ijse.backend.util.VarList;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -50,6 +51,8 @@ public class UserServiceImpl implements UserDetailsService, UserService {
    private ProfileServiceImpl profileService;
    @Autowired
    private ProfileRepo profileRepo;
+   @Autowired
+   private JwtUtil jwtUtil;
 
    private static final String FRONTEND_DIR = "static/images/";
    private static final String ITEMS = "items/";
@@ -80,6 +83,12 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     public String saveProfileImage(MultipartFile image) {
         String path = saveImage(image, PROFILE_UPLOAD_DIR, PROFILE);
         return FRONTEND_DIR + path;
+    }
+
+    @Override
+    public UserDTO getUserDTOByToken(String token) {
+        String username = jwtUtil.getUsernameFromToken(token);
+        return getUserByEmail(username);
     }
 
     public String saveImage(MultipartFile image, String savingDir, String savedFolderName) {
@@ -143,6 +152,32 @@ public class UserServiceImpl implements UserDetailsService, UserService {
         User user = userRepository.findByEmail(username);
         return modelMapper.map(user,UserDTO.class);
     }
+//    public ProfileDTO loadProfileDetailsByUsername(String username) throws UsernameNotFoundException {
+//        User user = userRepository.findByEmail(username);
+//        return modelMapper.map(user,ProfileDTO.class);
+//    }
+
+    public ProfileDTO loadProfileDetailsByUsername(String username) throws UsernameNotFoundException {
+        User user = userRepository.findByEmail(username);
+        if (user == null) {
+            throw new UsernameNotFoundException("User not found");
+        }
+
+        ModelMapper modelMapper = new ModelMapper();
+        modelMapper.getConfiguration()
+                .setMatchingStrategy(MatchingStrategies.STRICT)
+                .setSkipNullEnabled(true);
+
+        // Create custom type mapping
+        modelMapper.typeMap(User.class, ProfileDTO.class).addMappings(mapper -> {
+            // Map specific fields if names don't match
+            mapper.map(User::getEmail, ProfileDTO::setEmail);
+            // Skip problematic fields
+//            mapper.skip(ProfileDTO::setSomeCircularReferenceField);
+        });
+
+        return modelMapper.map(user, ProfileDTO.class);
+    }
 
     private Set<SimpleGrantedAuthority> getAuthority(User user) {
         Set<SimpleGrantedAuthority> authorities = new HashSet<>();
@@ -173,7 +208,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     }
 
     @Override
-    public String getUserEmailByToken(String token) {
+    public UserDTO getUserEmailByToken(String token) {
         return null;
     }
 
@@ -196,30 +231,8 @@ public class UserServiceImpl implements UserDetailsService, UserService {
             userRepository.save(modelMapper.map(userDTO, User.class));
             return VarList.Created;
         }
+
     }
-//
-//    @Override
-//    public ProfileDTO updateUserProfile(String email, ProfileDataDTO profileDataDTO) {
-//        // Find user by email
-//        User user = userRepository.findByEmail(email);
-//        System.out.println("user = " + user);
-//
-//        // Convert ProfileDataDTO to ProfileDTO
-//        ProfileDTO profileDTO = new ProfileDTO();
-//        profileDTO.setEmail(profileDataDTO.getEmail());
-//        profileDTO.setImage(String.valueOf(profileDataDTO.getImage())); // Save image name (you can upload separately)
-//        profileDTO.setName(profileDataDTO.getFirstName() + " " + profileDataDTO.getLastName());
-//        profileDTO.setAddress(profileDataDTO.getAddress());
-//        profileDTO.setContact(profileDataDTO.getContact());
-//
-//        // Map ProfileDTO to User entity
-//        modelMapper.map(profileDTO, user);
-//
-//        // Save updated user
-//        userRepository.save(user);
-//
-//        return profileDTO;
-//    }
 
     @Override
     public ProfileDTO updateUserProfile(String email, ProfileDataDTO profileDataDTO) {
@@ -236,6 +249,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
         String savedPath = null;
         if (profileDataDTO.getImage() != null){
             savedPath = saveProfileImage(profileDataDTO.getImage());
+            user.setImage(savedPath); // Save new image OR keep old one
         }
 
         // Update user details
@@ -243,13 +257,12 @@ public class UserServiceImpl implements UserDetailsService, UserService {
         user.setLastName(profileDataDTO.getLastName());
         user.setAddress(profileDataDTO.getAddress());
         user.setContact(profileDataDTO.getContact());
-        user.setImage(savedPath); // Save new image OR keep old one
+
 
 //        user.setImage(fileName); // Save new file name (or retain old one)
 
         userRepository.save(user); // Save updated user
 
-        // Convert User entity to ProfileDTO
         ProfileDTO profileDTO = new ProfileDTO();
         profileDTO.setEmail(user.getEmail());
         profileDTO.setName(user.getFirstName() + " " + user.getLastName());

@@ -12,9 +12,11 @@ public interface UserService {
     UserDTO getCurrentUser(String email);
     UserDTO getUserByEmail(String email);
     int updateUser(UserDTO userDTO);
-    String getUserEmailByToken(String token);
+    UserDTO getUserEmailByToken(String token);
     ProfileDTO updateUserProfile(String email, ProfileDataDTO profileDataDTO);
     public String saveItemImage(MultipartFile image);
     User getUserProfile(String email);
     String saveProfileImage(MultipartFile image);
+
+    UserDTO getUserDTOByToken(String token);
 }

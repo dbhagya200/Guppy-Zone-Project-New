@@ -6,8 +6,10 @@ import jakarta.validation.Valid;
 import lk.ijse.backend.dto.ProfileDTO;
 import lk.ijse.backend.dto.ProfileDataDTO;
 import lk.ijse.backend.dto.ResponseDTO;
+import lk.ijse.backend.dto.UserDTO;
 import lk.ijse.backend.service.ProfileService;
 import lk.ijse.backend.service.UserService;
+import lk.ijse.backend.service.imple.UserServiceImpl;
 import lk.ijse.backend.util.JwtUtil;
 import lk.ijse.backend.util.VarList;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,11 +31,14 @@ public class ProfileController {
     @Autowired
     private final ProfileService profileService;
     @Autowired
+    private final UserServiceImpl userServiceImpl;
+    @Autowired
     private final UserService userService;
     private final JwtUtil jwtUtil;
 
-    public ProfileController(ProfileService profileService, UserService userService, JwtUtil jwtUtil) {
+    public ProfileController(ProfileService profileService, UserServiceImpl userServiceImpl, UserService userService, JwtUtil jwtUtil) {
         this.profileService = profileService;
+        this.userServiceImpl = userServiceImpl;
         this.userService = userService;
         this.jwtUtil = jwtUtil;
     }
@@ -49,12 +54,21 @@ public class ProfileController {
     }
 
     @PutMapping(path = "/update", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<ProfileDTO> updateProfile(@RequestHeader("Authorization") String token,
+    @PreAuthorize("hasAnyAuthority('SELLER','BUYER')")
+    public ResponseEntity<ResponseDTO> updateProfile(@RequestHeader("Authorization") String token,
                                                     @ModelAttribute ProfileDataDTO profileDataDTO) {
-        String email = jwtUtil.getUsernameFromToken(token.substring(7));
+        UserDTO userDTO = userService.getUserDTOByToken(token.substring(7));
 
-        ProfileDTO updatedProfile = userService.updateUserProfile(email, profileDataDTO);
-        return ResponseEntity.ok(updatedProfile);
+        ProfileDTO updatedProfile = userService.updateUserProfile(userDTO.getEmail(), profileDataDTO);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(new ResponseDTO(VarList.OK, "Success", updatedProfile));
+    }
+    @GetMapping(path = "/me")
+    public ResponseEntity<ResponseDTO> getUserDetails(@RequestHeader("Authorization") String token) {
+        String username = jwtUtil.getUsernameFromToken(token.substring(7));
+        ProfileDTO profileDTO = userServiceImpl.loadProfileDetailsByUsername(username);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(new ResponseDTO(VarList.OK, "Success", profileDTO));
     }
 
 }

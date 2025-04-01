@@ -2,10 +2,11 @@ package lk.ijse.backend.entity;
 
 import jakarta.persistence.*;
 
+import java.io.Serializable;
 import java.util.List;
 
 @Entity
-public class Item {
+public class Item implements Serializable {
     @Id
     private String itemCode;
     private String itemName;
@@ -128,20 +129,20 @@ public class Item {
         this.orderDetails = orderDetails;
     }
 
-    @Override
-    public String toString() {
-        return "Item{" +
-                "itemCode='" + itemCode + '\'' +
-                ", itemName='" + itemName + '\'' +
-                ", description='" + description + '\'' +
-                ", quantity=" + quantity +
-                ", price=" + price +
-                ", location='" + location + '\'' +
-                ", sourceUrl='" + sourceUrl + '\'' +
-                ", category=" + category +
-                ", user=" + user +
-                ", reviewsRatings=" + reviewsRatings +
-                ", orderDetails=" + orderDetails +
-                '}';
-    }
+//    @Override
+//    public String toString() {
+//        return "Item{" +
+//                "itemCode='" + itemCode + '\'' +
+//                ", itemName='" + itemName + '\'' +
+//                ", description='" + description + '\'' +
+//                ", quantity=" + quantity +
+//                ", price=" + price +
+//                ", location='" + location + '\'' +
+//                ", sourceUrl='" + sourceUrl + '\'' +
+//                ", category=" + category +
+//                ", user=" + user +
+//                ", reviewsRatings=" + reviewsRatings +
+//                ", orderDetails=" + orderDetails +
+//                '}';
+//    }
 }

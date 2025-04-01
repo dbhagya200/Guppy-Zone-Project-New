@@ -16,16 +16,20 @@ public class ProfileDTO {
     private String address;
     @Pattern(regexp = "^[0-9]{10}$",message = "Phone number must be 10 digits")
     private String contact;
+    private String firstName;
+    private String lastName;
 
     public ProfileDTO() {
     }
 
-    public ProfileDTO(String email, String image, String name, String address, String contact) {
+    public ProfileDTO(String email, String image, String name, String address, String contact, String firstName, String lastName) {
         this.email = email;
         this.image = image;
         this.name = name;
         this.address = address;
         this.contact = contact;
+        this.firstName = firstName;
+        this.lastName = lastName;
     }
 
     public String getEmail() {
@@ -68,6 +72,22 @@ public class ProfileDTO {
         this.contact = contact;
     }
 
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
     @Override
     public String toString() {
         return "ProfileDTO{" +
@@ -76,6 +96,8 @@ public class ProfileDTO {
                 ", name='" + name + '\'' +
                 ", address='" + address + '\'' +
                 ", contact='" + contact + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
                 '}';
     }
 }

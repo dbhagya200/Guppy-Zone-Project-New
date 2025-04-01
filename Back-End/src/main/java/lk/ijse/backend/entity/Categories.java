@@ -2,10 +2,11 @@ package lk.ijse.backend.entity;
 
 import jakarta.persistence.*;
 
+import java.io.Serializable;
 import java.util.List;
 
 @Entity
-public class Categories {
+public class Categories implements Serializable {
     @Id
     private String categoryId;
     private String name;
@@ -45,12 +46,12 @@ public class Categories {
         this.items = items;
     }
 
-    @Override
-    public String toString() {
-        return "Categories{" +
-                "categoryId='" + categoryId + '\'' +
-                ", name='" + name + '\'' +
-                ", items=" + items +
-                '}';
-    }
+//    @Override
+//    public String toString() {
+//        return "Categories{" +
+//                "categoryId='" + categoryId + '\'' +
+//                ", name='" + name + '\'' +
+//                ", items=" + items +
+//                '}';
+//    }
 }

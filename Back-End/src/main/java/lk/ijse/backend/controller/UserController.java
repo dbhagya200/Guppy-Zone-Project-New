@@ -4,6 +4,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lk.ijse.backend.dto.*;
 import lk.ijse.backend.service.UserService;
+import lk.ijse.backend.service.imple.UserServiceImpl;
 import lk.ijse.backend.util.JwtUtil;
 import lk.ijse.backend.util.VarList;
 import org.springframework.http.HttpStatus;
@@ -19,10 +20,11 @@ import java.util.List;
 @CrossOrigin
 public class UserController {
     private final UserService userService;
+
     private final JwtUtil jwtUtil;
 
     //constructor injection
-    public UserController(UserService userService, JwtUtil jwtUtil) {
+    public UserController(UserService userService, UserServiceImpl userServiceImpl, JwtUtil jwtUtil) {
         this.userService = userService;
         this.jwtUtil = jwtUtil;
     }
@@ -54,19 +56,7 @@ public class UserController {
         }
     }
 
-//    @GetMapping("/me")
-//    public ResponseEntity<UserDTO> getUserDetails(@RequestHeader("Authorization") String token) {
-//        // Extract JWT token (Remove "Bearer " prefix)
-//        String jwt = token.substring(7);
-//
-//        // Extract email from token
-//        String email = jwtUtil.extractEmailFromToken(jwt);
-//
-//        // Fetch user details using the email
-//        UserDTO user = userService.getUserByEmail(email);
-//
-//        return ResponseEntity.ok(user);
-//    }
+
 //
 //    @PutMapping("/update")
 //    public ResponseEntity<ProfileDTO> updateProfile(
