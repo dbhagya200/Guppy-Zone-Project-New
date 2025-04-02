@@ -1,31 +1,52 @@
-// Save the original fetch function
+// scripts/api-interceptor.js
+
+// Store the original fetch function
 const originalFetch = window.fetch;
 
-// Override fetch to attach Authorization header
-window.fetch = async (url, options = {}) => {
-    const token = localStorage.getItem("authToken"); // Get stored token
+// Override the fetch function
+window.fetch = async function(...args) {
+    // Request interceptor - runs before the request is sent
+    console.log('Request interceptor - modifying request');
+
+    // Add authorization token if available
+    const token = localStorage.getItem('authToken');
+    let headers = {};
 
     if (token) {
-        options.headers = {
-            ...options.headers, // Keep existing headers
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}` // Attach token to every request
-        };
+        headers['Authorization'] = `Bearer ${token}`;
+    }
+
+    // Modify request options
+    let options = args[1] || {};
+    options.headers = {...options.headers, ...headers};
+
+    // Call original fetch with modified options
+    const response = await originalFetch(args[0], options);
+
+    // Clone response to read it and still pass it to the original flow
+    const clonedResponse = response.clone();
+
+    // Response interceptor - runs after response is received
+    console.log('Response interceptor - checking response');
+
+    if (response.status === 401) {
+        console.log('Unauthorized - redirecting to login');
+        window.location.href = '/login.html';
+        return response;
     }
 
     try {
-        const response = await originalFetch(url, options);
+        const data = await clonedResponse.json();
+        console.log('Response data:', data);
 
-        // Handle unauthorized responses globally
-        if (response.status === 401) {
-            alert("Session expired. Please log in again.");
-            localStorage.removeItem("authToken"); // Clear token
-            window.location.href = "/login.html"; // Redirect to login
-        }
+        // You can modify the response data here if needed
+        // For example, normalize data structure
 
-        return response; // Return the response
     } catch (error) {
-        console.error("Fetch error:", error);
-        throw error; // Re-throw error for specific handling
+        console.log('Error parsing JSON:', error);
     }
+
+    return response;
 };
+
+console.log('Fetch interceptor initialized');

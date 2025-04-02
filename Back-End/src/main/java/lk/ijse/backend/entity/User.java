@@ -1,8 +1,15 @@
 package lk.ijse.backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
+import jdk.jfr.Timestamp;
+import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -22,6 +29,10 @@ public class User implements Serializable {
     private String contact;
     private String firstName;
     private String lastName;
+
+    @CreationTimestamp
+//    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "MMMM dd, yyyy")
+    private LocalDate joinDate;
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Item> items;
     @OneToMany(mappedBy = "username", cascade = CascadeType.ALL)
@@ -30,7 +41,7 @@ public class User implements Serializable {
     public User() {
     }
 
-    public User(UUID uid, String username, String email, String password, String role, String image, String address, String contact, String firstName, String lastName, List<Item> items, List<ReviewsRatings> reviewsRatings) {
+    public User(UUID uid, String username, String email, String password, String role, String image, String address, String contact, String firstName, String lastName, LocalDate joinDate, List<Item> items, List<ReviewsRatings> reviewsRatings) {
         this.uid = uid;
         this.username = username;
         this.email = email;
@@ -41,6 +52,7 @@ public class User implements Serializable {
         this.contact = contact;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.joinDate = joinDate;
         this.items = items;
         this.reviewsRatings = reviewsRatings;
     }
@@ -125,6 +137,14 @@ public class User implements Serializable {
         this.lastName = lastName;
     }
 
+    public LocalDate getJoinDate() {
+        return joinDate;
+    }
+
+    public void setJoinDate(LocalDate joinDate) {
+        this.joinDate = joinDate;
+    }
+
     public List<Item> getItems() {
         return items;
     }
@@ -154,6 +174,7 @@ public class User implements Serializable {
                 ", contact='" + contact + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
+                ", joinDate=" + joinDate +
                 ", items=" + items +
                 ", reviewsRatings=" + reviewsRatings +
                 '}';

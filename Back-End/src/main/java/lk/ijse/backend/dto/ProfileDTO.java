@@ -5,6 +5,10 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import org.springframework.stereotype.Component;
 
+import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.util.Date;
+
 @Component
 public class ProfileDTO {
     @Email(message = "invalid format")
@@ -18,11 +22,12 @@ public class ProfileDTO {
     private String contact;
     private String firstName;
     private String lastName;
+    private LocalDate joinDate;
 
     public ProfileDTO() {
     }
 
-    public ProfileDTO(String email, String image, String name, String address, String contact, String firstName, String lastName) {
+    public ProfileDTO(String email, String image, String name, String address, String contact, String firstName, String lastName, LocalDate joinDate) {
         this.email = email;
         this.image = image;
         this.name = name;
@@ -30,6 +35,7 @@ public class ProfileDTO {
         this.contact = contact;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.joinDate = joinDate;
     }
 
     public String getEmail() {
@@ -88,6 +94,14 @@ public class ProfileDTO {
         this.lastName = lastName;
     }
 
+    public LocalDate getJoinDate() {
+        return joinDate;
+    }
+
+    public void setJoinDate(LocalDate joinDate) {
+        this.joinDate = joinDate;
+    }
+
     @Override
     public String toString() {
         return "ProfileDTO{" +
@@ -98,6 +112,7 @@ public class ProfileDTO {
                 ", contact='" + contact + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
+                ", joinDate=" + joinDate +
                 '}';
     }
 }

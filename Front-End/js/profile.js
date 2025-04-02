@@ -15,17 +15,22 @@ $(document).ready(function () {
             url: 'http://localhost:8080/api/v1/profile/me',
             method: 'GET',
             headers: {
-                'Authorization': 'Bearer ' + token
+                'Authorization': 'Bearer ' + localStorage.getItem("token")
             },
             success: function (response){
                 $('#email').val(response.data.email);
-                $('#name').text(response.data.firstName);
+                $('#name').text(response.data.firstName ? response.data.firstName : response.data.email);
                 $('#firstname').val(response.data.firstName);
                 $('#lastname').val(response.data.lastName);
                 $('#contact').val(response.data.contact);
                 $('#address').val(response.data.address);
+                $('#joinDate').text(response.data.joinDate);
+                $('#contact-t').text(response.data.contact);
+                $('#address-t').text(response.data.address);
+
+                let img = 'img/default-profile.jpeg';
              //   $('#input-file').attr("src", response.data.input-file);
-                $('#p-image').attr('src', response.data.image);
+                $('#p-image').attr('src', response.data.image ? response.data.image : img);
 
                 console.log(response.data)
             },
@@ -71,7 +76,7 @@ $(document).ready(function () {
                 processData: false,
                 timeout: 10000
             });
-
+            loadProfile();
             // Update the profile image display if a new image was uploaded
             if (fileInput.files.length > 0 && response.data.profileImageUrl) {
                 $("#input-file").attr("src", response.data.profileImageUrl);
@@ -82,6 +87,7 @@ $(document).ready(function () {
                 title: 'Success!',
                 text: 'Profile updated successfully',
                 timer: 2000
+
             });
             loadProfile();
         } catch (error) {

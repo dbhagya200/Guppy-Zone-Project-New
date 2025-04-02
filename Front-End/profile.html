@@ -8,6 +8,8 @@
     <link href="plugins/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
     <link href="plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
     <!-- Owl Carousel -->
     <link href="plugins/slick-carousel/slick/slick.css" rel="stylesheet">
     <link href="plugins/slick-carousel/slick/slick-theme.css" rel="stylesheet">
@@ -101,10 +103,20 @@
                         <!-- User Image -->
                         <div class="profile-thumb">
                             <img src="" alt="" class="rounded-circle" id="p-image" style="width:15rem;height: 15rem;object-fit: cover ">
+<!--                            <label for="input-file" class="edit-icon">-->
+<!--                                <i class="fa fa-camera"></i>-->
+<!--                            </label>-->
+                        </div>
+                        <div style="display: flex;flex-direction: column;align-items: center;">
+                            <h5 class="text-center" id="name" style="text-transform: uppercase;font-family: 'Gill Sans'"></h5>
+                            <br>
+                            <p class="text-muted"><i class="fa fa-calendar-alt me-2"></i> Joined: <span id="joinDate"></span></p>
+                            <p class="text-muted"><i class="fa fa-phone me-2"></i> Contact: <span id="contact-t"></span></p>
+                            <p class="text-muted"><i class="fa fa-map-marker-alt me-2"></i> Location: <span id="address-t"></span></p>
+
                         </div>
                         <!-- User Name -->
-                        <h5 class="text-center" id="name" style="text-transform: uppercase">Samanta Doe</h5>
-<!--                        <p id="data">Joined February 06, 2017</p>-->
+
                     </div>
                     <!-- Dashboard Links -->
                     <div class="widget user-dashboard-menu">
@@ -122,7 +134,7 @@
 <!--                                <a href="dashboard-pending-ads.html"><i class="fa fa-bolt"></i> Pending Approval<span>23</span></a>-->
 <!--                            </li>-->
                             <li>
-                                <a href="index-1.html"><i class="fa fa-cog"></i> Logout</a>
+                                <a href="index-1.html"><i class="fa fa-sign-out-alt me-2"></i>  Logout</a>
                             </li>
                             <li>
                                 <a href="delete-account.html"><i class="fa fa-power-off"></i>Delete Account</a>
@@ -273,5 +285,8 @@
 <script src="frameWork/jquery/jquery-3.7.1.min.js"></script>
 <script src="frameWork/sweetalert2/sweetalert2.all.min.js"></script>
 <script src="js/profile.js"></script>
+<script src="js/main.js"></script>
+<script src="js/httpInterceptor.js"></script>
+
 </body>
 </html>

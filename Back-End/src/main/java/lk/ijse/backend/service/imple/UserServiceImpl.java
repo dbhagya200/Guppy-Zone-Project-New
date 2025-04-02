@@ -30,6 +30,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -53,6 +54,8 @@ public class UserServiceImpl implements UserDetailsService, UserService {
    private ProfileRepo profileRepo;
    @Autowired
    private JwtUtil jwtUtil;
+    SimpleDateFormat dateFormat = new SimpleDateFormat("MMMM dd, yyyy");
+
 
    private static final String FRONTEND_DIR = "static/images/";
    private static final String ITEMS = "items/";
@@ -129,22 +132,22 @@ public class UserServiceImpl implements UserDetailsService, UserService {
             throw new UsernameNotFoundException("User not found for email: " + email);
         }
 
-        // Convert String role to GrantedAuthority
-        List<GrantedAuthority> authorities = new ArrayList<>();
-
-        if (user.getRole() != null && !user.getRole().isEmpty()) {
-            // If role is stored as "ROLE_SELLER", remove "ROLE_" prefix
-            String authority = user.getRole().startsWith("ROLE_")
-                    ? user.getRole().substring(5)  // Removes "ROLE_"
-                    : user.getRole();
-
-            authorities.add(new SimpleGrantedAuthority(authority));
-        }
+//        // Convert String role to GrantedAuthority
+//        List<GrantedAuthority> authorities = new ArrayList<>();
+//
+//        if (user.getRole() != null && !user.getRole().isEmpty()) {
+//            // If role is stored as "ROLE_SELLER", remove "ROLE_" prefix
+//            String authority = user.getRole().startsWith("ROLE_")
+//                    ? user.getRole().substring(5)  // Removes "ROLE_"
+//                    : user.getRole();
+//
+//            authorities.add(new SimpleGrantedAuthority(authority));
+//        }
 
         return new org.springframework.security.core.userdetails.User(
                 user.getEmail(),
                 user.getPassword(),
-                authorities
+                getAuthority(user)
         );
     }
 
@@ -214,7 +217,6 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 
     public UserDTO getUserByEmail(String email) {
         User user = userRepository.findByEmail(email);
-
         return modelMapper.map(user, UserDTO.class);
     }
 
