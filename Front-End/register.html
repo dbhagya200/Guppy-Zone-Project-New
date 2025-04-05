@@ -2,185 +2,153 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Register</title>
+    <title>Guppy Zone-Register</title>
+    <link href="plugins/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!-- Owl Carousel -->
+    <link href="plugins/slick-carousel/slick/slick.css" rel="stylesheet">
+    <link href="plugins/slick-carousel/slick/slick-theme.css" rel="stylesheet">
+    <!-- Fancy Box -->
+    <link href="plugins/fancybox/jquery.fancybox.pack.css" rel="stylesheet">
+    <link href="plugins/jquery-nice-select/css/nice-select.css" rel="stylesheet">
+    <link href="plugins/seiyria-bootstrap-slider/dist/css/bootstrap-slider.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
     <link href="css/register.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link href="/frameWork/bootstrap/bootstrap.min.css" rel="stylesheet">
     <link rel="shortcut icon" href="img/logo-new.png" type="image/x-icon" />
 </head>
+<style>
+    .inner {
+        min-width: 850px;
+        margin: auto;
+        padding-top: 68px;
+        padding-bottom: 48px;
+        background: url("img/logo-2.png") no-repeat right top;
+        background-repeat: no-repeat;
+        box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.6);
+        border-radius: 10px;
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+</style>
 <body>
-<div id="container" class="container">
-    <div style="color: white;display: flex;justify-content: space-between;margin: 10px 20px;text-decoration: none">
-        <a href="index-1.html" >
-            <i class="fas fa-arrow-left"
-               style="font-size: 20px;background-color: #57B894FF;padding: 10px;border-radius: 50%;color: white"></i>
-        </a>
-        <a href="index-1.html" >
-            <i class="fas fa-arrow-left"
-               style="font-size: 20px;background-color: #57B894FF;padding: 10px;border-radius: 50%;color: white" ></i>
-        </a>
-    </div>
-
-    <!-- FORM SECTION -->
-    <div class="row">
-
-        <!-- SIGN UP -->
-        <div class="col align-items-center flex-col sign-up">
-
-            <div class="form-wrapper align-items-center">
-
-                <div class="form sign-up">
-<!--                    <div class="input-group">-->
-<!--                        <i class='bx bxs-user'></i>-->
-<!--                        <input type="text" id="name" class="form-control" placeholder="Username" required>-->
-<!--                    </div>-->
-<!--                    <div class="input-group">-->
-<!--                        <i class='bx bx-mail-send'></i>-->
-<!--                        <input type="email" id="email" class="form-control" placeholder="Email" required>-->
-<!--                    </div>-->
-<!--                    <div class="mb-3">-->
-<!--                        <i class='bx bx-mail-send'></i>-->
-<!--                        <select class="form-select "  id="role" required>-->
-<!--                            <option value="" >Select a role</option>-->
-<!--                            <option value="BUYER">BUYER</option>-->
-<!--                            <option value="SELLER">SELLER</option>-->
-<!--                            &lt;!&ndash;                    <option value="ADMIN">ADMIN</option>&ndash;&gt;-->
-<!--                        </select>-->
-<!--                    </div>-->
-<!--                    <div class="input-group">-->
-<!--                        <i class='bx bxs-lock-alt'></i>-->
-<!--                        <input type="password" id="password" class="form-control" placeholder="Password" required>-->
-<!--                    </div>-->
-<!--                    <div class="input-group">-->
-<!--                        <i class='bx bxs-lock-alt'></i>-->
-<!--                        <input type="password" id="confirm-password" class="form-control" placeholder="Confirm password" required>-->
-<!--                    </div>-->
-<!--                    <button id="registerBtn" type="button" class="btn">-->
-<!--                        Sign up-->
-<!--                    </button>-->
-
-                    <form >
-                        <div class="mb-3 input-group">
-                            <!--                <label for="name" class="form-label">Full Name</label>-->
-                            <input  type="text" class="form-control " id="name" placeholder="Enter your  Username" required>
-                        </div>
-                        <div class="mb-3 input-group">
-                            <!--                <label for="email" class="form-label">Email address</label>-->
-                            <input type="email" class="form-control" id="email" placeholder="Enter your email" required>
-                        </div>
-                        <div class="mb-3 input-group">
-                            <!--                <label for="category" class="form-label">Category</label>-->
-                            <select class="form-select "  id="role" required>
-                                <option value="" style="font-family: aakari;">Select a role</option>
-                                <option value="BUYER">BUYER</option>
-                                <option value="SELLER">SELLER</option>
-                                <!--                    <option value="ADMIN">ADMIN</option>-->
-                            </select>
-                        </div>
-                        <div class="mb-3 input-group">
-                            <!--                <label for="password" class="form-label">Password</label>-->
-                            <input type="password" class="form-control" id="password" placeholder="Enter password" required>
-                        </div>
-                        <div class="mb-3 input-group">
-                            <!--                <label for="confirm-password" class="form-label">Confirm Password</label>-->
-                            <input type="password" class="form-control" id="confirm-password" placeholder="Confirm password" required>
-                        </div>
-                        <button id="registerBtn" type="button" class="btn btn-success w-100">Register</button>
-                    </form>
-                    <p>
-							<span>
-								Already have an account?
-							</span>
-                        <b onclick="toggle()" class="pointer">
-                            Sign in here
-                        </b>
-                    </p>
-                </div>
-            </div>
-
-        </div>
-        <!-- END SIGN UP -->
-        <!-- SIGN IN -->
-        <div class="col align-items-center flex-col sign-in">
-            <div class="form-wrapper align-items-center">
-                <div class="form sign-in">
-                    <div class="input-group">
-                        <i class='bx bxs-user'></i>
-                        <input type="email" id="name-login" placeholder="Email" class="form-control" required autocomplete="current-name">
-                    </div>
-                    <div class="input-group">
-                        <i class='bx bxs-lock-alt'></i>
-                        <input type="password" id="password-login" placeholder="Password" class="form-control" required autocomplete="current-name">
-                    </div>
-                    <button id="loginBtn" type="button" class="btn">
-                        Sign in
+<section id="navbar">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <nav class="navbar navbar-expand-lg  navigation">
+                    <a class="navbar-brand" href="pages/index.html">
+                        <img style="width: 3rem;height: 3rem" src="img/logo-2.png" alt="">
+                        <span>Guppy Zone</span></a>
+                    </a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
                     </button>
-                    <p>
-                        <b>
-                            <a href="#" class="pointer">
-                                Forgot password?
-                            </a>
-
-                        </b>
-                    </p>
-                    <p>
-							<span>
-								Don't have an account?
-							</span>
-                        <b onclick="toggle()" class="pointer">
-                            Sign up here
-                        </b>
-
-                    </p>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav ml-auto main-nav ">
+                            <li class="nav-item active">
+                                <a class="nav-link" href="index-1.html">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="dashboard.html">Dashboard</a>
+                            </li>
+                            <li class="nav-item dropdown dropdown-slide">
+                                <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Pages <span><i class="fa fa-angle-down"></i></span>
+                                </a>
+                                <!-- Dropdown list -->
+                                <div class="dropdown-menu dropdown-menu-right">
+                                    <a class="dropdown-item" href="category.html">Category</a>
+                                    <a class="dropdown-item" href="single.html">Single Page</a>
+                                    <a class="dropdown-item" href="store-single.html">Store Single</a>
+                                    <a class="dropdown-item" href="dashboard.html">Dashboard</a>
+                                    <a class="dropdown-item" href="user-profile.html">User Profile</a>
+                                    <a class="dropdown-item" href="submit-coupon.html">Submit Coupon</a>
+                                    <a class="dropdown-item" href="blog.html">Blog</a>
+                                    <a class="dropdown-item" href="single-blog.html">Single Post</a>
+                                </div>
+                            </li>
+                            <li class="nav-item dropdown dropdown-slide">
+                                <a class="nav-link dropdown-toggle" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Listing <span><i class="fa fa-angle-down"></i></span>
+                                </a>
+                                <!-- Dropdown list -->
+                                <div class="dropdown-menu dropdown-menu-right">
+                                    <a class="dropdown-item" href="#">Action</a>
+                                    <a class="dropdown-item" href="#">Another action</a>
+                                    <a class="dropdown-item" href="#">Something else here</a>
+                                </div>
+                            </li>
+                        </ul>
+<!--                        <ul class="navbar-nav ml-auto mt-10">-->
+<!--                            <li class="nav-item">-->
+<!--                                <a class="nav-link add-button" href="register.html">Login / Register</a>-->
+<!--                            </li>-->
+<!--                            &lt;!&ndash;							<li class="nav-item">&ndash;&gt;-->
+<!--                            &lt;!&ndash;								<a class="nav-link add-button" href="#"><i class="fa fa-plus-circle"></i> Add Listing</a>&ndash;&gt;-->
+<!--                            &lt;!&ndash;							</li>&ndash;&gt;-->
+<!--                        </ul>-->
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </div>
+</section>
+<div class="wrapper hero-area " style="background-image: url('img/bg-registration-form-2.jpg');">
+    <div class="inner">
+        <form action="">
+            <h3>Registration Form</h3>
+            <div class="form-group">
+                <div class="form-wrapper">
+                    <label for="name">Username</label>
+                    <input type="text" id="name" class="form-control" required>
                 </div>
             </div>
             <div class="form-wrapper">
-
+                <label for="email">Email</label><br>
+                <input type="text" class="form-control" id="email" required>
             </div>
-        </div>
-        <!-- END SIGN IN -->
+
+            <div class="form-wrapper">
+                <label for="password">Password</label>
+                <input type="password" class="form-control" id="password" required>
+            </div>
+            <div class="form-wrapper">
+                <label for="confirm-password">Confirm Password</label>
+                <input type="password" class="form-control" id="confirm-password" required>
+            </div>
+            <div class=" input-group form-wrapper">
+                <select class="form-control"  id="role" required>
+                    <option value="" >Select a role</option>
+                    <option value="BUYER">BUYER</option>
+                    <option value="SELLER">SELLER</option>
+                </select>
+            </div>
+            <!--      <div class="checkbox">-->
+            <!--        <label>-->
+            <!--          <input type="checkbox"> I caccept the Terms of Use & Privacy Policy.-->
+            <!--          <span class="checkmark"></span>-->
+            <!--        </label>-->
+            <!--      </div>-->
+            <button id="registerBtn" type="button" >Register Now</button>
+        </form>
+        <p style="margin-left: 120px;margin-top: 10px">
+							<span>
+								Already have an account?
+							</span>
+            <b onclick="toggle()" class="pointer" style="cursor: pointer;">
+                <a href="login.html" style="color: #0a53be;" >
+                    Sign in here
+                </a>
+
+            </b>
+        </p>
     </div>
-    <!-- END FORM SECTION -->
-    <!-- CONTENT SECTION -->
-    <div class="row content-row">
-
-        <!-- SIGN IN CONTENT -->
-        <div class="col align-items-center flex-col">
-
-            <div class="text sign-in">
-
-                <h2>
-                    Welcome
-                </h2>
-
-            </div>
-            <div class="img sign-in">
-
-            </div>
-        </div>
-        <!-- END SIGN IN CONTENT -->
-        <!-- SIGN UP CONTENT -->
-        <div class="col align-items-center flex-col">
-            <div class="img sign-up">
-
-            </div>
-            <div class="text sign-up">
-                <h2>
-                    Join with us
-                </h2>
-
-            </div>
-        </div>
-        <!-- END SIGN UP CONTENT -->
-    </div>
-    <!-- END CONTENT SECTION -->
 </div>
-<script src="js/register.js"></script>
-<!--<script src="js/signup-login.js"></script>-->
-<script src="/frameWork/jquery/jquery-3.7.1.min.js"></script>
+<script src="frameWork/jquery/jquery-3.7.1.min.js"></script>
 <script src="frameWork/sweetalert2/sweetalert2.all.min.js"></script>
 <script>
-    $(document).ready(function() {
+    $(document).ready(function () {
         $('#registerBtn').click(function () {
             // Get form values
             let name = $('#name').val().trim();
@@ -238,6 +206,7 @@
                             "role": selectedValue
                         }),
                         success: function(response) {
+                            location.reload();
                             if (response.data && response.data.token) {
                                 localStorage.setItem("token", response.data.token);
                             }
@@ -249,7 +218,7 @@
                                 timer: 2000,
                                 showConfirmButton: false
                             }).then(() => {
-                                window.location.href = "register.html";
+                                window.location.href = "login.html";
                             });
                         },
                         error: function(xhr) {
@@ -282,79 +251,6 @@
                 }
             });
         });
-
-        fetch('http://localhost:8080/api/v1/user/me', {
-            method: 'GET',
-            headers: {
-                'Authorization': `Bearer ${localStorage.getItem('token')}`
-            }
-        })
-            .then(response => response.json())
-            .then(data => console.log(data));
-
-        function showFieldError(fieldId, message) {
-            $(fieldId).addClass('is-invalid');
-            $(fieldId).next('.invalid-feedback').text(message);
-        }
-
-
-        $('#loginBtn').click(function (){
-            let name = $('#name-login').val();
-            let password = $('#password-login').val();
-
-            $.ajax({
-                url: 'http://localhost:8080/api/v1/auth/authenticate',
-                method: 'POST',
-                contentType: 'application/json',
-                data: JSON.stringify({
-                    "email": name,
-                    "password": password
-                    // "name": "USER",
-                    // "role": "USER"
-                }),
-                success: function(response) {
-                    localStorage.setItem("token", response.data.token);
-                    Swal.fire({
-                        icon: "success",
-                        title: "Success",
-                        text: "Login Successful!",
-                    }).then(() => {
-                        switch(response.data.role) {
-                            case "SELLER":
-                                window.location.href = "home.html";
-                                break;
-                            case "BUYER":
-                                window.location.href = "buyerHome.html";
-                                break;
-                            case "ADMIN":
-                                window.location.href = "adminHome.html";
-                                break;
-                            default:
-                                console.error("Unknown role:", response.data.role);
-                                window.location.href = "index-1.html";
-                        }
-                    });
-                },
-                error: function (error) {
-                    Swal.fire({
-                        icon: "error",
-                        title: "Oops...",
-                        text: " Something went wrong!",
-                    }).then(() => {
-                        window.location.href = "register.html";
-                    });
-                }
-            });
-
-
-
-
-        });
-
-
-        function errorAlert(message){
-            showAlert("error","Oops...",message)
-        }
     });
 </script>
 </body>

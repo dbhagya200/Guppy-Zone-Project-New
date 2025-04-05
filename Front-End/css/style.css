@@ -11,6 +11,12 @@ p, li, input, select, button {
   font-size: 14px;
   font-weight: 400;
 }
+#navbar{
+  position: fixed;
+  z-index: 10000;
+  background-color: white;
+  width: 100%;
+}
 
 h1, h2, h3, h4, h5, h6 {
   font-family: "Muli", sans-serif;
@@ -60,6 +66,7 @@ label {
 
 .nav-pills.with-background .nav-item {
   margin-right: 10px;
+
 }
 
 .nav-pills.with-background .nav-item:last-child {

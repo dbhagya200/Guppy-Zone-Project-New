@@ -5,13 +5,12 @@ $(document).ready(function () {
         window.location.href = "register.html";
         return;
     }
-
-    // Load items immediately
     loadItems();
+    loadUsersItems()
 
     function loadItems() {
         $.ajax({
-            url: "http://localhost:8080/api/v1/addsItem/get",
+            url: "http://localhost:8080/api/v1/addsItem/getAll",
             type: "GET",
             headers: {
                 "Authorization": "Bearer " + token
@@ -52,8 +51,8 @@ $(document).ready(function () {
                         <h3 class="title">${item.name || 'No name'}</h3>
                         <span class="add-id"><strong>ID:</strong> ${item.itemCode || 'N/A'}</span>
                         <span><strong>Description:</strong> ${item.description || 'N/A'}</span>
-                        <span><strong>Price:</strong> $${item.price ? item.price.toFixed(2) : '0.00'}</span>
-                        <span class="status active"><strong>Stock:</strong> ${item.quantity || 0}</span>
+                        <span class="status active"><strong>Price:</strong> Rs.${item.price ? item.price.toFixed(2) : '0.00'}</span>
+                        <span ><strong>Stock:</strong> ${item.quantity || 0}</span>
                         <span class="location"><strong>Location:</strong> ${item.location || 'N/A'}</span>
                     </td>
                     <td class="product-category">
@@ -94,11 +93,93 @@ $(document).ready(function () {
         $('[data-toggle="tooltip"]').tooltip();
     }
 
+    function loadUsersItems() {
+        $.ajax({
+            url: "http://localhost:8080/api/v1/addsItem/get",
+            type: "GET",
+            headers: {
+                "Authorization": "Bearer " + token
+            },
+            success: function(response) {
+                if (response && response.data) {
+                    populateModalTable(response.data);
+                } else {
+                    showError("No data received from server");
+                }
+            },
+            error: function(xhr, status, error) {
+                showError("Error loading items: " + error);
+            }
+        });
+    }
+
+    function populateModalTable(items) {
+        const tableBody = $('#addvertisementModal tbody');
+        tableBody.empty();
+        const baseImagePath = "static/images/items";
+
+        if (!items || items.length === 0) {
+            tableBody.append('<tr><td colspan="4" class="text-center">No advertisements found</td></tr>');
+            return;
+        }
+
+        items.forEach(item => {
+            const row = `
+            <tr>
+                <td>
+                    <img width="80px" height="60px" 
+                         src="${item.sourceImage || 'images/default-product.jpg'}" 
+                         alt="${item.name || 'Product image'}"
+                         class="img-thumbnail"
+                         onerror="this.src='images/default-product.jpg'">
+                </td>
+                <td>${item.name || 'No name'}</td>
+                <td class="text-center">${getCategoryName(item.category)}</td>
+                <td class="text-center">
+                    <div class="btn-group" role="group">
+                        <button class="btn btn-sm btn-outline-primary me-2" 
+                                onclick="editItemModal(${item.itemCode})">
+                            <i class="fa fa-pencil"></i> Edit
+                        </button>
+                        <button class="btn btn-sm btn-outline-danger" 
+                                onclick="deleteItemModal(${item.itemCode})">
+                            <i class="fa fa-trash"></i> Delete
+                        </button>
+                    </div>
+                </td>
+            </tr>
+        `;
+            tableBody.append(row);
+        });
+
+        // Initialize tooltips if needed
+        $('[data-toggle="tooltip"]').tooltip();
+    }
+
+
+// Example edit function for modal
+    function editItemModal(itemId) {
+        // Your edit implementation
+        console.log("Editing item:", itemId);
+        // You might want to open another modal or redirect
+    }
+
+// Example delete function for modal
+    function deleteItemModal(itemId) {
+        if (confirm("Are you sure you want to delete this item?")) {
+            // Your delete implementation
+            console.log("Deleting item:", itemId);
+        }
+    }
+
+    $('#addvertisement').on('show.bs.modal', function() {
+        loadUsersItems();
+    });
     // Helper functions
     function getCategoryName(categoryId) {
         const categories = {
             1: "Fish",
-            2: "Equipment",
+            2: "Filters",
             3: "Food",
             4: "Accessories"
         };

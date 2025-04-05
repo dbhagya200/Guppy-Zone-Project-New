@@ -54,8 +54,6 @@ public class UserServiceImpl implements UserDetailsService, UserService {
    private ProfileRepo profileRepo;
    @Autowired
    private JwtUtil jwtUtil;
-    SimpleDateFormat dateFormat = new SimpleDateFormat("MMMM dd, yyyy");
-
 
    private static final String FRONTEND_DIR = "static/images/";
    private static final String ITEMS = "items/";

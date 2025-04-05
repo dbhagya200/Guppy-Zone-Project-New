@@ -39,17 +39,15 @@ public class ItemServiceImple implements ItemService {
 
     @Override
     public ItemDTO saveItem(ItemDataDTO itemDataDTO, String sellerEmail) {
-        // Verify the seller exists and is actually a seller
         User seller = userRepository.findByEmailAndRole(sellerEmail, "SELLER");
         if (seller == null) {
             throw new RuntimeException("Seller not found or invalid role");
         }
 
         if (itemDataDTO.getSourceImage() == null) {
-            String savePath = userService.saveItemImage(itemDataDTO.getSourceImage());
+             userService.saveItemImage(itemDataDTO.getSourceImage());
         }
 
-        // Verify the category belongs to the seller
         Categories category = categoryRepo.findById(itemDataDTO.getCategoryId())
                 .orElseThrow(() -> new RuntimeException("Category not found"));
 
