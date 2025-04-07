@@ -23,4 +23,6 @@ public interface ItemRepo extends JpaRepository<Item, Integer> {
                                        @Param("sellerEmail") String sellerEmail);
 
     Item findByItemCode(int itemCode);
+
+    List<Item> findByItemCodeAndUserEmail(int itemCode, String sellerEmail);
 }

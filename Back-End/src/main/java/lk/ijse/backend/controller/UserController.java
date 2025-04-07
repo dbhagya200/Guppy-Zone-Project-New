@@ -4,6 +4,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lk.ijse.backend.dto.*;
 import lk.ijse.backend.service.UserService;
+import lk.ijse.backend.service.imple.MailSendServiceImpl;
 import lk.ijse.backend.service.imple.UserServiceImpl;
 import lk.ijse.backend.util.JwtUtil;
 import lk.ijse.backend.util.VarList;
@@ -23,10 +24,13 @@ public class UserController {
 
     private final JwtUtil jwtUtil;
 
+    private final MailSendServiceImpl mailSendService;
+
     //constructor injection
-    public UserController(UserService userService, UserServiceImpl userServiceImpl, JwtUtil jwtUtil) {
+    public UserController(UserService userService, UserServiceImpl userServiceImpl, JwtUtil jwtUtil, MailSendServiceImpl mailSendService) {
         this.userService = userService;
         this.jwtUtil = jwtUtil;
+        this.mailSendService = mailSendService;
     }
     @PostMapping(value = "/register")
     public ResponseEntity<ResponseDTO> registerUser(@RequestBody @Valid UserDTO userDTO) {
@@ -38,6 +42,7 @@ public class UserController {
                     AuthDTO authDTO = new AuthDTO();
                     authDTO.setEmail(userDTO.getEmail());
                     authDTO.setToken(token);
+                    mailSendService.sendRegisteredEmail(userDTO.getUsername(), userDTO.getEmail(), "Registered Successfully!");
                     return ResponseEntity.status(HttpStatus.CREATED)
                             .body(new ResponseDTO(VarList.Created, "Success", authDTO));
                 }

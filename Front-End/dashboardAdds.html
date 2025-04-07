@@ -3,24 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <title>Guppy Zone-AddsDashboard</title>
-    <link href="plugins/jquery-ui/jquery-ui.min.css" rel="stylesheet">
-    <link href="plugins/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet">
     <link href="plugins/slick-carousel/slick/slick.css" rel="stylesheet">
     <link href="plugins/slick-carousel/slick/slick-theme.css" rel="stylesheet">
+
+    <!-- Slick Slider JS -->
+    <script src="plugins/slick-carousel/slick/slick.min.js"></script>
+    <!-- Bootstrap -->
+    <link href="plugins/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!-- Owl Carousel -->
+    <link href="plugins/slick-carousel/slick/slick.css" rel="stylesheet">
+    <link href="plugins/slick-carousel/slick/slick-theme.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
     <link href="plugins/fancybox/jquery.fancybox.pack.css" rel="stylesheet">
     <link href="plugins/jquery-nice-select/css/nice-select.css" rel="stylesheet">
     <link href="plugins/seiyria-bootstrap-slider/dist/css/bootstrap-slider.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- CUSTOM CSS -->
     <link href="css/style.css" rel="stylesheet">
     <link rel="shortcut icon" href="img/logo-new.png" type="image/x-icon" />
-    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+            href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700&display=swap"
+            rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="fonts/icomoon/style.css" />
+    <link rel="stylesheet" href="fonts/flaticon/font/flaticon.css" />
+
+    <link rel="stylesheet" href="css/tiny-slider.css" />
+    <link rel="stylesheet" href="css/aos.css" />
+    <link rel="stylesheet" href="css/style1.css" />
+    <link rel="stylesheet" href="css/style.css" />
 </head>
 <body class="body-wrapper">
-<section>
-    <div class="container">
+<section id="navbar">
+    <div class="container" style="">
         <div class="row">
             <div class="col-md-12">
                 <nav class="navbar navbar-expand-lg  navigation">
@@ -64,10 +83,20 @@
                         </ul>
                         <ul class="navbar-nav ml-auto mt-10">
                             <li class="nav-item">
-                                <a class="nav-link login-button" href="profile.html">Profile</a>
+                                <a class="nav-link login-button" style="border-radius: 20px"
+                                   href="profile.html">Profile</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link add-button" href="postAdd.html"><i class="fa fa-plus-circle"></i> Add Post</a>
+                                <!--<a class="nav-link add-button" style="border-radius: 20px" href="#"
+                                   data-toggle="modal"
+                                   data-target="#addPostModal">
+                                    <i class="fa fa-plus-circle"></i> Add Post
+                                </a>-->
+<!--                                <button type="button" class="btn btn-success mb-4" data-bs-toggle="modal" id="addPost" data-bs-target="#addPostModal">Add Post</button>-->
+                                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#addPostModal"
+                                        style="width: 120px;height: 35px;border-radius: 30px;padding: 0.25rem 0.5rem;">
+                                    <i class="fa fa-plus-circle mr-1"></i> Add Post
+                                </button>
                             </li>
                         </ul>
                     </div>
@@ -87,7 +116,7 @@
         <div class="row">
             <div class="col-md-10 offset-md-1 col-lg-12 offset-lg-0">
                 <!-- Recently Favorited -->
-                <div class="widget dashboard-container my-adslist">
+                <div class="widget dashboard-container my-adslist" style="margin-top: 100px">
                     <div style="text-align: center">
                         <h1 class="" style="font-family: aakar;">What are you looking for....?</h1>
                     </div>
@@ -95,25 +124,13 @@
                         <button type="button" class="btn btn-success mb-4" data-bs-toggle="modal" id="addvertisement" data-bs-target="#addvertisementModal">My Advertisement</button>
                     </div>
 
-                    <table class="table product-dashboard-table">
-<!--                        <thead>-->
-<!--                        <tr>-->
-<!--                            <th>Image</th>-->
-<!--                            <th>Product Title</th>-->
-<!--                            <th class="text-center">Category</th>-->
-<!--                            <th class="text-center">Action</th>-->
-<!--                        </tr>-->
-<!--                        </thead>-->
-                        <tbody>
-                        <tr>
-                            <!-- Your main content here -->
-                        </tr>
-                        </tbody>
-                    </table>
+                    <div class="row" id="itemsContainer">
+
+                    </div>
                 </div>
             </div>
 
-            <!-- Modal - Must be placed at the root level (not nested) -->
+            <!-- My addvertisements Model -->
             <div class="modal fade" id="addvertisementModal" tabindex="-1" aria-labelledby="addvertisementModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-lg modal-dialog-centered">
                     <div class="modal-content">
@@ -127,24 +144,173 @@
                                 <tr>
                                     <th width="100">Image</th>
                                     <th>Product Title</th>
+                                    <th width="200" class="text-center">Description</th>
                                     <th width="200" class="text-center">Category</th>
+                                    <th width="200" class="text-center">Price</th>
                                     <th width="200" class="text-center">Action</th>
                                 </tr>
                                 </thead>
                                 <tbody  class="table product-table">
-                                <tr>
-
-                                </tr>
+                                <tr></tr>
                                 </tbody>
                             </table>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
                             <button type="button" class="btn btn-success">Add New Advertisement</button>
                         </div>
                     </div>
                 </div>
             </div>
+
+            <!--see item details Model-->
+            <div class="modal fade" id="itemDetailsModal" tabindex="-1" aria-labelledby="itemDetailsModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header bg-success text-white">
+                            <h5 class="modal-title" id="itemDetailsModalLabel">Product Details</h5>
+                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <!-- Modal content here -->
+                            <div id="item-details-content">
+                                <!-- Product details will be injected here -->
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <!-- Optionally a save button or another action button -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--Add Post Model-->
+            <div class="modal fade" id="addPostModal" tabindex="-1" aria-labelledby="addPostModalLabel" aria-hidden="true"
+                 style="margin-top: 90px; height: auto">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header bg-success text-light">
+                            <h5 class="modal-title text-light" id="addPostModalLabel" style="font-family: SansSerif">
+                                <i class="fas fa-plus-circle mr-2"></i>Add New Item
+                            </h5>
+                            <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="postAddForm">
+                                <!-- Item Title with Icon -->
+                                <div class="form-group">
+                                    <label for="itemTitle"><i class="fas fa-heading mr-2 text-success"></i>Item Title*</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text bg-light"><i class="fas fa-tag text-success"></i></span>
+                                        </div>
+                                        <input type="text" class="form-control" id="itemTitle" placeholder="Enter item title" required>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <!-- Category with Icon -->
+                                    <div class="col-md-6 form-group">
+                                        <label for="itemCategory"><i class="fas fa-tags mr-2 text-success"></i>Category*</label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text bg-light"><i class="fas fa-filter text-success"></i></span>
+                                            </div>
+                                            <select class="form-control" id="itemCategory" required>
+<!--                                                <option value="" disabled selected>Choose a category</option>-->
+<!--                                                <option value="Fish" data-icon="fas fa-fish">🐠 Fish</option>-->
+<!--                                                <option value="Filters" data-icon="fas fa-filter">🧽 Filters</option>-->
+<!--                                                <option value="Food" data-icon="fas fa-utensils">🍴 Food</option>-->
+<!--                                                <option value="Accessories" data-icon="fas fa-water">🛟-->
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <!-- Price with Icon -->
+                                    <div class="col-md-6 form-group">
+                                        <label for="itemPrice"><i class="fas fa-dollar-sign mr-2 text-success"></i>Price*</label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text bg-light"><i class="fas fa-rupee-sign text-success"></i></span>
+                                            </div>
+                                            <input type="number" class="form-control" id="itemPrice" placeholder="0.00" step="0.01" required>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <!-- Quantity with Icon -->
+                                    <div class="col-md-6 form-group">
+                                        <label for="itemQuantity"><i class="fas fa-boxes mr-2 text-success"></i>Quantity*</label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text bg-light"><i class="fas fa-cubes text-success"></i></span>
+                                            </div>
+                                            <input type="number" class="form-control" id="itemQuantity" min="1" value="1" required>
+                                        </div>
+                                    </div>
+
+                                    <!-- Location with Icon -->
+                                    <div class="col-md-6 form-group">
+                                        <label for="itemLocation"><i class="fas fa-map-marker-alt mr-2 text-success"></i>Location*</label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text bg-light"><i class="fas fa-location-dot text-success"></i></span>
+                                            </div>
+                                            <input type="text" class="form-control" id="itemLocation" placeholder="Enter location" required>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Description with Icon -->
+                                <div class="form-group">
+                                    <label for="itemDescription"><i class="fas fa-align-left mr-2 text-success"></i>Description*</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text bg-light h-100"><i class="fas fa-file-alt text-success"></i></span>
+                                        </div>
+                                        <textarea class="form-control" id="itemDescription" rows="4" placeholder="Enter detailed description" required></textarea>
+                                    </div>
+                                </div>
+
+                                <!-- Image Upload with Icon -->
+                                <div class="form-group">
+                                    <label><i class="fas fa-images mr-2 text-success"></i>Upload Images*</label>
+                                    <div class="custom-file">
+                                        <input type="file" class="custom-file-input" id="itemImages" multiple accept="image/*" required>
+                                        <label class="custom-file-label" for="itemImages">
+                                            <i class="fas fa-cloud-upload-alt mr-2"></i>Choose files...
+                                        </label>
+                                    </div>
+                                    <small class="form-text text-muted"><i class="fas fa-info-circle mr-1"></i>You can upload multiple images</small>
+                                    <div id="imagePreview" class="mt-2 d-flex flex-wrap"></div>
+                                </div>
+
+                                <!-- Terms Checkbox with Icon -->
+                                <div class="form-group form-check">
+                                    <input type="checkbox" class="form-check-input" id="agreeTerms" required>
+                                    <label class="form-check-label" for="agreeTerms">
+                                        <i class="fas fa-file-signature mr-2 text-success"></i>I agree to the terms and conditions
+                                    </label>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                                <i class="fas fa-times mr-2"></i>Cancel
+                            </button>
+                            <button type="submit" class="btn btn-primary" id="submitPost">
+                                <i class="fas fa-paper-plane mr-2"></i>Post Item
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
         </div>
     </div>
 </section>
@@ -236,9 +402,14 @@
     </div>
 </footer>
 
+
+
+
+
+
 <!-- Bootstrap CSS -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="frameWork/jquery/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jwt-decode@3.1.2/build/jwt-decode.min.js"></script>
 <script src="plugins/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 <script src="plugins/tether/js/tether.min.js"></script>
 <script src="plugins/raty/jquery.raty-fa.js"></script>
@@ -253,6 +424,173 @@
 <script src="js/scripts.js"></script>
 <script src="frameWork/sweetalert2/sweetalert2.all.min.js"></script>
 <script src="js/dashboardAdds.js"></script>
+<script>
+    $(document).ready(function () {
+        const token = localStorage.getItem('token');
+
+        if (!token) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Authentication Required',
+                text: 'Please login first',
+                confirmButtonColor: '#28a745'
+            }).then(() => {
+                window.location.href = "register.html";
+            });
+            return;
+        }
+
+        const decoded = jwt_decode(token);
+        const userEmail = decoded.username;
+
+        loadCategories();
+
+        function loadCategories() {
+            $.ajax({
+                url: "http://localhost:8080/api/v1/categories/get",
+                type: "GET",
+                headers: {
+                    "Authorization": "Bearer " + localStorage.getItem("token")
+                },
+                success: function (categories) {
+                    const $select = $('#itemCategory');
+                    $select.empty().append(`<option value="" disabled selected>Choose a category</option>`);
+                    categories.forEach(category => {
+                        $select.append(`<option value="${category.categoryId}">${category.name}</option>`);
+                    });
+                },
+                error: function (err) {
+                    console.error("Failed to load categories", err);
+                }
+            });
+        }
+
+        // Preview one image
+        $('#itemImages').on('change', function () {
+            $('#imagePreview').empty();
+            const file = this.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    $('#imagePreview').append(`
+                    <div class="image-preview-item m-2 position-relative">
+                        <img src="${e.target.result}" class="img-thumbnail rounded shadow-sm"
+                             style="width: 100px; height: 100px; object-fit: cover;">
+                        <span class="remove-image position-absolute top-0 end-0 bg-white rounded-circle p-1"
+                              style="transform: translate(30%, -30%); cursor: pointer;">
+                            <i class="fas fa-times text-danger"></i>
+                        </span>
+                    </div>
+                `);
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        $(document).on('click', '.remove-image', function () {
+            $('#itemImages').val('');
+            $('#imagePreview').empty();
+        });
+
+        $('#submitPost').click(function (e) {
+            e.preventDefault();
+            const form = $('#postAddForm')[0];
+
+            if (!form.checkValidity()) {
+                form.classList.add('was-validated');
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Missing Information',
+                    text: 'Please fill all required fields correctly',
+                    confirmButtonColor: '#28a745'
+                });
+                return;
+            }
+
+            if (!$('#agreeTerms').is(':checked')) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Terms Not Accepted',
+                    text: 'You must agree to the terms and conditions',
+                    confirmButtonColor: '#28a745'
+                });
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('title', $('#itemTitle').val());
+            formData.append('category', $('#itemCategory').val());
+            formData.append('price', $('#itemPrice').val());
+            formData.append('quantity', $('#itemQuantity').val());
+            formData.append('location', $('#itemLocation').val());
+            formData.append('description', $('#itemDescription').val());
+            formData.append('email', userEmail); // 👈 Send user email
+
+            const file = $('#itemImages')[0].files[0];
+            if (file) {
+                formData.append('sourceImage', file); // 👈 Send only one image
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'No Image Selected',
+                    text: 'Please upload one image',
+                    confirmButtonColor: '#28a745'
+                });
+                return;
+            }
+
+            const submitBtn = $(this);
+            submitBtn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin mr-2"></i> Posting...');
+
+            $.ajax({
+                url: 'http://localhost:8080/api/v1/addsItem/saveItem',
+                type: 'POST',
+                headers: {
+                    'Authorization': 'Bearer ' + token
+                },
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (response) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success!',
+                        text: 'Your item has been posted successfully',
+                        confirmButtonColor: '#28a745'
+                    }).then(() => {
+                        form.reset();
+                        form.classList.remove('was-validated');
+                        $('#imagePreview').empty();
+                        $('#addPostModal').modal('hide');
+                    });
+                },
+                error: function (xhr) {
+                    let errorMessage = 'Failed to post item. Please try again.';
+                    if (xhr.responseJSON && xhr.responseJSON.message) {
+                        errorMessage = xhr.responseJSON.message;
+                    }
+
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: errorMessage,
+                        confirmButtonColor: '#28a745'
+                    });
+                },
+                complete: function () {
+                    submitBtn.prop('disabled', false).html('<i class="fas fa-paper-plane mr-2"></i> Post Item');
+                }
+            });
+        });
+
+        // Clear validation styling on input
+        $('input, textarea, select').on('input change', function () {
+            $(this).removeClass('is-invalid');
+        });
+    });
+
+
+</script>
 
 </body>
 </html>

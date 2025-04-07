@@ -6,7 +6,8 @@ $(document).ready(function () {
         return;
     }
     loadItems();
-    loadUsersItems()
+    loadUserAdvertisements();
+    showItemDetails(item);
 
     function loadItems() {
         $.ajax({
@@ -17,106 +18,144 @@ $(document).ready(function () {
             },
             success: function(response) {
                 if (response && response.data) {
-                    populateTable(response.data);
+                    populateCards(response.data);
                 } else {
-                    showError("No data received from server");
+                    $('#itemsContainer').html('<p class="text-center text-danger">No items found.</p>');
                 }
             },
             error: function(xhr, status, error) {
-                showError("Error loading items: " + error);
+                $('#itemsContainer').html('<p class="text-center text-danger">Error loading items: ' + error + '</p>');
             }
         });
     }
 
-    function populateTable(items) {
-        const tableBody = $('.product-dashboard-table tbody');
-        tableBody.empty();
-        const baseImagePath = "static/images/items";
-        if (!items || items.length === 0) {
-            tableBody.append('<tr><td colspan="4">No items found</td></tr>');
-            return;
-        }
+    function populateCards(items) {
+        const container = $('#itemsContainer');
+        container.empty();
 
         items.forEach(item => {
-            console.log("Original imageUrl:", item.sourceImage);
-            const row = `
-                <tr>
-                    <td class="product-thumb">
-                        <img width="80px" height="auto" 
-                             src="${item.sourceImage || 'images/products/products-1.jpg'}" 
+            const card = `
+        <div class="col-md-6 col-lg-3 mb-4">
+           <div class="property-item"	style="padding: 15px;margin-bottom: 30px;
+           box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.6);align-items: center">
+                    <a href="product-detail.html?id=${item.id}" class="img">
+                        <img src="${item.sourceImage || 'images/img_1.jpg'}"
                              alt="${item.name || 'Product image'}"
-                             onerror="this.src='images/default.jpg'">
-                    </td>
-                    <td class="product-details">
-                        <h3 class="title">${item.name || 'No name'}</h3>
-                        <span class="add-id"><strong>ID:</strong> ${item.itemCode || 'N/A'}</span>
-                        <span><strong>Description:</strong> ${item.description || 'N/A'}</span>
-                        <span class="status active"><strong>Price:</strong> Rs.${item.price ? item.price.toFixed(2) : '0.00'}</span>
-                        <span ><strong>Stock:</strong> ${item.quantity || 0}</span>
-                        <span class="location"><strong>Location:</strong> ${item.location || 'N/A'}</span>
-                    </td>
-                    <td class="product-category">
-                        <span class="categories">${getCategoryName(item.category)}</span>
-                    </td>
-                    <td class="action" data-title="Action">
-                        <div class="">
-                            <ul class="list-inline justify-content-center">
-                                <li class="list-inline-item">
-                                    <a data-toggle="tooltip" title="View" class="view" 
-                                       href="product-detail.html?id=${item.id}">
-                                        <i class="fa fa-eye"></i>
-                                    </a>
-                                </li>
-                                <li class="list-inline-item">
-                                    <a class="edit" href="#" 
-                                       onclick="editItem(${item.id}, '${escapeString(item.name)}', ${item.category}, 
-                                               '${escapeString(item.description)}', ${item.price}, 
-                                               '${item.imageUrl}', '${escapeString(item.location)}', 
-                                               ${item.quantity})">
-                                        <i class="fa fa-pencil"></i>
-                                    </a>
-                                </li>
-                                <li class="list-inline-item">
-                                    <a class="delete" href="#" onclick="deleteItem(${item.id})">
-                                        <i class="fa fa-trash"></i>
-                                    </a>
-                                </li>
-                            </ul>
+                             class="img-fluid"
+                             onerror="this.src='images/img_1.jpg'"
+                             style="padding: 10px; width: 18rem;height: 16rem;
+                             object-fit: cover;"
+                             >
+                    </a>
+
+                    <div class="property-content">
+                        <div class="price mb-2"><span>Rs.${item.price ? item.price.toFixed(2) : '0.00'}</span></div>
+                        <div>
+                            <span class="d-block mb-2 text-black-50">${item.location || 'N/A'}</span>
+                            <span class="city d-block mb-3">${item.name || 'No name'}</span>
+
+                            <div class="specs d-flex mb-3">
+                                <span class="d-block d-flex align-items-center me-3">
+                                    <i class="fas fa-tag me-2"></i>
+                                    <span class="caption">${getCategoryName(item.category)}</span>
+                                </span>
+                                <span class="d-block d-flex align-items-center">
+                                    <i class="fas fa-cubes me-2"></i>
+                                    <span class="caption">${item.quantity || 0}</span>
+                                </span>
+                            </div>
+
+                           <button 
+                                 <a href="javascript:void(0);" class="btn text-light btn-success btn-outline-dark py-2 px-3" 
+                               onclick="showItemDetails(${item.code})" style="border-radius: 20px;background-color: #245a48;margin-top: 10px;">
+                               See Details
+                            </a>
+
+                            </button>
+
                         </div>
-                    </td>
-                </tr>
-            `;
-            tableBody.append(row);
+                    </div>
+                </div>
+        </div>
+        
+      `;
+            container.append(card);
+
         });
 
-        // Initialize tooltips
-        $('[data-toggle="tooltip"]').tooltip();
     }
 
-    function loadUsersItems() {
+    function showItemDetails(itemId) {
+        // Make an API request to fetch item details using itemId
         $.ajax({
-            url: "http://localhost:8080/api/v1/addsItem/get",
+            url: `http://localhost:8080/api/v1/addsItem/${itemId}`, // Make sure this endpoint is correct
+            type: 'GET',
+            success: function(response) {
+                if (response && response.data) {
+                    const item = response.data;
+
+                    // Inject data into the modal content
+                    const content = `
+                    <h3>${item.itemName}</h3>
+                    <p><strong>Category:</strong> ${getCategoryName(item.category)}</p>
+                    <p><strong>Price:</strong> Rs.${item.price}</p>
+                    <p><strong>Description:</strong> ${item.description}</p>
+                    <p><strong>Stock:</strong> ${item.quantity}</p>
+                    <img src="${item.sourceImage || 'images/default.jpg'}" class="img-fluid" alt="Product Image">
+                `;
+
+                    $('#item-details-content').html(content);
+
+                    // Show the modal
+                    const modal = new bootstrap.Modal(document.getElementById('itemDetailsModal'));
+                    modal.show();
+                } else {
+                    console.log("Item details not found");
+                }
+            },
+            error: function(xhr, status, error) {
+                console.log('Error fetching item details:', error);
+            }
+        });
+    }
+
+
+
+    function getCategoryName(categoryId) {
+        const categories = {
+            1: "Fish",
+            2: "Filters",
+            3: "Food",
+            4: "Accessories"
+        };
+        return categories[categoryId] || "Other";
+    }
+
+    function loadUserAdvertisements() {
+        const token = localStorage.getItem('token');
+
+        $.ajax({
+            url: "http://localhost:8080/api/v1/addsItem/get", // Adjust endpoint if needed
             type: "GET",
             headers: {
                 "Authorization": "Bearer " + token
             },
             success: function(response) {
                 if (response && response.data) {
-                    populateModalTable(response.data);
+                    populateAdvertisementTable(response.data);
                 } else {
-                    showError("No data received from server");
+                    $('#addvertisementModal .product-table').html('<tr><td colspan="4" class="text-center">No data found</td></tr>');
                 }
             },
             error: function(xhr, status, error) {
-                showError("Error loading items: " + error);
+                $('#addvertisementModal .product-table').html(`<tr><td colspan="4" class="text-danger text-center">Error loading data: ${error}</td></tr>`);
             }
         });
     }
 
-    function populateModalTable(items) {
-        const tableBody = $('#addvertisementModal tbody');
+    function populateAdvertisementTable(items) {
+        const tableBody = $('#addvertisementModal .product-table');
         tableBody.empty();
-        const baseImagePath = "static/images/items";
 
         if (!items || items.length === 0) {
             tableBody.append('<tr><td colspan="4" class="text-center">No advertisements found</td></tr>');
@@ -125,36 +164,38 @@ $(document).ready(function () {
 
         items.forEach(item => {
             const row = `
-            <tr>
+             <tr>
                 <td>
-                    <img width="80px" height="60px" 
-                         src="${item.sourceImage || 'images/default-product.jpg'}" 
-                         alt="${item.name || 'Product image'}"
-                         class="img-thumbnail"
-                         onerror="this.src='images/default-product.jpg'">
+                    <img src="${item.sourceImage || 'images/default.jpg'}" 
+                         width="100px" height="80px" class="img-thumbnail" 
+                         onerror="this.src='images/default.jpg'" />
                 </td>
-                <td>${item.name || 'No name'}</td>
+                <td>${item.itemName || 'No name'}</td>
+                <td class="text-center">${item.description || 'No description'}</td>
                 <td class="text-center">${getCategoryName(item.category)}</td>
+                <td class="text-center">Rs.${item.price ? item.price.toFixed(2) : '0.00'}</td>
                 <td class="text-center">
-                    <div class="btn-group" role="group">
-                        <button class="btn btn-sm btn-outline-primary me-2" 
-                                onclick="editItemModal(${item.itemCode})">
-                            <i class="fa fa-pencil"></i> Edit
+                      <div class="btn-group">
+                        <button class="btn btn-sm btn-outline-primary px-2 py-1" 
+                                onclick="editItemModal(${item.itemCode})" 
+                                data-bs-toggle="tooltip" title="Edit">
+                          <i class="fas fa-pen"></i>
                         </button>
-                        <button class="btn btn-sm btn-outline-danger" 
-                                onclick="deleteItemModal(${item.itemCode})">
-                            <i class="fa fa-trash"></i> Delete
+                        <button class="btn btn-sm btn-outline-danger px-2 py-1" 
+                                onclick="deleteItemModal(${item.itemCode})" 
+                                data-bs-toggle="tooltip" title="Delete">
+                          <i class="fas fa-trash"></i>
                         </button>
-                    </div>
-                </td>
+                      </div>
+                    </td>
+
             </tr>
         `;
             tableBody.append(row);
-        });
 
-        // Initialize tooltips if needed
-        $('[data-toggle="tooltip"]').tooltip();
+        });
     }
+
 
 
 // Example edit function for modal

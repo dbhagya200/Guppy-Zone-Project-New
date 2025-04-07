@@ -99,6 +99,14 @@ public class ItemController {
         List<ItemDTO> items = itemService.getItemsByCategoryAndSeller(categoryId, sellerEmail);
         return ResponseEntity.ok(new ResponseUtil(200, "Items fetched successfully", items));
     }
+    @GetMapping(path = "{itemCode}")
+    public ResponseEntity<ResponseUtil> getItemsByItemCode(
+            @PathVariable int itemCode,
+            @AuthenticationPrincipal UserDetails userDetails) {
+        String sellerEmail = userDetails.getUsername();
+        List<ItemDTO> items = itemService.getItembyItemCode(itemCode, sellerEmail);
+        return ResponseEntity.ok(new ResponseUtil(200, "Items fetched successfully", items));
+    }
 
     @PutMapping(path = "/update", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<ItemDTO> updateItem(@RequestHeader("Authorization") String token,

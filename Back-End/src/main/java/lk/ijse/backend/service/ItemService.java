@@ -18,4 +18,6 @@ public interface ItemService {
     ItemDTO updateItem(ItemDataDTO itemDataDTO, String email);
 
     void deleteItem(int id, String username);
+
+    List<ItemDTO> getItembyItemCode(int itemCode, String sellerEmail);
 }

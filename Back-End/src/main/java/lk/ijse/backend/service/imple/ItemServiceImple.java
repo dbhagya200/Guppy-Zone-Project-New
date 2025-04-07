@@ -151,6 +151,13 @@ public class ItemServiceImple implements ItemService {
         itemRepository.delete(item);
     }
 
+    @Override
+    public List<ItemDTO> getItembyItemCode(int itemCode, String sellerEmail) {
+        return itemRepository.findByItemCodeAndUserEmail(itemCode, sellerEmail).stream()
+                .map(item -> modelMapper.map(item, ItemDTO.class))
+                .collect(Collectors.toList());
+    }
+
 //    @Override
 //    public ItemDTO updateItem(ItemDTO itemDTO) {
 //        if (!itemRepository.existsById(itemDTO.getItemCode())) {
