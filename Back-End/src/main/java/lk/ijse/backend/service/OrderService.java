@@ -1,11 +1,13 @@
 package lk.ijse.backend.service;
 
 import lk.ijse.backend.dto.OrderDTO;
-import org.hibernate.mapping.List;
-import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 
 public interface OrderService {
-    OrderDTO placeOrder(OrderDTO orderDTO);
-//    List<OrderDTO> getAllOrders();
+    void placeOrder(OrderDTO orderDTO);
+    void delete(int orderId);
+    List<OrderDTO> getallOrders();
+    OrderDTO getLastOrder();
 }

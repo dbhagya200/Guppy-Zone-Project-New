@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Guppy Zone-Buyer Profile</title>
+    <title>Title</title>
     <link href="plugins/slick-carousel/slick/slick.css" rel="stylesheet">
     <link href="plugins/slick-carousel/slick/slick-theme.css" rel="stylesheet">
 
@@ -141,92 +141,51 @@
 </section>
 
 
-
-<!--==================================
-=            User Profile            =
-===================================-->
-
-<section class="user-profile section" style="margin-top: 100px">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-10 offset-md-1 col-lg-4 offset-lg-0" >
-                <div class="sidebar">
-                    <!-- User Widget -->
-                    <div class="widget user-dashboard-profile" >
-                        <!-- User Image -->
-                        <div class="profile-thumb">
-                            <img src="images/user/user-thumb.jpg" alt="" class="rounded-circle" id="image">
-                        </div>
-                        <!-- User Name -->
-                        <h5 class="text-center" id="name">Samanta Doe</h5>
-                        <!--                        <p id="data">Joined February 06, 2017</p>-->
-                    </div>
-                    <!-- Dashboard Links -->
-                    <div class="widget user-dashboard-menu">
-                        <ul>
-                            <li>
-                                <a href="dashboardAdds.html"><i class="fa fa-user"></i> My Ads</a>
-                            </li>
-                            <!--                            <li>-->
-                            <!--                                <a href="dashboard-favourite-ads.html"><i class="fa fa-bookmark-o"></i> Favourite Ads <span>5</span></a>-->
-                            <!--                            </li>-->
-                            <!--                            <li>-->
-                            <!--                                <a href="dashboard-archived-ads.html"><i class="fa fa-file-archive-o"></i>Archeved Ads <span>12</span></a>-->
-                            <!--                            </li>-->
-                            <!--                            <li>-->
-                            <!--                                <a href="dashboard-pending-ads.html"><i class="fa fa-bolt"></i> Pending Approval<span>23</span></a>-->
-                            <!--                            </li>-->
-                            <li>
-                                <a href="index-1.html"><i class="fa fa-cog"></i> Logout</a>
-                            </li>
-                            <li>
-                                <a href="delete-account.html"><i class="fa fa-power-off"></i>Delete Account</a>
-                            </li>
-                        </ul>
-                    </div>
+<div class="container" style="margin-top: 100px;">
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="cart-container">
+                <h4 class="mb-4"><i class="fas fa-shopping-cart me-2"></i>Your Shopping Cart</h4>
+                <div id="cart-items-container">
+                    <!-- Cart items will be loaded here by JavaScript -->
+                </div>
+                <div class="d-flex justify-content-between mt-4">
+                    <a href="buyerDashboard.html" class="btn btn-outline-secondary">
+                        <i class="fas fa-arrow-left me-2"></i>Continue Shopping
+                    </a>
+                    <button class="btn btn-outline-danger" id="clear-cart-btn">
+                        <i class="fas fa-trash me-2"></i>Clear Cart
+                    </button>
                 </div>
             </div>
-            <div class="col-md-10 offset-md-1 col-lg-8 offset-lg-0">
-                <!-- Edit Personal Info -->
-                <div class="widget personal-info">
-                    <h3 class="widget-header user">Edit Personal Information</h3>
-                    <form action="#">
-                        <!-- First Name -->
-                        <div class="form-group">
-                            <label for="first-name">First Name</label>
-                            <input type="text" class="form-control" id="first-name">
-                        </div>
-                        <!-- Last Name -->
-                        <div class="form-group">
-                            <label for="last-name">Last Name</label>
-                            <input type="text" class="form-control" id="last-name">
-                        </div>
-                        <div class="form-group">
-                            <label for="last-name">Email</label>
-                            <input type="email" class="form-control" id="email">
-                        </div>
-                        <!-- File chooser -->
-                        <div class="form-group choose-file">
-                            <i class="fa fa-user text-center"></i>
-                            <input type="file" class="form-control-file d-inline" id="input-file">
-                        </div>
-                        <!-- Comunity Name -->
-                        <div class="form-group">
-                            <label for="address"> Address</label>
-                            <input type="text" class="form-control" id="address">
-                        </div>
-                        <div class="form-group">
-                            <label for="contact"> Contact Number</label>
-                            <input type="text" class="form-control" id="contact">
-                        </div>
-                        <!-- Submit button -->
-                        <button class="btn btn-transparent">Save My Changes</button>
-                    </form>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="cart-container">
+                <h5 class="mb-4">Order Summary</h5>
+                <div class="summary-card mb-4">
+                    <!-- Order summary will be loaded here by JavaScript -->
+                </div>
+                <div class="d-grid gap-2">
+                    <button class="btn btn-checkout" id="checkout-btn">
+                        <i class="fas fa-lock me-2"></i>Proceed to Checkout
+                    </button>
+                </div>
+                <div class="mt-3">
+                    <p class="text-muted small"><i class="fas fa-lock me-2"></i>Secure checkout</p>
+                    <p class="text-muted small">We accept:
+                        <i class="fab fa-cc-visa ms-2"></i>
+                        <i class="fab fa-cc-mastercard"></i>
+                        <i class="fab fa-cc-amex"></i>
+                        <i class="fab fa-cc-paypal"></i>
+                    </p>
                 </div>
             </div>
         </div>
     </div>
-</section>
+</div>
+
+
 
 <!--============================
 =            Footer            =
@@ -315,9 +274,15 @@
     </div>
 </footer>
 
-<!-- JAVASCRIPTS -->
-<!--<script src="plugins/jquery/jquery.min.js"></script>-->
-<!--<script src="plugins/jquery-ui/jquery-ui.min.js"></script>-->
+
+
+
+
+
+<!-- Bootstrap CSS -->
+<script src="frameWork/jquery/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jwt-decode@3.1.2/build/jwt-decode.min.js"></script>
+<script src="plugins/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 <script src="plugins/tether/js/tether.min.js"></script>
 <script src="plugins/raty/jquery.raty-fa.js"></script>
 <script src="plugins/bootstrap/dist/js/popper.min.js"></script>
@@ -328,85 +293,49 @@
 <script src="plugins/fancybox/jquery.fancybox.pack.js"></script>
 <script src="plugins/smoothscroll/SmoothScroll.min.js"></script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCC72vZw-6tGqFyRhhg5CkF2fqfILn2Tsw"></script>
+<script src="https://cdn.jsdelivr.net/npm/jwt-decode@3.1.2/build/jwt-decode.min.js"></script>
 <script src="js/scripts.js"></script>
-<script src="frameWork/jquery/jquery-3.7.1.min.js"></script>
+<script src="js/shoppingCart.js"></script>
+
 <script src="frameWork/sweetalert2/sweetalert2.all.min.js"></script>
-<script src="js/profile.js"></script>
-<!--<script>-->
-<!--    $(document).ready(function () {-->
-<!--        const token = localStorage.getItem('token');-->
+<script>
+    // Simple quantity adjustment functionality
+    document.querySelectorAll('.quantity-btn').forEach(button => {
+        button.addEventListener('click', function() {
+            const input = this.parentNode.querySelector('.quantity-input');
+            let value = parseInt(input.value);
 
-<!--        if (!token) {-->
-<!--            console.error("Token not found!");-->
-<!--            return;-->
-<!--        }-->
+            if (this.textContent === '+' && value < 10) {
+                input.value = value + 1;
+            } else if (this.textContent === '-' && value > 1) {
+                input.value = value - 1;
+            }
 
-<!--        // Function to decode JWT and extract email-->
-<!--        function getEmailFromToken(token) {-->
-<!--            try {-->
-<!--                const payload = JSON.parse(atob(token.split('.')[1])); // Decode JWT payload-->
-<!--                return payload.sub || payload.email || ""; // Extract email (assuming 'sub' or 'email' holds it)-->
-<!--            } catch (error) {-->
-<!--                console.error("Error decoding token:", error);-->
-<!--                return "";-->
-<!--            }-->
-<!--        }-->
+            // In a real app, you would update the cart total here
+        });
+    });
 
-<!--        // Get email from token-->
-<!--        const email = getEmailFromToken(token);-->
-<!--        console.log("Extracted email:", email);-->
-<!--        $("#email").val(email); // Set email in text field-->
+    // Delete button functionality
+    document.querySelectorAll('.btn-outline-danger').forEach(button => {
+        if (button.innerHTML.includes('trash')) {
+            button.addEventListener('click', function() {
+                const item = this.closest('.cart-item');
+                item.style.opacity = '0';
+                setTimeout(() => item.remove(), 300);
 
-<!--        // Load user details via API-->
-<!--        $.ajax({-->
-<!--            url: 'http://localhost:8080/api/v1/user/get',-->
-<!--            method: 'GET',-->
-<!--            headers: {-->
-<!--                'Authorization': 'Bearer ' + token-->
-<!--            },-->
-<!--            success: function (response) {-->
-<!--                console.log("API Response:", response);-->
-<!--                const user = response; // Adjust if response contains 'data'-->
+                // In a real app, you would remove the item from the cart
+            });
+        }
+    });
 
-<!--                $("#email").val(user.email || email); // Use API email if available-->
-<!--                // $("#contact").val(user.contact || "");-->
-<!--                // $("#address").val(user.address || "");-->
-<!--                //-->
-<!--                // if (user.name) {-->
-<!--                //     const names = user.name.split(' ');-->
-<!--                //     $("#first-name").val(names[0] || "");-->
-<!--                //     $("#last-name").val(names.slice(1).join(' ') || "");-->
-<!--                // }-->
-<!--            },-->
-<!--            error: function (xhr, status, error) {-->
-<!--                console.error("Error fetching user data:", xhr.responseText);-->
-<!--            }-->
-<!--        });-->
+    // This would be replaced with actual cart data from your backend
+    document.addEventListener('DOMContentLoaded', function() {
+        // Example: Update cart count
+        const cartCount = 3; // This would come from your cart system
+        document.querySelector('.cart-count-badge').textContent = cartCount;
 
-
-<!--        $.ajax({-->
-<!--            url: 'http://localhost:8080/api/v1/user/update',-->
-<!--            method: 'PUT',-->
-<!--            contentType: 'application/json',-->
-<!--            data: JSON.stringify({-->
-<!--                "email": email,-->
-<!--                "role": "BUYER"-->
-<!--            }),-->
-<!--            headers: {-->
-<!--                'Authorization': 'Bearer ' + token-->
-<!--            },-->
-<!--            success: function (response) {-->
-<!--                console.log("API Response:", response);-->
-<!--            },-->
-<!--            error: function (xhr, status, error) {-->
-<!--                console.error("Error fetching user data:", xhr.responseText);-->
-<!--            }-->
-<!--        })-->
-
-<!--    });-->
-
-<!--</script>-->
-
-
+        // For the dropdown version, you would also update the cart items here
+    });
+</script>
 </body>
 </html>

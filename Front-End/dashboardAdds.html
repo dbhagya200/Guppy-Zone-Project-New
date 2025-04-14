@@ -121,8 +121,7 @@
                         <h1 class="" style="font-family: aakar;">What are you looking for....?</h1>
                     </div>
                     <div style="display: flex; justify-content: space-between">
-                        <button type="button" class="btn btn-success mb-4" data-bs-toggle="modal" id="addvertisement" data-bs-target="#addvertisementModal">My Advertisement</button>
-                    </div>
+                        <button type="button" class="btn btn-success mb-4" data-toggle="modal" id="addvertisement" data-target="#addvertisementModal">My Advertisement</button>                    </div>
 
                     <div class="row" id="itemsContainer">
 
@@ -136,7 +135,9 @@
                     <div class="modal-content">
                         <div class="modal-header bg-success text-white">
                             <h5 class="modal-title" id="addvertisementModalLabel">My Advertisements</h5>
-                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                            <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
                         </div>
                         <div class="modal-body p-0">
                             <table class="table table-hover mb-0">
@@ -156,30 +157,92 @@
                             </table>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
                             <button type="button" class="btn btn-success">Add New Advertisement</button>
                         </div>
                     </div>
                 </div>
             </div>
-
-            <!--see item details Model-->
-            <div class="modal fade" id="itemDetailsModal" tabindex="-1" aria-labelledby="itemDetailsModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-lg">
+        <!--edit advertisement model-->
+            <div class="modal fade" id="editItemModal" tabindex="-1" role="dialog" aria-labelledby="editItemModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg" role="document">
                     <div class="modal-content">
                         <div class="modal-header bg-success text-white">
-                            <h5 class="modal-title" id="itemDetailsModalLabel">Product Details</h5>
-                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                            <h5 class="modal-title" id="editItemModalLabel">Edit Advertisement</h5>
+                            <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
                         </div>
                         <div class="modal-body">
-                            <!-- Modal content here -->
-                            <div id="item-details-content">
-                                <!-- Product details will be injected here -->
-                            </div>
+                            <form id="editItemForm">
+                                <input  id="editItemId">
+                                <div class="form-group">
+                                    <label for="editItemTitle">Item Title</label>
+                                    <input type="text" class="form-control" id="editItemTitle" required>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 form-group">
+                                        <label for="editItemCategory">Category</label>
+                                        <select class="form-control" id="editItemCategory" required></select>
+                                    </div>
+                                    <div class="col-md-6 form-group">
+                                        <label for="editItemPrice">Price</label>
+                                        <input type="number" class="form-control" id="editItemPrice" step="0.01" required>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 form-group">
+                                        <label for="editItemQuantity">Quantity</label>
+                                        <input type="number" class="form-control" id="editItemQuantity" min="1" required>
+                                    </div>
+                                    <div class="col-md-6 form-group">
+                                        <label for="editItemLocation">Location</label>
+                                        <input type="text" class="form-control" id="editItemLocation" required>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="editItemDescription">Description</label>
+                                    <textarea class="form-control" id="editItemDescription" rows="4" required></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label>Current Image</label>
+                                    <div id="imagePreviewEdit" class="mb-3"></div>
+                                    <label for="editItemImages">Update Image</label>
+                                    <input type="file" class="form-control-file" id="editItemImages" accept="image/*">
+                                </div>
+                            </form>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <!-- Optionally a save button or another action button -->
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                            <button type="button" class="btn btn-primary" id="saveEditChanges">Save Changes</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--           item details model-->
+            <div class="modal fade" id="itemDetailsModal" tabindex="-1" aria-labelledby="itemDetailsModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header bg-success text-white">
+                            <h5 class="modal-title" id="itemDetailsModalLabel">Item Details</h5>
+                            <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>                        </div>
+                        <div class="modal-body">
+                            <div class="row g-3">
+                                <div class="col-md-5">
+                                    <img id="detailImage" class="img-fluid rounded shadow" src="" alt="Item image" />
+                                </div>
+                                <div class="col-md-7">
+                                    <h4 id="detailTitle" class="mb-3"></h4>
+                                    <p><strong>Item Code:</strong> <span id="detailId"></span></p>
+                                    <p><strong>Category:</strong> <span id="detailCategory"></span></p>
+                                    <p><strong>Description:</strong> <span id="detailDescription"></span></p>
+                                    <p><strong>Location:</strong> <span id="detailLocation"></span></p>
+                                    <p><strong>Quantity:</strong> <span id="detailQuantity"></span></p>
+                                    <p><strong>Price:</strong> Rs.<span id="detailPrice"></span></p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -206,7 +269,7 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text bg-light"><i class="fas fa-tag text-success"></i></span>
                                         </div>
-                                        <input type="text" class="form-control" id="itemTitle" placeholder="Enter item title" required>
+                                        <input type="text" class="form-control" id="itemTitle" placeholder="Enter item title" name="title" required>
                                     </div>
                                 </div>
 
@@ -218,13 +281,16 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text bg-light"><i class="fas fa-filter text-success"></i></span>
                                             </div>
-                                            <select class="form-control" id="itemCategory" required>
-<!--                                                <option value="" disabled selected>Choose a category</option>-->
-<!--                                                <option value="Fish" data-icon="fas fa-fish">🐠 Fish</option>-->
-<!--                                                <option value="Filters" data-icon="fas fa-filter">🧽 Filters</option>-->
-<!--                                                <option value="Food" data-icon="fas fa-utensils">🍴 Food</option>-->
-<!--                                                <option value="Accessories" data-icon="fas fa-water">🛟-->
+                                            <select class="form-control text-dark" id="itemCategory" name="category" required>
+                                                <!-- Options will be loaded dynamically -->
                                             </select>
+<!--                                            <select class="form-control" id="itemCategory" name="category" required>-->
+<!--&lt;!&ndash;                                                <option value="" disabled selected>Choose a category</option>&ndash;&gt;-->
+<!--&lt;!&ndash;                                                <option value="Fish" data-icon="fas fa-fish">🐠 Fish</option>&ndash;&gt;-->
+<!--&lt;!&ndash;                                                <option value="Filters" data-icon="fas fa-filter">🧽 Filters</option>&ndash;&gt;-->
+<!--&lt;!&ndash;                                                <option value="Food" data-icon="fas fa-utensils">🍴 Food</option>&ndash;&gt;-->
+<!--&lt;!&ndash;                                                <option value="Accessories" data-icon="fas fa-water">🛟&ndash;&gt;-->
+<!--                                            </select>-->
                                         </div>
                                     </div>
 
@@ -235,7 +301,7 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text bg-light"><i class="fas fa-rupee-sign text-success"></i></span>
                                             </div>
-                                            <input type="number" class="form-control" id="itemPrice" placeholder="0.00" step="0.01" required>
+                                            <input type="number" class="form-control" id="itemPrice" placeholder="0.00" step="0.01" name="price" required>
                                         </div>
                                     </div>
                                 </div>
@@ -248,7 +314,7 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text bg-light"><i class="fas fa-cubes text-success"></i></span>
                                             </div>
-                                            <input type="number" class="form-control" id="itemQuantity" min="1" value="1" required>
+                                            <input type="number" class="form-control" id="itemQuantity" min="1" value="1" name="quantity" required>
                                         </div>
                                     </div>
 
@@ -259,8 +325,18 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text bg-light"><i class="fas fa-location-dot text-success"></i></span>
                                             </div>
-                                            <input type="text" class="form-control" id="itemLocation" placeholder="Enter location" required>
+                                            <input type="text" class="form-control" id="itemLocation" placeholder="Enter location" name="location" required>
                                         </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6 form-group">
+                                    <label for="email"><i class="fas fa-envelope mr-2 text-success"></i>Email*</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text bg-light"><i class="fas fa-envelope text-success"></i></span>
+                                        </div>
+                                        <input type="text" class="form-control" id="email" name="email" required readonly>
                                     </div>
                                 </div>
 
@@ -271,7 +347,7 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text bg-light h-100"><i class="fas fa-file-alt text-success"></i></span>
                                         </div>
-                                        <textarea class="form-control" id="itemDescription" rows="4" placeholder="Enter detailed description" required></textarea>
+                                        <textarea class="form-control" id="itemDescription" rows="4" placeholder="Enter detailed description" name="description" required></textarea>
                                     </div>
                                 </div>
 
@@ -279,7 +355,7 @@
                                 <div class="form-group">
                                     <label><i class="fas fa-images mr-2 text-success"></i>Upload Images*</label>
                                     <div class="custom-file">
-                                        <input type="file" class="custom-file-input" id="itemImages" multiple accept="image/*" required>
+                                        <input type="file" class="custom-file-input" id="itemImages" multiple accept="image/*" name="images" required>
                                         <label class="custom-file-label" for="itemImages">
                                             <i class="fas fa-cloud-upload-alt mr-2"></i>Choose files...
                                         </label>
@@ -308,9 +384,6 @@
                     </div>
                 </div>
             </div>
-
-
-
         </div>
     </div>
 </section>
@@ -421,176 +494,12 @@
 <script src="plugins/fancybox/jquery.fancybox.pack.js"></script>
 <script src="plugins/smoothscroll/SmoothScroll.min.js"></script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCC72vZw-6tGqFyRhhg5CkF2fqfILn2Tsw"></script>
+<script src="https://cdn.jsdelivr.net/npm/jwt-decode@3.1.2/build/jwt-decode.min.js"></script>
 <script src="js/scripts.js"></script>
 <script src="frameWork/sweetalert2/sweetalert2.all.min.js"></script>
 <script src="js/dashboardAdds.js"></script>
-<script>
-    $(document).ready(function () {
-        const token = localStorage.getItem('token');
+<script src="js/shoppingCart.js"></script>
 
-        if (!token) {
-            Swal.fire({
-                icon: 'error',
-                title: 'Authentication Required',
-                text: 'Please login first',
-                confirmButtonColor: '#28a745'
-            }).then(() => {
-                window.location.href = "register.html";
-            });
-            return;
-        }
-
-        const decoded = jwt_decode(token);
-        const userEmail = decoded.username;
-
-        loadCategories();
-
-        function loadCategories() {
-            $.ajax({
-                url: "http://localhost:8080/api/v1/categories/get",
-                type: "GET",
-                headers: {
-                    "Authorization": "Bearer " + localStorage.getItem("token")
-                },
-                success: function (categories) {
-                    const $select = $('#itemCategory');
-                    $select.empty().append(`<option value="" disabled selected>Choose a category</option>`);
-                    categories.forEach(category => {
-                        $select.append(`<option value="${category.categoryId}">${category.name}</option>`);
-                    });
-                },
-                error: function (err) {
-                    console.error("Failed to load categories", err);
-                }
-            });
-        }
-
-        // Preview one image
-        $('#itemImages').on('change', function () {
-            $('#imagePreview').empty();
-            const file = this.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function (e) {
-                    $('#imagePreview').append(`
-                    <div class="image-preview-item m-2 position-relative">
-                        <img src="${e.target.result}" class="img-thumbnail rounded shadow-sm"
-                             style="width: 100px; height: 100px; object-fit: cover;">
-                        <span class="remove-image position-absolute top-0 end-0 bg-white rounded-circle p-1"
-                              style="transform: translate(30%, -30%); cursor: pointer;">
-                            <i class="fas fa-times text-danger"></i>
-                        </span>
-                    </div>
-                `);
-                };
-                reader.readAsDataURL(file);
-            }
-        });
-
-        $(document).on('click', '.remove-image', function () {
-            $('#itemImages').val('');
-            $('#imagePreview').empty();
-        });
-
-        $('#submitPost').click(function (e) {
-            e.preventDefault();
-            const form = $('#postAddForm')[0];
-
-            if (!form.checkValidity()) {
-                form.classList.add('was-validated');
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Missing Information',
-                    text: 'Please fill all required fields correctly',
-                    confirmButtonColor: '#28a745'
-                });
-                return;
-            }
-
-            if (!$('#agreeTerms').is(':checked')) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Terms Not Accepted',
-                    text: 'You must agree to the terms and conditions',
-                    confirmButtonColor: '#28a745'
-                });
-                return;
-            }
-
-            const formData = new FormData();
-            formData.append('title', $('#itemTitle').val());
-            formData.append('category', $('#itemCategory').val());
-            formData.append('price', $('#itemPrice').val());
-            formData.append('quantity', $('#itemQuantity').val());
-            formData.append('location', $('#itemLocation').val());
-            formData.append('description', $('#itemDescription').val());
-            formData.append('email', userEmail); // 👈 Send user email
-
-            const file = $('#itemImages')[0].files[0];
-            if (file) {
-                formData.append('sourceImage', file); // 👈 Send only one image
-            } else {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'No Image Selected',
-                    text: 'Please upload one image',
-                    confirmButtonColor: '#28a745'
-                });
-                return;
-            }
-
-            const submitBtn = $(this);
-            submitBtn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin mr-2"></i> Posting...');
-
-            $.ajax({
-                url: 'http://localhost:8080/api/v1/addsItem/saveItem',
-                type: 'POST',
-                headers: {
-                    'Authorization': 'Bearer ' + token
-                },
-                data: formData,
-                processData: false,
-                contentType: false,
-                success: function (response) {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Success!',
-                        text: 'Your item has been posted successfully',
-                        confirmButtonColor: '#28a745'
-                    }).then(() => {
-                        form.reset();
-                        form.classList.remove('was-validated');
-                        $('#imagePreview').empty();
-                        $('#addPostModal').modal('hide');
-                    });
-                },
-                error: function (xhr) {
-                    let errorMessage = 'Failed to post item. Please try again.';
-                    if (xhr.responseJSON && xhr.responseJSON.message) {
-                        errorMessage = xhr.responseJSON.message;
-                    }
-
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Error',
-                        text: errorMessage,
-                        confirmButtonColor: '#28a745'
-                    });
-                },
-                complete: function () {
-                    submitBtn.prop('disabled', false).html('<i class="fas fa-paper-plane mr-2"></i> Post Item');
-                }
-            });
-        });
-
-        // Clear validation styling on input
-        $('input, textarea, select').on('input change', function () {
-            $(this).removeClass('is-invalid');
-        });
-    });
-
-
-</script>
 
 </body>
 </html>

@@ -1,20 +1,30 @@
 package lk.ijse.backend.dto;
 
+import org.springframework.stereotype.Component;
+
+import java.time.LocalDate;
+import java.time.LocalTime;
+
+@Component
 public class OrderDTO {
     private int orderId;
     private String userId;
-    private String orderDate;
+    private String itemName;
     private double totalAmount;
+    private LocalDate date;
+    private LocalTime time;
     private String status;
 
     public OrderDTO() {
     }
 
-    public OrderDTO(int orderId, String userId, String orderDate, double totalAmount, String status) {
+    public OrderDTO(int orderId, String userId, String itemName, double totalAmount, LocalDate date, LocalTime time, String status) {
         this.orderId = orderId;
         this.userId = userId;
-        this.orderDate = orderDate;
+        this.itemName = itemName;
         this.totalAmount = totalAmount;
+        this.date = date;
+        this.time = time;
         this.status = status;
     }
 
@@ -34,12 +44,12 @@ public class OrderDTO {
         this.userId = userId;
     }
 
-    public String getOrderDate() {
-        return orderDate;
+    public String getItemName() {
+        return itemName;
     }
 
-    public void setOrderDate(String orderDate) {
-        this.orderDate = orderDate;
+    public void setItemName(String itemName) {
+        this.itemName = itemName;
     }
 
     public double getTotalAmount() {
@@ -48,6 +58,22 @@ public class OrderDTO {
 
     public void setTotalAmount(double totalAmount) {
         this.totalAmount = totalAmount;
+    }
+
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
+
+    public LocalTime getTime() {
+        return time;
+    }
+
+    public void setTime(LocalTime time) {
+        this.time = time;
     }
 
     public String getStatus() {
@@ -61,10 +87,12 @@ public class OrderDTO {
     @Override
     public String toString() {
         return "OrderDTO{" +
-                "orderId='" + orderId + '\'' +
+                "orderId=" + orderId +
                 ", userId='" + userId + '\'' +
-                ", orderDate='" + orderDate + '\'' +
+                ", itemName='" + itemName + '\'' +
                 ", totalAmount=" + totalAmount +
+                ", date=" + date +
+                ", time=" + time +
                 ", status='" + status + '\'' +
                 '}';
     }

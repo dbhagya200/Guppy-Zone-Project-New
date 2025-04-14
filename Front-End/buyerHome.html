@@ -3,7 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>Guppy Zone-Buyer Home</title>
-    <link href="plugins/jquery-ui/jquery-ui.min.css" rel="stylesheet">
+    <link href="plugins/slick-carousel/slick/slick.css" rel="stylesheet">
+    <link href="plugins/slick-carousel/slick/slick-theme.css" rel="stylesheet">
+
+    <!-- Slick Slider JS -->
+    <script src="plugins/slick-carousel/slick/slick.min.js"></script>
     <!-- Bootstrap -->
     <link href="plugins/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
@@ -11,26 +15,32 @@
     <!-- Owl Carousel -->
     <link href="plugins/slick-carousel/slick/slick.css" rel="stylesheet">
     <link href="plugins/slick-carousel/slick/slick-theme.css" rel="stylesheet">
-    <!-- Fancy Box -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
     <link href="plugins/fancybox/jquery.fancybox.pack.css" rel="stylesheet">
     <link href="plugins/jquery-nice-select/css/nice-select.css" rel="stylesheet">
     <link href="plugins/seiyria-bootstrap-slider/dist/css/bootstrap-slider.min.css" rel="stylesheet">
     <!-- CUSTOM CSS -->
     <link href="css/style.css" rel="stylesheet">
-
-    <!-- FAVICON -->
     <link rel="shortcut icon" href="img/logo-new.png" type="image/x-icon" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+            href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700&display=swap"
+            rel="stylesheet"
+    />
 
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
+    <link rel="stylesheet" href="fonts/icomoon/style.css" />
+    <link rel="stylesheet" href="fonts/flaticon/font/flaticon.css" />
+
+    <link rel="stylesheet" href="css/tiny-slider.css" />
+    <link rel="stylesheet" href="css/aos.css" />
+    <link rel="stylesheet" href="css/style1.css" />
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/shoppingCart.css" />
 </head>
 <body class="body-wrapper">
-<section>
-    <div class="container">
+<section id="navbar">
+    <div class="container" style="">
         <div class="row">
             <div class="col-md-12">
                 <nav class="navbar navbar-expand-lg  navigation">
@@ -55,7 +65,6 @@
                                 </a>
                                 <!-- Dropdown list -->
                                 <div class="dropdown-menu dropdown-menu-right">
-                                    <a class="dropdown-item" href="buyerCategories.html">Category</a>
                                     <a class="dropdown-item" href="blog.html">Blog</a>
                                     <a class="dropdown-item" href="s-comment.html">Leave Some Comments</a>
                                 </div>
@@ -74,10 +83,54 @@
                         </ul>
                         <ul class="navbar-nav ml-auto mt-10">
                             <li class="nav-item">
-                                <a class="nav-link login-button" href="buyerProfile.html">Profile</a>
+                                <a class="nav-link login-button" style="border-radius: 20px"
+                                   href="buyerProfile.html">Profile</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link add-button" href="index-1.html">Logout </a>
+                                <a class="nav-link add-button" style="border-radius: 20px"
+                                   href="index-1.html"><i class="fa fa-sign-out-alt me-2"></i>Logout</a>
+                            </li>
+                            <li class="nav-item dropdown dropdown-slide">
+                                <a class="nav-link dropdown-toggle cart-button" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="position: relative;">
+                                    <i class="fas fa-shopping-cart"></i>
+                                    <span class="cart-count-badge">3</span>
+                                </a>
+                                <!-- Cart Dropdown Preview -->
+                                <div class="dropdown-menu dropdown-menu-right dropdown-cart" style="min-width: 300px; padding: 15px;">
+                                    <h6 class="dropdown-header">Your Cart (3 items)</h6>
+                                    <div class="dropdown-divider"></div>
+
+                                    <!-- Cart Items Preview -->
+                                    <div class="cart-preview-item">
+                                        <img src="https://via.placeholder.com/50" alt="Product" class="cart-item-image">
+                                        <div class="cart-item-details">
+                                            <p class="mb-1">Product Name</p>
+                                            <small>1 x $19.99</small>
+                                        </div>
+                                        <button class="btn btn-sm btn-outline-danger cart-item-remove">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                    </div>
+
+                                    <div class="cart-preview-item">
+                                        <img src="https://via.placeholder.com/50" alt="Product" class="cart-item-image">
+                                        <div class="cart-item-details">
+                                            <p class="mb-1">Another Product</p>
+                                            <small>2 x $29.99</small>
+                                        </div>
+                                        <button class="btn btn-sm btn-outline-danger cart-item-remove">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                    </div>
+
+                                    <div class="dropdown-divider"></div>
+                                    <div class="d-flex justify-content-between mb-2">
+                                        <strong>Subtotal:</strong>
+                                        <span>$79.97</span>
+                                    </div>
+                                    <a href="shoppingCart.html" class="btn btn-primary btn-block">View Cart</a>
+                                    <a href="payment.html" class="btn btn-success btn-block mt-2">Checkout</a>
+                                </div>
                             </li>
                         </ul>
                     </div>
@@ -93,72 +146,61 @@
 =            Hero Area            =
 ================================-->
 
-<section class="hero-area bg-1 text-center overly">
-    <!-- Container Start -->
+<div class="hero" style="">
+    <div class="hero-slide">
+        <div
+                class="img overlay"
+                style="background-image: url('img/c-3.jpg')"
+        ></div>
+        <div
+                class="img overlay"
+                style="background-image: url('img/c-2.jpg')"
+        ></div>
+        <div
+                class="img overlay"
+                style="background-image: url('img/c-1.jpg')"
+        ></div>
+
+        <div
+                class="img overlay"
+                style="background-image: url('img/c-5.jpg')"
+        ></div>
+        <div
+                class="img overlay"
+                style="background-image: url('img/c-6.jpg')"
+        ></div>
+
+        <div
+                class="img overlay"
+                style="background-image: url('img/c-8.jpg')"
+        ></div>
+    </div>
+
     <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <!-- Header Contetnt -->
-                <div class="content-block">
-                    <h1>Discover Quality Aquarium Products & Fish</h1>
-                    <p>Find the perfect additions for your aquatic world <br> from trusted sellers and breeders</p>
-                    <div class="short-popular-category-list text-center">
-                        <h2>Shop by Category</h2>
-                        <ul class="list-inline">
-                            <li class="list-inline-item">
-                                <a href=""><i class="fa fa-fish"></i> Freshwater Fish</a>
-                            </li>
-                            <li class="list-inline-item">
-                                <a href=""><i class="fa fa-fish"></i> Saltwater Fish</a>
-                            </li>
-                            <li class="list-inline-item">
-                                <a href=""><i class="fa fa-water"></i> Complete Tank Setups</a>
-                            </li>
-                            <li class="list-inline-item">
-                                <a href=""><i class="fa fa-filter"></i> Filtration Equipment</a>
-                            </li>
-                            <li class="list-inline-item">
-                                <a href=""><i class="fa fa-leaf"></i> Live Plants</a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="buyer-benefits mt-4">
-                        <h3 class="text-center text-light">Buyer Benefits</h3>
-                        <ul class="list-unstyled text-center">
-                            <li><i class="fa fa-check-circle text-success"></i> Health Guarantee on Live Fish</li>
-                            <li><i class="fa fa-check-circle text-success"></i> Local Pickup Available</li>
-                            <li><i class="fa fa-check-circle text-success"></i> Expert Seller Ratings</li>
-                        </ul>
-                    </div>
-                </div>
-                <!-- Advance Search -->
-                <div class="advance-search">
-                    <form action="#">
-                        <div class="row">
-                            <!-- Store Search -->
-                            <div class="col-lg-6 col-md-12">
-                                <div class="block d-flex">
-                                    <input type="text" class="form-control mb-2 mr-sm-2 mb-sm-0" id="search" placeholder="Search for store">
-                                </div>
-                            </div>
-                            <div class="col-lg-6 col-md-12">
-                                <div class="block d-flex">
-                                    <input type="text" class="form-control mb-2 mr-sm-2 mb-sm-0" id="search" placeholder="Search for store">
-                                    <!-- Search Button -->
-                                    <button class="btn btn-main">SEARCH</button>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-
-                </div>
-
+        <div class="row justify-content-center align-items-center">
+            <div class="col-lg-9 text-center">
+                <p class="fs-1 text-uppercase text-white" style="font-family: SansSerif" data-aos="fade-up">
+                    Explore Aquarium Products & Fish for Sale
+                </p>
+                <p class="fs-6 text-light"><b>Connect with aquarium enthusiasts and breeders <br> in our dedicated aquatic marketplace</b></p>
+                <form
+                        action="#"
+                        class="narrow-w form-search d-flex align-items-stretch mb-3"
+                        data-aos="fade-up"
+                        data-aos-delay="200"
+                >
+                    <input
+                            type="text"
+                            class="form-control px-4"
+                            placeholder="Your ZIP code or City. e.g. New York"
+                            style="background-color: white"
+                    />
+                    <button type="submit" class="btn btn-primary " style="border-radius: 30px">Search</button>
+                </form>
             </div>
         </div>
     </div>
-    <!-- Container End -->
-</section>
-
+</div>
 <!--===================================
 =            Client Slider            =
 ====================================-->
@@ -533,9 +575,16 @@
     </div>
 </footer>
 
-<!-- JAVASCRIPTS -->
-<script src="plugins/jquery/jquery.min.js"></script>
-<script src="plugins/jquery-ui/jquery-ui.min.js"></script>
+<script src="js/bootstrap.bundle.min.js"></script>
+<script src="js/tiny-slider.js"></script>
+<script src="js/aos.js"></script>
+<script src="js/navbar.js"></script>
+<script src="js/counter.js"></script>
+<script src="js/custom.js"></script>
+<script src="frameWork/jquery/jquery-3.7.1.min.js"></script>
+<script src="plugins/slick-carousel/slick/slick.min.js"></script>
+
+
 <script src="plugins/tether/js/tether.min.js"></script>
 <script src="plugins/raty/jquery.raty-fa.js"></script>
 <script src="plugins/bootstrap/dist/js/popper.min.js"></script>

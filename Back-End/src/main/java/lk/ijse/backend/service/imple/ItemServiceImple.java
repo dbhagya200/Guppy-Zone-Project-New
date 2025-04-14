@@ -158,6 +158,17 @@ public class ItemServiceImple implements ItemService {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public ItemDTO getItemByCode(int itemCode) {
+        Item item = itemRepository.findByItemCode(itemCode);
+        if (item == null) {
+            throw new RuntimeException("Item not found");
+        }
+
+        // Map to DTO
+        return modelMapper.map(item, ItemDTO.class);
+    }
+
 //    @Override
 //    public ItemDTO updateItem(ItemDTO itemDTO) {
 //        if (!itemRepository.existsById(itemDTO.getItemCode())) {

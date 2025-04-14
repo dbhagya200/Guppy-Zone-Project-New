@@ -20,4 +20,6 @@ public interface ItemService {
     void deleteItem(int id, String username);
 
     List<ItemDTO> getItembyItemCode(int itemCode, String sellerEmail);
+
+    ItemDTO getItemByCode(int itemCode);
 }

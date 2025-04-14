@@ -24,5 +24,7 @@ public interface ItemRepo extends JpaRepository<Item, Integer> {
 
     Item findByItemCode(int itemCode);
 
-    List<Item> findByItemCodeAndUserEmail(int itemCode, String sellerEmail);
+    @Query("SELECT i FROM Item i WHERE i.itemCode = :itemCode AND i.user.email = :email")
+    List<Item> findByItemCodeAndUserEmail(@Param("itemCode") int itemCode,
+                                              @Param("email") String email);
 }

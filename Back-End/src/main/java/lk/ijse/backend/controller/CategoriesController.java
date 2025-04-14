@@ -41,9 +41,10 @@ public class CategoriesController {
     }
 
 
-    @GetMapping(path = "/get", produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasAnyAuthority('SELLER','BUYER')")
-    public ResponseEntity<ResponseDTO> getAllCategories() {
+    @GetMapping(path = "/get")
+//    @PreAuthorize("hasAnyAuthority('SELLER','BUYER')")
+    public ResponseEntity<ResponseDTO> getAllCategories(@RequestHeader("Authorization") String token) {
+        String email = jwtUtil.getUsernameFromToken(token.substring(7));
         List<CategoriesDTO> categories = categoriesService.getAllCategories();
         return ResponseEntity.ok()
                 .body(new ResponseDTO(VarList.OK, "Success", categories));

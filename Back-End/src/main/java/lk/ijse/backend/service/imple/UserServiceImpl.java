@@ -45,11 +45,8 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 
     @Autowired
     private UserRepo userRepository;
-
    @Autowired
     private ModelMapper modelMapper;
-   @Autowired
-   private ProfileServiceImpl profileService;
    @Autowired
    private ProfileRepo profileRepo;
    @Autowired

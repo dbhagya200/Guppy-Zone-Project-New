@@ -2,7 +2,7 @@ package lk.ijse.backend.dto;
 
 import org.springframework.stereotype.Component;
 
-@Component
+
 public class ItemDTO {
     private int itemCode;
     private String itemName;

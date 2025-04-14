@@ -31,10 +31,8 @@ public class AuthController {
     private final AuthenticationManager authenticationManager;
     private final UserServiceImpl userService;
     private final ResponseDTO responseDTO;
-
     private  UserRepo userRepo;
 
-    //constructor injection
     public AuthController(JwtUtil jwtUtil, AuthenticationManager authenticationManager, UserServiceImpl userService, ResponseDTO responseDTO) {
         this.jwtUtil = jwtUtil;
         this.authenticationManager = authenticationManager;
@@ -69,11 +67,9 @@ public class AuthController {
         authDTO.setToken(token);
         authDTO.setRole(loadedUser.getRole());
 
-        // Create response payload
         Map<String, Object> response = new HashMap<>();
         response.put("token", token);
-        response.put("role", authDTO.getRole()); // Ensure role is included
-
+        response.put("role", authDTO.getRole());
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(new ResponseDTO(VarList.Created, "Success", authDTO));
 
@@ -85,14 +81,11 @@ public class AuthController {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(userDTO.getEmail(), userDTO.getPassword()));
 
-        // Generate JWT token
         String token = jwtUtil.generateToken(userDTO);
 
-        // Create response payload
         Map<String, Object> response = new HashMap<>();
         response.put("token", token);
-        response.put("role", userDTO.getRole()); // Ensure role is included
-
+        response.put("role", userDTO.getRole());
         return ResponseEntity.ok(response);
     }
     @GetMapping("/check")

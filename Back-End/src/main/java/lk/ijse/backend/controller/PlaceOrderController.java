@@ -1,8 +1,11 @@
 package lk.ijse.backend.controller;
 
 import lk.ijse.backend.dto.OrderDTO;
+import lk.ijse.backend.dto.ResponseDTO;
 import lk.ijse.backend.service.OrderService;
+import lk.ijse.backend.util.VarList;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -18,9 +21,10 @@ public class PlaceOrderController {
 
     @PostMapping(path = "save")
     @PreAuthorize("hasAnyAuthority('SELLER','BUYER')")
-    public ResponseEntity<OrderDTO> placeOrder(@RequestBody OrderDTO orderDTO) {
-        OrderDTO savedOrder = orderService.placeOrder(orderDTO);
-        return ResponseEntity.ok(savedOrder);
+    public ResponseEntity<ResponseDTO> placeOrder(@RequestBody OrderDTO orderDTO) {
+        orderService.placeOrder(orderDTO);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(new ResponseDTO(VarList.OK, "Order Added SuccessFully!", orderDTO));
     }
 
 //    @GetMapping(path = "get")

@@ -55,11 +55,11 @@ public class CategoriesServiceImpl implements CategoriesService {
 
     @Override
     public List<CategoriesDTO> getAllCategories() {
-        List<Categories> categories = categoriesRepo.findAll();
-        return modelMapper.map(categories,
-                new TypeToken<List<CategoriesDTO>>(){}.getType());
+        return categoriesRepo.findAll()
+                .stream()
+                .map(category -> modelMapper.map(category, CategoriesDTO.class))
+                .collect(Collectors.toList());
     }
-
     @Override
     public CategoriesDTO updateCategory(int id, CategoryUpdateDTO updateDTO, String username) {
         Categories category = categoriesRepo.findById(id)
